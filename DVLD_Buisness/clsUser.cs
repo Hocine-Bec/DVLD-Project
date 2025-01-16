@@ -63,7 +63,7 @@ namespace DVLD_Buisness
             string UserName = "", Password = "";
             bool IsActive = false;
 
-            bool IsFound = clsUserData.GetUserInfoByUserID
+            bool IsFound = clsUserData.GetUserInfoByUserId
                                 ( UserID,ref PersonID, ref UserName,ref Password,ref IsActive);
 
             if (IsFound)
@@ -78,7 +78,7 @@ namespace DVLD_Buisness
             string UserName = "", Password = "";
             bool IsActive = false;
 
-            bool IsFound = clsUserData.GetUserInfoByPersonID
+            bool IsFound = clsUserData.GetUserInfoByPersonId
                                 (PersonID, ref UserID, ref UserName, ref Password, ref IsActive);
 
             if (IsFound)
@@ -151,7 +151,7 @@ namespace DVLD_Buisness
 
         public static bool isUserExistForPersonID(int PersonID)
         {
-            return clsUserData.IsUserExistForPersonID(PersonID);
+            return clsUserData.IsUserExistForPersonId(PersonID);
         }
 
 

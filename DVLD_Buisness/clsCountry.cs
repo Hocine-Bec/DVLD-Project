@@ -29,7 +29,7 @@ namespace DVLD_Buisness
         {
             string CountryName = "";
 
-            if (clsCountryData.GetCountryInfoByID(ID, ref CountryName))
+            if (clsCountryData.GetCountryInfoById(ID, ref CountryName))
 
                 return new clsCountry(ID, CountryName);
             else

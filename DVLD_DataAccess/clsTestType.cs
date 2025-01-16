@@ -13,184 +13,127 @@ namespace DVLD_DataAccess
 {
     public class clsTestTypeData
     {
-
-        public static bool GetTestTypeInfoByID(int TestTypeID, 
-            ref string TestTypeTitle, ref string TestDescription ,ref float TestFees)
-            {
-                bool isFound = false;
-
-                SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
-
-                string query = "SELECT * FROM TestTypes WHERE TestTypeID = @TestTypeID";
-
-                SqlCommand command = new SqlCommand(query, connection);
-
-                command.Parameters.AddWithValue("@TestTypeID", TestTypeID);
-
-                try
-                {
-                    connection.Open();
-                    SqlDataReader reader = command.ExecuteReader();
-
-                    if (reader.Read())
-                    {
-
-                        // The record was found
-                        isFound = true;
-
-                        TestTypeTitle = (string)reader["TestTypeTitle"];
-                        TestDescription = (string)reader["TestTypeDescription"];
-                        TestFees = Convert.ToSingle( reader["TestTypeFees"]);
-
-                }
-                    else
-                    {
-                        // The record was not found
-                        isFound = false;
-                    }
-
-                    reader.Close();
-
-
-                }
-                catch (Exception ex)
-                {
-                    //Console.WriteLine("Error: " + ex.Message);
-                    isFound = false;
-                }
-                finally
-                {
-                    connection.Close();
-                }
-
-                return isFound;
-            }
-
-         public static DataTable GetAllTestTypes()
-            {
-
-                DataTable dt = new DataTable();
-                SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
-
-                string query = "SELECT * FROM TestTypes order by TestTypeID";
-
-                SqlCommand command = new SqlCommand(query, connection);
-
-                try
-                {
-                    connection.Open();
-
-                    SqlDataReader reader = command.ExecuteReader();
-
-                    if (reader.HasRows)
-
-                    {
-                        dt.Load(reader);
-                    }
-
-                    reader.Close();
-
-
-                }
-
-                catch (Exception ex)
-                {
-                    // Console.WriteLine("Error: " + ex.Message);
-                }
-                finally
-                {
-                    connection.Close();
-                }
-
-                return dt;
-
-            }
-
-        public static int AddNewTestType( string Title,string Description, float Fees)
+        public static bool GetTestTypeInfoById(int testTypeId, ref string testTypeTitle,
+                  ref string testDescription, ref float testFees)
         {
-            int TestTypeID = -1;
-
-            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
-
-            string query = @"Insert Into TestTypes (TestTypeTitle,TestTypeTitle,TestTypeFees)
-                            Values (@TestTypeTitle,@TestTypeDescription,@ApplicationFees)
-                            where TestTypeID = @TestTypeID;
-                            SELECT SCOPE_IDENTITY();";
-
-            SqlCommand command = new SqlCommand(query, connection);
-
-            command.Parameters.AddWithValue("@TestTypeTitle", Title);
-            command.Parameters.AddWithValue("@TestTypeDescription", Description);
-            command.Parameters.AddWithValue("@ApplicationFees", Fees);
+            const string query = "SELECT * FROM TestTypes WHERE TestTypeID = @TestTypeID";
 
             try
             {
-                connection.Open();
-
-                object result = command.ExecuteScalar();
-
-                if (result != null && int.TryParse(result.ToString(), out int insertedID))
+                using (var connection = new SqlConnection(DbConfig.ConnectionString))
+                using (var command = new SqlCommand(query, connection))
                 {
-                    TestTypeID = insertedID;
+                    command.Parameters.AddWithValue("@TestTypeID", testTypeId);
+
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            testTypeTitle = (string)reader["TestTypeTitle"];
+                            testDescription = (string)reader["TestTypeDescription"];
+                            testFees = Convert.ToSingle(reader["TestTypeFees"]);
+                            return true;
+                        }
+
+                        return false;
+                    }
                 }
             }
-
-            catch (Exception ex)
+            catch
             {
-                //Console.WriteLine("Error: " + ex.Message);
-
-            }
-
-            finally
-            {
-                connection.Close();
-            }
-
-
-            return TestTypeID;
-
-        }
-
-        public static bool UpdateTestType(int TestTypeID,string Title,string Description, float Fees)
-        {
-
-            int rowsAffected = 0;
-            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
-
-            string query = @"Update  TestTypes  
-                            set TestTypeTitle = @TestTypeTitle,
-                                TestTypeDescription=@TestTypeDescription,
-                                TestTypeFees = @TestTypeFees
-                                where TestTypeID = @TestTypeID";
-
-            SqlCommand command = new SqlCommand(query, connection);
-
-            command.Parameters.AddWithValue("@TestTypeID", TestTypeID);
-            command.Parameters.AddWithValue("@TestTypeTitle", Title);
-            command.Parameters.AddWithValue("@TestTypeDescription", Description);
-            command.Parameters.AddWithValue("@TestTypeFees", Fees);
-
-            try
-            {
-                connection.Open();
-                rowsAffected = command.ExecuteNonQuery();
-
-            }
-            catch (Exception ex)
-            {
-                //Console.WriteLine("Error: " + ex.Message);
                 return false;
             }
-
-            finally
-            {
-                connection.Close();
-            }
-
-            return (rowsAffected > 0);
         }
 
+        public static DataTable GetAllTestTypes()
+        {
+            const string query = "SELECT * FROM TestTypes ORDER BY TestTypeID";
+            var dataTable = new DataTable();
 
+            try
+            {
+                using (var connection = new SqlConnection(DbConfig.ConnectionString))
+                using (var command = new SqlCommand(query, connection))
+                {
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            dataTable.Load(reader);
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                dataTable.Clear();
+            }
+
+            return dataTable;
+        }
+
+        public static int AddNewTestType(string title, string description, float fees)
+        {
+            const string query = @"
+            INSERT INTO TestTypes (TestTypeTitle, TestTypeDescription, TestTypeFees)
+            VALUES (@TestTypeTitle, @TestTypeDescription, @TestTypeFees);
+            SELECT SCOPE_IDENTITY();";
+
+            try
+            {
+                using (var connection = new SqlConnection(DbConfig.ConnectionString))
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@TestTypeTitle", title);
+                    command.Parameters.AddWithValue("@TestTypeDescription", description);
+                    command.Parameters.AddWithValue("@TestTypeFees", fees);
+
+                    connection.Open();
+                    var result = command.ExecuteScalar();
+
+                    return result != null && int.TryParse(result.ToString(), out var testTypeId)
+                        ? testTypeId : -1;
+                }
+            }
+            catch
+            {
+                return -1;
+            }
+        }
+
+        public static bool UpdateTestType(int testTypeId, string title, string description, float fees)
+        {
+            const string query = @"
+            UPDATE TestTypes  
+            SET 
+                TestTypeTitle = @TestTypeTitle,
+                TestTypeDescription = @TestTypeDescription,
+                TestTypeFees = @TestTypeFees
+            WHERE TestTypeID = @TestTypeID";
+
+            try
+            {
+                using (var connection = new SqlConnection(DbConfig.ConnectionString))
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@TestTypeID", testTypeId);
+                    command.Parameters.AddWithValue("@TestTypeTitle", title);
+                    command.Parameters.AddWithValue("@TestTypeDescription", description);
+                    command.Parameters.AddWithValue("@TestTypeFees", fees);
+
+                    connection.Open();
+                    var rowsAffected = command.ExecuteNonQuery();
+                    return rowsAffected > 0;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
     }
+
 }

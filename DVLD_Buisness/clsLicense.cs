@@ -111,7 +111,7 @@ namespace DVLD_Buisness
             string Notes = "";
             float PaidFees = 0; bool IsActive = true; int CreatedByUserID = 1;
             byte IssueReason = 1;
-            if (clsLicenseData.GetLicenseInfoByID(LicenseID,ref ApplicationID, ref DriverID, ref LicenseClass,
+            if (clsLicenseData.GetLicenseInfoById(LicenseID,ref ApplicationID, ref DriverID, ref LicenseClass,
             ref IssueDate, ref ExpirationDate, ref Notes,
             ref PaidFees, ref IsActive,ref IssueReason, ref CreatedByUserID))
 
@@ -162,7 +162,7 @@ namespace DVLD_Buisness
         public static int GetActiveLicenseIDByPersonID(int PersonID, int LicenseClassID)
         {
 
-            return clsLicenseData.GetActiveLicenseIDByPersonID(PersonID, LicenseClassID);
+            return clsLicenseData.GetActiveLicenseIdByPersonId(PersonID, LicenseClassID);
 
         }
 

@@ -58,7 +58,7 @@ namespace DVLD_Buisness
         {
             string Title = "", Description=""; float Fees=0;
 
-            if (clsTestTypeData.GetTestTypeInfoByID((int) TestTypeID, ref Title,ref Description, ref Fees))
+            if (clsTestTypeData.GetTestTypeInfoById((int) TestTypeID, ref Title,ref Description, ref Fees))
 
                 return new clsTestType(TestTypeID, Title, Description,Fees);
             else

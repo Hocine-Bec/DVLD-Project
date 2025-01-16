@@ -91,7 +91,7 @@ namespace DVLD_Buisness
             bool IsReleased = false; DateTime ReleaseDate = DateTime.MaxValue;
             int ReleasedByUserID = -1; int ReleaseApplicationID = -1;
 
-            if (clsDetainedLicenseData.GetDetainedLicenseInfoByID(DetainID,
+            if (clsDetainedLicenseData.GetDetainedLicenseInfoById(DetainID,
             ref LicenseID, ref DetainDate,
             ref FineFees, ref CreatedByUserID,
             ref IsReleased, ref ReleaseDate,
@@ -120,7 +120,7 @@ namespace DVLD_Buisness
             bool IsReleased = false; DateTime ReleaseDate = DateTime.MaxValue;
             int ReleasedByUserID = -1; int ReleaseApplicationID = -1;
 
-            if (clsDetainedLicenseData.GetDetainedLicenseInfoByLicenseID(LicenseID,
+            if (clsDetainedLicenseData.GetDetainedLicenseInfoByLicenseId(LicenseID,
             ref DetainID, ref DetainDate,
             ref FineFees, ref CreatedByUserID,
             ref IsReleased, ref ReleaseDate,

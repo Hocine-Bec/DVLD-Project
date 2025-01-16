@@ -70,7 +70,7 @@ namespace DVLD_Buisness
             string ClassName = ""; string ClassDescription = "";
             byte MinimumAllowedAge = 18; byte DefaultValidityLength = 10; float ClassFees = 0;
 
-            if (clsLicenseClassData.GetLicenseClassInfoByID(LicenseClassID, ref ClassName, ref ClassDescription,
+            if (clsLicenseClassData.GetLicenseClassInfoById(LicenseClassID, ref ClassName, ref ClassDescription,
                     ref  MinimumAllowedAge,  ref DefaultValidityLength, ref ClassFees))
 
                 return new clsLicenseClass(LicenseClassID,ClassName ,ClassDescription,

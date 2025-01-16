@@ -115,7 +115,7 @@ namespace DVLD_Buisness
             byte ApplicationStatus =1; DateTime LastStatusDate= DateTime.Now;
             float PaidFees = 0  ;  int CreatedByUserID = -1;
 
-            bool IsFound = clsApplicationData.GetApplicationInfoByID 
+            bool IsFound = clsApplicationData.GetApplicationInfoById 
                                 (
                                     ApplicationID, ref  ApplicantPersonID, 
                                     ref  ApplicationDate, ref  ApplicationTypeID,
@@ -192,12 +192,12 @@ namespace DVLD_Buisness
 
         public static int GetActiveApplicationID(int PersonID, clsApplication.enApplicationType  ApplicationTypeID)
         {
-            return clsApplicationData.GetActiveApplicationID(PersonID,(int) ApplicationTypeID);
+            return clsApplicationData.GetActiveApplicationId(PersonID,(int) ApplicationTypeID);
         }
 
         public static int GetActiveApplicationIDForLicenseClass(int PersonID, clsApplication.enApplicationType ApplicationTypeID,int LicenseClassID)
         {
-            return clsApplicationData.GetActiveApplicationIDForLicenseClass(PersonID, (int)ApplicationTypeID,LicenseClassID );
+            return clsApplicationData.GetActiveApplicationIdForLicenseClass(PersonID, (int)ApplicationTypeID,LicenseClassID );
         }
        
         public  int GetActiveApplicationID(clsApplication.enApplicationType ApplicationTypeID)

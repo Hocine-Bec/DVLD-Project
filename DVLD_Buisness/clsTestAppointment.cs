@@ -83,7 +83,7 @@ namespace DVLD_Buisness
             DateTime AppointmentDate = DateTime.Now;  float PaidFees = 0;  
             int CreatedByUserID = -1; bool IsLocked=false;int RetakeTestApplicationID = -1;
 
-            if (clsTestAppointmentData.GetTestAppointmentInfoByID(TestAppointmentID, ref  TestTypeID, ref  LocalDrivingLicenseApplicationID,
+            if (clsTestAppointmentData.GetTestAppointmentInfoById(TestAppointmentID, ref  TestTypeID, ref  LocalDrivingLicenseApplicationID,
             ref   AppointmentDate, ref  PaidFees, ref  CreatedByUserID, ref IsLocked, ref RetakeTestApplicationID))
 
                 return new clsTestAppointment(TestAppointmentID,  (clsTestType.enTestType) TestTypeID,  LocalDrivingLicenseApplicationID,
@@ -154,7 +154,7 @@ namespace DVLD_Buisness
 
         private int  _GetTestID()
         {
-            return clsTestAppointmentData.GetTestID(TestAppointmentID);
+            return clsTestAppointmentData.GetTestId(TestAppointmentID);
         }
 
     }

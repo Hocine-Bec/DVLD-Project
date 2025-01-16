@@ -56,7 +56,7 @@ namespace DVLD_Buisness
         {
             string Title = "";float Fees=0;
 
-            if (clsApplicationTypeData.GetApplicationTypeInfoByID((int) ID, ref Title, ref Fees))
+            if (clsApplicationTypeData.GetApplicationTypeInfoById((int) ID, ref Title, ref Fees))
 
                 return new clsApplicationType(ID, Title,Fees);
             else

@@ -112,7 +112,7 @@ namespace DVLD_Buisness
             int NationalityCountryID = -1;
             short Gendor = 0;
 
-            bool IsFound = clsPersonData.GetPersonInfoByID 
+            bool IsFound = clsPersonData.GetPersonInfoById 
                                 (
                                     PersonID, ref FirstName, ref SecondName,
                                     ref ThirdName, ref LastName, ref NationalNo, ref DateOfBirth,
@@ -191,9 +191,9 @@ namespace DVLD_Buisness
            return clsPersonData.IsPersonExist(ID);
         }
 
-        public static bool isPersonExist(string NationlNo)
+        public static bool isPersonExist(string NationalNo)
         {
-            return clsPersonData.IsPersonExist(NationlNo);
+            return clsPersonData.IsPersonExist(NationalNo);
         }
 
     }

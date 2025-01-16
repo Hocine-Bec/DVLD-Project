@@ -9,8 +9,8 @@ namespace DVLD_Buisness
     public class clsInternationalLicense:clsApplication
     {
 
-        public enum enMode { AddNew = 0, Update = 1 };
-        public enMode Mode = enMode.AddNew;
+        public new enum enMode { AddNew = 0, Update = 1 };
+        public new enMode Mode = enMode.AddNew;
 
         public clsDriver DriverInfo;
         public int InternationalLicenseID { set; get; }  
@@ -24,7 +24,7 @@ namespace DVLD_Buisness
         public clsInternationalLicense()
 
         {
-            //here we set the applicaiton type to New International License.
+            //here we set the application type to New International License.
             this.ApplicationTypeID = (int) clsApplication.enApplicationType.NewInternationalLicense;
             
             this.InternationalLicenseID = -1;
@@ -102,7 +102,8 @@ namespace DVLD_Buisness
             DateTime IssueDate = DateTime.Now; DateTime ExpirationDate = DateTime.Now;
              bool IsActive = true; int CreatedByUserID = 1;
 
-            if (clsInternationalLicenseData.GetInternationalLicenseInfoByID(InternationalLicenseID,ref ApplicationID, ref DriverID, 
+
+            if (clsInternationalLicenseData.GetInternationalLicenseInfoById(InternationalLicenseID,ref ApplicationID, ref DriverID, 
                 ref IssuedUsingLocalLicenseID,
             ref IssueDate, ref ExpirationDate, ref IsActive, ref CreatedByUserID))
             {
@@ -165,9 +166,7 @@ namespace DVLD_Buisness
 
         public static int GetActiveInternationalLicenseIDByDriverID(int DriverID)
         {
-
-            return clsInternationalLicenseData.GetActiveInternationalLicenseIDByDriverID(DriverID);
-
+            return clsInternationalLicenseData.GetActiveInternationalLicenseIdByDriverId(DriverID);
         }
 
         public static DataTable GetDriverInternationalLicenses(int DriverID)

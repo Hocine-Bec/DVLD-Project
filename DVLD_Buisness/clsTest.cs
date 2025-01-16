@@ -69,7 +69,7 @@ namespace DVLD_Buisness
             int TestAppointmentID = -1;
             bool TestResult = false; string Notes = "";int CreatedByUserID = -1;
 
-            if (clsTestData.GetTestInfoByID( TestID,
+            if (clsTestData.GetTestInfoById( TestID,
             ref  TestAppointmentID, ref  TestResult,
             ref  Notes, ref  CreatedByUserID))
 

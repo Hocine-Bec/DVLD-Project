@@ -27,7 +27,7 @@ namespace DVLD.Tests
 
 
         private clsTestType.enTestType _TestTypeID =clsTestType.enTestType.VisionTest; 
-        private clsLocalDrivingLicenseApplication _LocalDrivingLicenseApplication;
+        private clsLocalDLA _LocalDrivingLicenseApplication;
         private int _LocalDrivingLicenseApplicationID = -1;
         private clsTestAppointment _TestAppointment;
         private int _TestAppointmentID = -1;
@@ -81,7 +81,7 @@ namespace DVLD.Tests
             _LocalDrivingLicenseApplicationID = LocalDrivingLicenseApplicationID;
             _TestAppointmentID =AppointmentID;     
             _LocalDrivingLicenseApplicationID = LocalDrivingLicenseApplicationID;
-            _LocalDrivingLicenseApplication =  clsLocalDrivingLicenseApplication.FindByLocalDrivingAppLicenseID(_LocalDrivingLicenseApplicationID);
+            _LocalDrivingLicenseApplication =  clsLocalDLA.FindByLocalDrivingAppLicenseID(_LocalDrivingLicenseApplicationID);
 
            if ( _LocalDrivingLicenseApplication==null)
             {
@@ -156,7 +156,7 @@ namespace DVLD.Tests
         }
         private bool _HandleActiveTestAppointmentConstraint()
         {
-            if (_Mode == enMode.AddNew && clsLocalDrivingLicenseApplication.IsThereAnActiveScheduledTest(_LocalDrivingLicenseApplicationID, _TestTypeID))
+            if (_Mode == enMode.AddNew && clsLocalDLA.IsThereAnActiveScheduledTest(_LocalDrivingLicenseApplicationID, _TestTypeID))
             {
                 lblUserMessage.Text = "Person Already have an active appointment for this test";
                 btnSave.Enabled = false;

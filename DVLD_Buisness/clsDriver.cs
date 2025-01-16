@@ -63,7 +63,7 @@ namespace DVLD_Buisness
             
             int PersonID = -1; int CreatedByUserID = -1;DateTime CreatedDate= DateTime.Now; 
 
-            if (clsDriverData.GetDriverInfoByDriverID(DriverID, ref PersonID,ref CreatedByUserID,ref CreatedDate))
+            if (clsDriverData.GetDriverInfoByDriverId(DriverID, ref PersonID,ref CreatedByUserID,ref CreatedDate))
 
                 return new clsDriver(DriverID,  PersonID,  CreatedByUserID,  CreatedDate);
             else
@@ -76,7 +76,7 @@ namespace DVLD_Buisness
 
             int DriverID = -1; int CreatedByUserID = -1; DateTime CreatedDate = DateTime.Now;
 
-            if (clsDriverData.GetDriverInfoByPersonID( PersonID, ref DriverID,  ref CreatedByUserID, ref CreatedDate))
+            if (clsDriverData.GetDriverInfoByPersonId( PersonID, ref DriverID,  ref CreatedByUserID, ref CreatedDate))
 
                 return new clsDriver(DriverID, PersonID, CreatedByUserID, CreatedDate);
             else
