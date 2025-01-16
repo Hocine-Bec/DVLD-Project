@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -52,7 +53,7 @@
     <Compile Include="LicenseClass.cs" />
     <Compile Include="clsApplication.cs" />
     <Compile Include="ApplicationType.cs" />
-    <Compile Include="clsDataAccessSettings.cs" />
+    <Compile Include="DbConfig.cs" />
     <Compile Include="clsUserData.cs" />
     <Compile Include="clsPersonData.cs" />
     <Compile Include="clsCountryData.cs" />

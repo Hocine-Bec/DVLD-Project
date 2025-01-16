@@ -20,7 +20,7 @@ namespace DVLD_DataAccess
             {
                 bool isFound = false;
 
-                SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+                SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
                 string query = "SELECT * FROM LicenseClasses WHERE LicenseClassID = @LicenseClassID";
 
@@ -75,7 +75,7 @@ namespace DVLD_DataAccess
         {
             bool isFound = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = "SELECT * FROM LicenseClasses WHERE ClassName = @ClassName";
 
@@ -128,7 +128,7 @@ namespace DVLD_DataAccess
             {
 
                 DataTable dt = new DataTable();
-                SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+                SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
                 string query = "SELECT * FROM LicenseClasses order by ClassName";
 
@@ -169,7 +169,7 @@ namespace DVLD_DataAccess
         {
             int LicenseClassID = -1;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @"Insert Into LicenseClasses 
            (
@@ -227,7 +227,7 @@ namespace DVLD_DataAccess
         {
 
             int rowsAffected = 0;
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @"Update  LicenseClasses  
                             set ClassName = @ClassName,

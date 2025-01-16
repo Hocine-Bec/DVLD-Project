@@ -21,7 +21,7 @@ namespace DVLD_DataAccess
             {
                 bool isFound = false;
 
-                SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+                SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
                 string query = "SELECT * FROM Licenses WHERE LicenseID = @LicenseID";
 
@@ -84,7 +84,7 @@ namespace DVLD_DataAccess
             {
 
                 DataTable dt = new DataTable();
-                SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+                SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
                 string query = "SELECT * FROM Licenses";
 
@@ -124,7 +124,7 @@ namespace DVLD_DataAccess
         {
 
             DataTable dt = new DataTable();
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @"SELECT     
                            Licenses.LicenseID,
@@ -175,7 +175,7 @@ namespace DVLD_DataAccess
         {
             int LicenseID = -1;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @"
                               INSERT INTO Licenses
@@ -256,7 +256,7 @@ namespace DVLD_DataAccess
         {
 
             int rowsAffected = 0;
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @"UPDATE Licenses
                            SET ApplicationID=@ApplicationID, DriverID = @DriverID,
@@ -312,7 +312,7 @@ namespace DVLD_DataAccess
         {
             int LicenseID = -1;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @"SELECT        Licenses.LicenseID
                             FROM Licenses INNER JOIN
@@ -359,7 +359,7 @@ namespace DVLD_DataAccess
         {
 
             int rowsAffected = 0;
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @"UPDATE Licenses
                            SET 

@@ -19,7 +19,7 @@ namespace DVLD_DataAccess
             {
                 bool isFound = false;
 
-                SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+                SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
                 string query = "SELECT * FROM Drivers WHERE DriverID = @DriverID";
 
@@ -72,7 +72,7 @@ namespace DVLD_DataAccess
         {
             bool isFound = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = "SELECT * FROM Drivers WHERE PersonID = @PersonID";
 
@@ -123,7 +123,7 @@ namespace DVLD_DataAccess
             {
 
                 DataTable dt = new DataTable();
-                SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+                SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
                 string query = "SELECT * FROM Drivers_View order by FullName";
            
@@ -163,7 +163,7 @@ namespace DVLD_DataAccess
         {
             int DriverID = -1;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @"Insert Into Drivers (PersonID,CreatedByUserID,CreatedDate)
                             Values (@PersonID,@CreatedByUserID,@CreatedDate);
@@ -207,7 +207,7 @@ namespace DVLD_DataAccess
         {
 
             int rowsAffected = 0;
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
             //we dont update the createddate for the driver.
             string query = @"Update  Drivers  
                             set PersonID = @PersonID,

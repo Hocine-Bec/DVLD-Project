@@ -16,7 +16,7 @@ namespace DVLD_DataAccess
             {
                 bool isFound = false;
 
-                SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+                SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
                 string query = "SELECT * FROM Countries WHERE CountryID = @CountryID";
 
@@ -65,7 +65,7 @@ namespace DVLD_DataAccess
         {
             bool isFound = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = "SELECT * FROM Countries WHERE CountryName = @CountryName";
 
@@ -114,7 +114,7 @@ namespace DVLD_DataAccess
         {
 
             DataTable dt = new DataTable();
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = "SELECT * FROM Countries order by CountryName";
 

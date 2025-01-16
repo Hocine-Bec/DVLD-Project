@@ -13,7 +13,7 @@ namespace DVLD_DataAccess
         {
             bool isFound = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = "SELECT * FROM Users WHERE UserID = @UserID";
 
@@ -68,7 +68,7 @@ namespace DVLD_DataAccess
         {
             bool isFound = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = "SELECT * FROM Users WHERE PersonID = @PersonID";
 
@@ -121,7 +121,7 @@ namespace DVLD_DataAccess
         {
             bool isFound = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = "SELECT * FROM Users WHERE Username = @Username and Password=@Password;";
 
@@ -178,7 +178,7 @@ namespace DVLD_DataAccess
             //this function will return the new person id if succeeded and -1 if not.
             int UserID = -1;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @"INSERT INTO Users (PersonID,UserName,Password,IsActive)
                              VALUES (@PersonID, @UserName,@Password,@IsActive);
@@ -223,7 +223,7 @@ namespace DVLD_DataAccess
         {
 
             int rowsAffected = 0;
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @"Update  Users  
                             set PersonID = @PersonID,
@@ -266,7 +266,7 @@ namespace DVLD_DataAccess
         {
 
             DataTable dt = new DataTable();
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @"SELECT  Users.UserID, Users.PersonID,
                             FullName = People.FirstName + ' ' + People.SecondName + ' ' + ISNULL( People.ThirdName,'') +' ' + People.LastName,
@@ -311,7 +311,7 @@ namespace DVLD_DataAccess
 
             int rowsAffected = 0;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @"Delete Users 
                                 where UserID = @UserID";
@@ -346,7 +346,7 @@ namespace DVLD_DataAccess
         {
             bool isFound = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = "SELECT Found=1 FROM Users WHERE UserID = @UserID";
 
@@ -380,7 +380,7 @@ namespace DVLD_DataAccess
         {
             bool isFound = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = "SELECT Found=1 FROM Users WHERE UserName = @UserName";
 
@@ -414,7 +414,7 @@ namespace DVLD_DataAccess
         {
             bool isFound = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = "SELECT Found=1 FROM Users WHERE PersonID = @PersonID";
 
@@ -448,7 +448,7 @@ namespace DVLD_DataAccess
         {
             bool isFound = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = "SELECT Found=1 FROM Users WHERE PersonID = @PersonID";
 
@@ -482,7 +482,7 @@ namespace DVLD_DataAccess
         {
 
             int rowsAffected = 0;
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @"Update  Users  
                             set Password = @Password

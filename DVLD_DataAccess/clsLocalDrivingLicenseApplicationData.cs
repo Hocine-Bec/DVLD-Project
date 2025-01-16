@@ -19,7 +19,7 @@ namespace DVLD_DataAccess
             {
                 bool isFound = false;
 
-                SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+                SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
 
                 string query = "SELECT * FROM LocalDrivingLicenseApplications WHERE LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID";
@@ -74,7 +74,7 @@ namespace DVLD_DataAccess
         {
             bool isFound = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = "SELECT * FROM LocalDrivingLicenseApplications WHERE ApplicationID = @ApplicationID";
 
@@ -124,7 +124,7 @@ namespace DVLD_DataAccess
             {
 
                 DataTable dt = new DataTable();
-                SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+                SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @"SELECT *
                               FROM LocalDrivingLicenseApplications_View
@@ -172,7 +172,7 @@ namespace DVLD_DataAccess
             //this function will return the new person id if succeeded and -1 if not.
             int LocalDrivingLicenseApplicationID = -1;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @"INSERT INTO LocalDrivingLicenseApplications ( 
                             ApplicationID,LicenseClassID)
@@ -217,7 +217,7 @@ namespace DVLD_DataAccess
         {
 
             int rowsAffected = 0;
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @"Update  LocalDrivingLicenseApplications  
                             set ApplicationID = @ApplicationID,
@@ -257,7 +257,7 @@ namespace DVLD_DataAccess
 
             int rowsAffected = 0;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @"Delete LocalDrivingLicenseApplications 
                                 where LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID";
@@ -295,7 +295,7 @@ namespace DVLD_DataAccess
              
             bool Result = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @" SELECT top 1 TestResult
                             FROM LocalDrivingLicenseApplications INNER JOIN
@@ -345,7 +345,7 @@ namespace DVLD_DataAccess
 
             bool IsFound = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @" SELECT top 1 Found=1
                             FROM LocalDrivingLicenseApplications INNER JOIN
@@ -395,7 +395,7 @@ namespace DVLD_DataAccess
 
             byte TotalTrialsPerTest = 0;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @" SELECT TotalTrialsPerTest = count(TestID)
                             FROM LocalDrivingLicenseApplications INNER JOIN
@@ -444,7 +444,7 @@ namespace DVLD_DataAccess
 
             bool Result = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @" SELECT top 1 Found=1
                             FROM LocalDrivingLicenseApplications INNER JOIN

@@ -20,7 +20,7 @@ namespace DVLD_DataAccess
             {
                 bool isFound = false;
 
-                SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+                SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
                 string query = "SELECT * FROM Applications WHERE ApplicationID = @ApplicationID";
 
@@ -76,7 +76,7 @@ namespace DVLD_DataAccess
             {
 
                 DataTable dt = new DataTable();
-                SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+                SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
                 string query = "select * from ApplicationsList_View order by ApplicationDate desc";
 
@@ -120,7 +120,7 @@ namespace DVLD_DataAccess
             //this function will return the new person id if succeeded and -1 if not.
             int ApplicationID = -1;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @"INSERT INTO Applications ( 
                             ApplicantPersonID,ApplicationDate,ApplicationTypeID,
@@ -178,7 +178,7 @@ namespace DVLD_DataAccess
         {
 
             int rowsAffected = 0;
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @"Update  Applications  
                             set ApplicantPersonID = @ApplicantPersonID,
@@ -227,7 +227,7 @@ namespace DVLD_DataAccess
 
             int rowsAffected = 0;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @"Delete Applications 
                                 where ApplicationID = @ApplicationID";
@@ -262,7 +262,7 @@ namespace DVLD_DataAccess
         {
             bool isFound = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = "SELECT Found=1 FROM Applications WHERE ApplicationID = @ApplicationID";
 
@@ -303,7 +303,7 @@ namespace DVLD_DataAccess
         {
             int ActiveApplicationID =-1;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = "SELECT ActiveApplicationID=ApplicationID FROM Applications WHERE ApplicantPersonID = @ApplicantPersonID and ApplicationTypeID=@ApplicationTypeID and ApplicationStatus=1";
 
@@ -340,7 +340,7 @@ namespace DVLD_DataAccess
         {
             int ActiveApplicationID = -1;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @"SELECT ActiveApplicationID=Applications.ApplicationID  
                             From
@@ -384,7 +384,7 @@ namespace DVLD_DataAccess
         {
 
             int rowsAffected = 0;
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @"Update  Applications  
                             set 

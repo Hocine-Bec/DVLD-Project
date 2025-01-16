@@ -22,7 +22,7 @@ namespace DVLD_DataAccess
             {
                 bool isFound = false;
 
-                SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+                SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
                 string query = "SELECT * FROM Tests WHERE TestID = @TestID";
 
@@ -83,7 +83,7 @@ namespace DVLD_DataAccess
         {
             bool isFound = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @"SELECT  top 1 Tests.TestID, 
                 Tests.TestAppointmentID, Tests.TestResult, 
@@ -153,7 +153,7 @@ namespace DVLD_DataAccess
             {
 
                 DataTable dt = new DataTable();
-                SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+                SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
                 string query = "SELECT * FROM Tests order by TestID";
 
@@ -194,7 +194,7 @@ namespace DVLD_DataAccess
         {
             int TestID = -1;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @"Insert Into Tests (TestAppointmentID,TestResult,
                                                 Notes,   CreatedByUserID)
@@ -253,7 +253,7 @@ namespace DVLD_DataAccess
         {
 
             int rowsAffected = 0;
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @"Update  Tests  
                             set TestAppointmentID = @TestAppointmentID,
@@ -294,7 +294,7 @@ namespace DVLD_DataAccess
         {
             byte PassedTestCount = 0;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @"SELECT PassedTestCount = count(TestTypeID)
                          FROM Tests INNER JOIN

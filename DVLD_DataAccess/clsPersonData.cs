@@ -15,7 +15,7 @@ namespace DVLD_DataAccess
         {
             bool isFound = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = "SELECT * FROM People WHERE PersonID = @PersonID";
 
@@ -107,7 +107,7 @@ namespace DVLD_DataAccess
         {
             bool isFound = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = "SELECT * FROM People WHERE NationalNo = @NationalNo";
 
@@ -201,7 +201,7 @@ namespace DVLD_DataAccess
             //this function will return the new person id if succeeded and -1 if not.
             int PersonID = -1;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @"INSERT INTO People (FirstName, SecondName, ThirdName,LastName,NationalNo,
                                                    DateOfBirth,Gendor,Address,Phone, Email, NationalityCountryID,ImagePath)
@@ -273,7 +273,7 @@ namespace DVLD_DataAccess
         {
 
             int rowsAffected = 0;
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @"Update  People  
                             set FirstName = @FirstName,
@@ -347,7 +347,7 @@ namespace DVLD_DataAccess
         {
 
             DataTable dt = new DataTable();
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = 
               @"SELECT People.PersonID, People.NationalNo,
@@ -405,7 +405,7 @@ namespace DVLD_DataAccess
 
             int rowsAffected = 0;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = @"Delete People 
                                 where PersonID = @PersonID";
@@ -440,7 +440,7 @@ namespace DVLD_DataAccess
         {
             bool isFound = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = "SELECT Found=1 FROM People WHERE PersonID = @PersonID";
 
@@ -474,7 +474,7 @@ namespace DVLD_DataAccess
         {
             bool isFound = false;
 
-            SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString);
+            SqlConnection connection = new SqlConnection(DbConfig.ConnectionString);
 
             string query = "SELECT Found=1 FROM People WHERE NationalNo = @NationalNo";
 
