@@ -9,14 +9,13 @@ using static DVLD_DataAccess.clsCountryData;
 using System.Net;
 using System.Security.Policy;
 using System.ComponentModel;
+using DVLD.DTOs;
 
 namespace DVLD_DataAccess
 {
     public class clsInternationalLicenseData
     {
-        public static bool GetInternationalLicenseInfoById(int internationalLicenseId, ref int applicationId,
-                    ref int driverId, ref int issuedUsingLocalLicenseId, ref DateTime issueDate, ref DateTime expirationDate,
-                    ref bool isActive, ref int createdByUserId)
+        public static InternationalLicenseDTO GetInternationalLicenseInfoById(int internationalLicenseId)
         {
             const string query = "SELECT * FROM InternationalLicenses " +
                 "WHERE InternationalLicenseID = @InternationalLicenseID";
@@ -33,23 +32,25 @@ namespace DVLD_DataAccess
                     {
                         if (reader.Read())
                         {
-                            applicationId = (int)reader["ApplicationID"];
-                            driverId = (int)reader["DriverID"];
-                            issuedUsingLocalLicenseId = (int)reader["IssuedUsingLocalLicenseID"];
-                            issueDate = (DateTime)reader["IssueDate"];
-                            expirationDate = (DateTime)reader["ExpirationDate"];
-                            isActive = (bool)reader["IsActive"];
-                            createdByUserId = (int)reader["CreatedByUserID"];
-                            return true;
+                            return new InternationalLicenseDTO()
+                            {
+                                ApplicationID = (int)reader["ApplicationID"],
+                                DriverID = (int)reader["DriverID"],
+                                IssuedUsingLocalLicenseID = (int)reader["IssuedUsingLocalLicenseID"],
+                                IssueDate = (DateTime)reader["IssueDate"],
+                                ExpirationDate = (DateTime)reader["ExpirationDate"],
+                                IsActive = (bool)reader["IsActive"],
+                                CreatedByUserID = (int)reader["CreatedByUserID"]
+                            };
                         }
 
-                        return false;
+                        return null;
                     }
                 }
             }
             catch
             {
-                return false;
+                return null;
             }
         }
 
@@ -120,9 +121,7 @@ namespace DVLD_DataAccess
             return dataTable;
         }
 
-        public static int AddNewInternationalLicense(int applicationId, int driverId,
-            int issuedUsingLocalLicenseId, DateTime issueDate, DateTime expirationDate,
-            bool isActive, int createdByUserId)
+        public static int AddNewInternationalLicense(InternationalLicenseDTO internationalLicenseDTO)
         {
             const string query = @"
             UPDATE InternationalLicenses
@@ -146,13 +145,13 @@ namespace DVLD_DataAccess
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
                 using (var command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@ApplicationID", applicationId);
-                    command.Parameters.AddWithValue("@DriverID", driverId);
-                    command.Parameters.AddWithValue("@IssuedUsingLocalLicenseID", issuedUsingLocalLicenseId);
-                    command.Parameters.AddWithValue("@IssueDate", issueDate);
-                    command.Parameters.AddWithValue("@ExpirationDate", expirationDate);
-                    command.Parameters.AddWithValue("@IsActive", isActive);
-                    command.Parameters.AddWithValue("@CreatedByUserID", createdByUserId);
+                    command.Parameters.AddWithValue("@ApplicationID", internationalLicenseDTO.ApplicationID);
+                    command.Parameters.AddWithValue("@DriverID", internationalLicenseDTO.DriverID);
+                    command.Parameters.AddWithValue("@IssuedUsingLocalLicenseID", internationalLicenseDTO.IssuedUsingLocalLicenseID);
+                    command.Parameters.AddWithValue("@IssueDate", internationalLicenseDTO.IssueDate);
+                    command.Parameters.AddWithValue("@ExpirationDate", internationalLicenseDTO.ExpirationDate);
+                    command.Parameters.AddWithValue("@IsActive", internationalLicenseDTO.IsActive);
+                    command.Parameters.AddWithValue("@CreatedByUserID", internationalLicenseDTO.CreatedByUserID);
 
                     connection.Open();
                     var result = command.ExecuteScalar();
@@ -169,9 +168,7 @@ namespace DVLD_DataAccess
 
         }
 
-        public static bool UpdateInternationalLicense(int internationalLicenseId, int applicationId,
-            int driverId, int issuedUsingLocalLicenseId, DateTime issueDate, DateTime expirationDate,
-            bool isActive, int createdByUserId)
+        public static bool UpdateInternationalLicense(InternationalLicenseDTO internationalLicenseDTO)
         {
             const string query = @"
             UPDATE InternationalLicenses
@@ -190,14 +187,14 @@ namespace DVLD_DataAccess
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
                 using (var command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@InternationalLicenseID", internationalLicenseId);
-                    command.Parameters.AddWithValue("@ApplicationID", applicationId);
-                    command.Parameters.AddWithValue("@DriverID", driverId);
-                    command.Parameters.AddWithValue("@IssuedUsingLocalLicenseID", issuedUsingLocalLicenseId);
-                    command.Parameters.AddWithValue("@IssueDate", issueDate);
-                    command.Parameters.AddWithValue("@ExpirationDate", expirationDate);
-                    command.Parameters.AddWithValue("@IsActive", isActive);
-                    command.Parameters.AddWithValue("@CreatedByUserID", createdByUserId);
+                    command.Parameters.AddWithValue("@ApplicationID", internationalLicenseDTO.ApplicationID);
+                    command.Parameters.AddWithValue("@DriverID", internationalLicenseDTO.DriverID);
+                    command.Parameters.AddWithValue("@IssuedUsingLocalLicenseID", internationalLicenseDTO.IssuedUsingLocalLicenseID);
+                    command.Parameters.AddWithValue("@IssueDate", internationalLicenseDTO.IssueDate);
+                    command.Parameters.AddWithValue("@ExpirationDate", internationalLicenseDTO.ExpirationDate);
+                    command.Parameters.AddWithValue("@IsActive", internationalLicenseDTO.IsActive);
+                    command.Parameters.AddWithValue("@CreatedByUserID", internationalLicenseDTO.CreatedByUserID);
+                    command.Parameters.AddWithValue("@InternationalLicenseID", internationalLicenseDTO.InternationalLicenseID);
 
                     connection.Open();
 

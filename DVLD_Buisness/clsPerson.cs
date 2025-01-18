@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Data;
 using System.Xml.Linq;
+using DVLD.DTOs;
 using DVLD_DataAccess;
 
 
-namespace DVLD_Buisness
+namespace DVLD_Business
 {
-    public  class clsPerson
+
+    public class clsPerson
     {
         public enum enMode { AddNew = 0, Update = 1 };
         public enMode Mode = enMode.AddNew;
@@ -23,7 +25,7 @@ namespace DVLD_Buisness
         }
         public string NationalNo { set; get; }
         public DateTime DateOfBirth { set; get; }
-        public short Gendor { set; get; }
+        public short Gender { set; get; }
         public string Address { set; get; }
         public string Phone { set; get; }
         public string Email { set; get; }
@@ -31,16 +33,9 @@ namespace DVLD_Buisness
 
         public clsCountry CountryInfo;
 
-        private string _ImagePath;
+        public string ImagePath;
       
-        public string ImagePath   
-        {
-            get { return _ImagePath; }   
-            set { _ImagePath = value; }  
-        }
-
         public clsPerson()
-
         {
             this.PersonID = -1;
             this.FirstName = "";
@@ -57,98 +52,96 @@ namespace DVLD_Buisness
             Mode = enMode.AddNew;
         }
 
-        private clsPerson(int PersonID, string FirstName,string SecondName, string ThirdName,
-            string LastName,string NationalNo, DateTime DateOfBirth,short Gendor,
-             string Address, string Phone, string Email,
-            int NationalityCountryID, string ImagePath)
+        private clsPerson(PersonDTO personDTO)
 
         {
-            this.PersonID = PersonID;
-            this.FirstName = FirstName;
-            this.SecondName= SecondName;
-            this.ThirdName = ThirdName;
-            this.LastName = LastName;
-            this.NationalNo = NationalNo;   
-            this.DateOfBirth = DateOfBirth;
-            this.Gendor= Gendor;
-            this.Address = Address;
-            this.Phone = Phone;
-            this.Email = Email;
-            this.NationalityCountryID = NationalityCountryID;
-            this.ImagePath = ImagePath;
-            this.CountryInfo = clsCountry.Find(NationalityCountryID);
+            this.PersonID = personDTO.PersonID;
+            this.FirstName = personDTO.FirstName;
+            this.SecondName = personDTO.SecondName;
+            this.ThirdName = personDTO.ThirdName;
+            this.LastName = personDTO.LastName;
+            this.NationalNo = personDTO.NationalNo;
+            this.DateOfBirth = personDTO.DateOfBirth;
+            this.Gender = personDTO.Gender;
+            this.Address = personDTO.Address;
+            this.Phone = personDTO.Phone;
+            this.Email = personDTO.Email;
+            this.NationalityCountryID = personDTO.NationalityCountryID;
+            this.ImagePath = personDTO.ImagePath;
+            this.CountryInfo = clsCountry.Find(personDTO.NationalityCountryID);
             Mode = enMode.Update;
         }
 
         private bool _AddNewPerson()
         {
-            //call DataAccess Layer 
+            var personDTO = new PersonDTO
+            {
+                FirstName = this.FirstName,
+                SecondName = this.SecondName,
+                ThirdName = this.ThirdName,
+                LastName = this.LastName,
+                NationalNo = this.NationalNo,
+                DateOfBirth = this.DateOfBirth,
+                Gender = this.Gender,
+                Address = this.Address,
+                Phone = this.Phone,
+                Email = this.Email,
+                NationalityCountryID = this.NationalityCountryID,
+                ImagePath = this.ImagePath
+            };
 
-            this.PersonID = clsPersonData.AddNewPerson(
-                this.FirstName,this.SecondName ,this.ThirdName,
-                this.LastName,this.NationalNo,
-                this.DateOfBirth, this.Gendor, this.Address, this.Phone, this.Email,
-                this.NationalityCountryID, this.ImagePath);
+            this.PersonID = clsPersonData.AddNewPerson(personDTO);
 
             return (this.PersonID != -1);
         }
 
         private bool _UpdatePerson()
         {
-            //call DataAccess Layer 
+            var personDTO = new PersonDTO
+            {
+                PersonID = this.PersonID,
+                FirstName = this.FirstName,
+                SecondName = this.SecondName,
+                ThirdName = this.ThirdName,
+                LastName = this.LastName,
+                NationalNo = this.NationalNo,
+                DateOfBirth = this.DateOfBirth,
+                Gender = this.Gender,
+                Address = this.Address,
+                Phone = this.Phone,
+                Email = this.Email,
+                NationalityCountryID = this.NationalityCountryID,
+                ImagePath = this.ImagePath
+            };
 
-            return clsPersonData.UpdatePerson(
-                this.PersonID, this.FirstName,this.SecondName,this.ThirdName,
-                this.LastName, this.NationalNo, this.DateOfBirth, this.Gendor,
-                this.Address, this.Phone, this.Email, 
-                  this.NationalityCountryID, this.ImagePath);
+
+            return clsPersonData.UpdatePerson(personDTO);
+
         }
 
-        public static clsPerson Find(int PersonID)
+        public static clsPerson Find(int personID)
         {
 
-            string FirstName = "", SecondName = "", ThirdName = "", LastName = "",NationalNo="", Email = "", Phone = "", Address = "", ImagePath = "";
-            DateTime DateOfBirth = DateTime.Now;
-            int NationalityCountryID = -1;
-            short Gendor = 0;
+            var personDTO = clsPersonData.GetPersonInfoById(personID);
 
-            bool IsFound = clsPersonData.GetPersonInfoById 
-                                (
-                                    PersonID, ref FirstName, ref SecondName,
-                                    ref ThirdName, ref LastName, ref NationalNo, ref DateOfBirth,
-                                    ref Gendor, ref Address, ref Phone, ref Email,
-                                    ref NationalityCountryID, ref ImagePath
-                                );
+            if (personDTO != null)
+            {
+                return new clsPerson(personDTO);
+            }
 
-            if (IsFound)
-                //we return new object of that person with the right data
-                return new clsPerson(PersonID, FirstName,SecondName ,ThirdName, LastName,
-                          NationalNo, DateOfBirth,Gendor, Address, Phone, Email,NationalityCountryID, ImagePath);
-            else
-                return null;
+            return null;
         }
 
-        public static clsPerson Find(string NationalNo)
+        public static clsPerson Find(string nationalNo)
         {
-            string FirstName = "", SecondName = "", ThirdName = "", LastName = "",  Email = "", Phone = "", Address = "", ImagePath = "";
-            DateTime DateOfBirth = DateTime.Now;
-            int PersonID=-1,NationalityCountryID = -1;
-            short Gendor = 0;
+            var personDTO = clsPersonData.GetPersonInfoByNationalNo(nationalNo);
 
-            bool IsFound = clsPersonData.GetPersonInfoByNationalNo
-                                (
-                                    NationalNo, ref PersonID, ref FirstName, ref SecondName,
-                                    ref ThirdName, ref LastName, ref DateOfBirth,
-                                    ref Gendor,ref Address, ref Phone, ref Email,
-                                    ref NationalityCountryID, ref ImagePath
-                                );
+            if (personDTO != null)
+            {
+                return new clsPerson(personDTO);
+            }
 
-            if (IsFound)
-
-                return new clsPerson(PersonID, FirstName, SecondName, ThirdName, LastName,
-                          NationalNo, DateOfBirth,Gendor, Address, Phone, Email, NationalityCountryID, ImagePath);
-            else
-                return null;
+            return null;
         }
 
         public bool Save()
@@ -158,7 +151,6 @@ namespace DVLD_Buisness
                 case enMode.AddNew:
                     if (_AddNewPerson())
                     {
-
                         Mode = enMode.Update;
                         return true;
                     }

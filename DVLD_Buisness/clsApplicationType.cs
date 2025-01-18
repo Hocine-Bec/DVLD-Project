@@ -3,7 +3,7 @@ using System.Data;
 using System.Diagnostics.Eventing.Reader;
 using DVLD_DataAccess;
 
-namespace DVLD_Buisness
+namespace DVLD_Business
 {
     public class clsApplicationType
     {
@@ -54,7 +54,7 @@ namespace DVLD_Buisness
 
         public static clsApplicationType Find(int ID)
         {
-            string Title = "";float Fees=0;
+            string Title = ""; float Fees=0;
 
             if (clsApplicationTypeData.GetApplicationTypeInfoById((int) ID, ref Title, ref Fees))
 

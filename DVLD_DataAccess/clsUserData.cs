@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DVLD.DTOs;
+using System;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
@@ -7,8 +8,7 @@ namespace DVLD_DataAccess
 {
     public class clsUserData
     {
-        public static bool GetUserInfoByUserId(int userId, ref int personId, ref string userName,
-           ref string password, ref bool isActive)
+        public static UsersDTO GetUserInfoByUserId(int userId)
         {
             const string query = "SELECT * FROM Users WHERE UserID = @UserID";
 
@@ -24,25 +24,26 @@ namespace DVLD_DataAccess
                     {
                         if (reader.Read())
                         {
-                            personId = (int)reader["PersonID"];
-                            userName = (string)reader["UserName"];
-                            password = (string)reader["Password"];
-                            isActive = (bool)reader["IsActive"];
-                            return true;
+                            return new UsersDTO
+                            {
+                                PersonID = (int)reader["PersonID"],
+                                Username = (string)reader["UserName"],
+                                Password = (string)reader["Password"],
+                                IsActive = (bool)reader["IsActive"]
+                            };
                         }
 
-                        return false;
+                        return null;
                     }
                 }
             }
             catch
             {
-                return false;
+                return null;
             }
         }
 
-        public static bool GetUserInfoByPersonId(int personId, ref int userId, ref string userName,
-            ref string password, ref bool isActive)
+        public static UsersDTO GetUserInfoByPersonId(int personId)
         {
             const string query = "SELECT * FROM Users WHERE PersonID = @PersonID";
 
@@ -58,25 +59,27 @@ namespace DVLD_DataAccess
                     {
                         if (reader.Read())
                         {
-                            userId = (int)reader["UserID"];
-                            userName = (string)reader["UserName"];
-                            password = (string)reader["Password"];
-                            isActive = (bool)reader["IsActive"];
-                            return true;
+                            return new UsersDTO()
+                            {
+                                UserID = (int)reader["UserID"],
+                                Username = (string)reader["UserName"],
+                                Password = (string)reader["Password"],
+                                IsActive = (bool)reader["IsActive"]
+                            };
+                          
                         }
 
-                        return false;
+                        return null;
                     }
                 }
             }
             catch
             {
-                return false;
+                return null;
             }
         }
 
-        public static bool GetUserInfoByUsernameAndPassword(string userName, string password,
-            ref int userId, ref int personId, ref bool isActive)
+        public static UsersDTO GetUserInfoByUsernameAndPassword(string userName, string password)
         {
             const string query = "SELECT * FROM Users WHERE Username = @Username AND Password = @Password";
 
@@ -93,25 +96,27 @@ namespace DVLD_DataAccess
                     {
                         if (reader.Read())
                         {
-                            userId = (int)reader["UserID"];
-                            personId = (int)reader["PersonID"];
-                            userName = (string)reader["UserName"];
-                            password = (string)reader["Password"];
-                            isActive = (bool)reader["IsActive"];
-                            return true;
+                            return new UsersDTO()
+                            {
+                                UserID = (int)reader["UserID"],
+                                PersonID = (int)reader["PersonID"],
+                                Username = (string)reader["UserName"],
+                                Password = (string)reader["Password"],
+                                IsActive = (bool)reader["IsActive"]
+                            };
                         }
 
-                        return false;
+                        return null;
                     }
                 }
             }
             catch
             {
-                return false;
+                return null;
             }
         }
 
-        public static int AddNewUser(int personId, string userName, string password, bool isActive)
+        public static int AddNewUser(UsersDTO usersDTO)
         {
             const string query = @"
             INSERT INTO Users (PersonID, UserName, Password, IsActive)
@@ -123,10 +128,10 @@ namespace DVLD_DataAccess
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
                 using (var command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@PersonID", personId);
-                    command.Parameters.AddWithValue("@UserName", userName);
-                    command.Parameters.AddWithValue("@Password", password);
-                    command.Parameters.AddWithValue("@IsActive", isActive);
+                    command.Parameters.AddWithValue("@PersonID", usersDTO.PersonID);
+                    command.Parameters.AddWithValue("@UserName", usersDTO.Username);
+                    command.Parameters.AddWithValue("@Password", usersDTO.Password);
+                    command.Parameters.AddWithValue("@IsActive", usersDTO.IsActive);
 
                     connection.Open();
                     var result = command.ExecuteScalar();
@@ -141,7 +146,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool UpdateUser(int userId, int personId, string userName, string password, bool isActive)
+        public static bool UpdateUser(UsersDTO usersDTO)
         {
             const string query = @"
             UPDATE Users  
@@ -157,11 +162,11 @@ namespace DVLD_DataAccess
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
                 using (var command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@PersonID", personId);
-                    command.Parameters.AddWithValue("@UserName", userName);
-                    command.Parameters.AddWithValue("@Password", password);
-                    command.Parameters.AddWithValue("@IsActive", isActive);
-                    command.Parameters.AddWithValue("@UserID", userId);
+                    command.Parameters.AddWithValue("@PersonID", usersDTO.PersonID);
+                    command.Parameters.AddWithValue("@UserName", usersDTO.Username);
+                    command.Parameters.AddWithValue("@Password", usersDTO.Password);
+                    command.Parameters.AddWithValue("@IsActive", usersDTO.IsActive);
+                    command.Parameters.AddWithValue("@UserID", usersDTO.UserID);
 
                     connection.Open();
                     var rowsAffected = command.ExecuteNonQuery();

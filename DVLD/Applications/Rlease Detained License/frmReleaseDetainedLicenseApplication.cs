@@ -2,7 +2,7 @@
 using DVLD.DriverLicense;
 using DVLD.Licenses.Controls;
 using DVLD.Licenses.International_License;
-using DVLD_Buisness;
+using DVLD_Business;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

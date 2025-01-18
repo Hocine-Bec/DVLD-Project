@@ -1,7 +1,7 @@
 ﻿using DVLD.Licenses.International_License;
 using DVLD.Licenses.International_Licenses;
 using DVLD.People;
-using DVLD_Buisness;
+using DVLD_Business;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

@@ -1,5 +1,5 @@
 ﻿using DVLD.Applications;
-using DVLD_Buisness;
+using DVLD_Business;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Net.Mime.MediaTypeNames;
-using DVLD_Buisness;
+using DVLD_Business;
 using DVLD.DriverLicense;
 using System.Security.Cryptography;
 using DVLD.Drivers;

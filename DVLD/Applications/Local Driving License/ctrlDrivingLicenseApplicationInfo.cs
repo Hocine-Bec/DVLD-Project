@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DVLD_Buisness;
+using DVLD_Business;
 using DVLD.Classes;
 using static System.Net.Mime.MediaTypeNames;
 using DVLD.Tests;

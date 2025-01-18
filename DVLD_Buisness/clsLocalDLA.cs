@@ -5,10 +5,10 @@ using System.Security.Cryptography;
 using System.Xml.Linq;
 using DVLD_DataAccess;
 using static System.Net.Mime.MediaTypeNames;
-using static DVLD_Buisness.clsTestType;
+using static DVLD_Business.clsTestType;
 
 
-namespace DVLD_Buisness
+namespace DVLD_Business
 {
     public   class clsLocalDLA : clsApplication
 
@@ -38,21 +38,21 @@ namespace DVLD_Buisness
 
         }
 
-        private clsLocalDLA(int LocalDrivingLicenseApplicationID, int ApplicationID, int ApplicantPersonID, 
-            DateTime ApplicationDate, int ApplicationTypeID,
-             enApplicationStatus ApplicationStatus, DateTime LastStatusDate,
-             float PaidFees, int CreatedByUserID, int LicenseClassID)
-
+        private clsLocalDLA(int LocalDrivingLicenseApplicationID, int ApplicationID, int ApplicantPersonID)
         {
-            this.LocalDrivingLicenseApplicationID= LocalDrivingLicenseApplicationID; ;
-            this.ApplicationID = ApplicationID;
-            this.ApplicantPersonID = ApplicantPersonID;
-            this.ApplicationDate = ApplicationDate;
-            this.ApplicationTypeID = (int) ApplicationTypeID;
-            this.ApplicationStatus = ApplicationStatus;
-            this.LastStatusDate = LastStatusDate;
-            this.PaidFees = PaidFees;
-            this.CreatedByUserID = CreatedByUserID;
+            clsApplication application = clsApplication.FindBaseApplication(ApplicationID);
+
+            this.LocalDrivingLicenseApplicationID = LocalDrivingLicenseApplicationID; 
+
+            this.ApplicationID = application.ApplicationID;
+            this.ApplicantPersonID = application.ApplicantPersonID;
+            this.ApplicationDate = application.ApplicationDate;
+            this.ApplicationTypeID = (int)application.ApplicationTypeID;
+            this.ApplicationStatus = application.ApplicationStatus;
+            this.LastStatusDate = application.LastStatusDate;
+            this.PaidFees = application.PaidFees;
+            this.CreatedByUserID = application.CreatedByUserID;
+
             this.LicenseClassID = LicenseClassID;
             this.LicenseClassInfo = clsLicenseClass.Find(LicenseClassID);
             Mode = enMode.Update;
@@ -79,26 +79,14 @@ namespace DVLD_Buisness
 
         public static clsLocalDLA FindByLocalDrivingAppLicenseID(int LocalDrivingLicenseApplicationID)
         {
-            // 
+            
             int ApplicationID=-1, LicenseClassID=-1;
 
             bool IsFound = clsLocalDLAdata.GetLocalDrivingLicenseApplicationInfoByID
                 (LocalDrivingLicenseApplicationID, ref ApplicationID, ref LicenseClassID);
 
-
             if (IsFound)
-            { 
-               //now we find the base application
-                clsApplication Application = clsApplication.FindBaseApplication(ApplicationID);
-
-                //we return new object of that person with the right data
-                return new clsLocalDLA(
-                    LocalDrivingLicenseApplicationID, Application.ApplicationID, 
-                    Application.ApplicantPersonID,
-                                     Application.ApplicationDate, Application.ApplicationTypeID,
-                                    (enApplicationStatus)Application.ApplicationStatus, Application.LastStatusDate,
-                                     Application.PaidFees, Application.CreatedByUserID,LicenseClassID);
-            }
+                return new clsLocalDLA(LocalDrivingLicenseApplicationID, ApplicationID, LicenseClassID);
             else
                 return null;
           
@@ -107,28 +95,17 @@ namespace DVLD_Buisness
 
         public static clsLocalDLA FindByApplicationID(int ApplicationID)
         {
-            
             int LocalDrivingLicenseApplicationID = -1, LicenseClassID = -1;
 
-            bool IsFound = clsLocalDLAdata.GetLocalDrivingLicenseApplicationInfoByApplicationId
-                (ApplicationID, ref LocalDrivingLicenseApplicationID, ref LicenseClassID);
-
-
-            if (IsFound)
+            if (clsLocalDLAdata.GetLocalDrivingLicenseApplicationInfoByApplicationId
+                (ApplicationID, ref LocalDrivingLicenseApplicationID, ref LicenseClassID))
             {
-                //now we find the base application
-                clsApplication Application = clsApplication.FindBaseApplication(ApplicationID);
-
-                //we return new object of that person with the right data
-                return new clsLocalDLA(
-                    LocalDrivingLicenseApplicationID, Application.ApplicationID,
-                    Application.ApplicantPersonID,
-                                     Application.ApplicationDate, Application.ApplicationTypeID,
-                                    (enApplicationStatus)Application.ApplicationStatus, Application.LastStatusDate,
-                                     Application.PaidFees, Application.CreatedByUserID, LicenseClassID);
+                return new clsLocalDLA(LocalDrivingLicenseApplicationID, ApplicationID, LicenseClassID);
             }
             else
+            {
                 return null;
+            }
         }
 
         public bool  Save()
@@ -321,7 +298,7 @@ namespace DVLD_Buisness
             }
             //now we diver is there, so we add new licesnse
             
-            clsLicense License= new clsLicense();
+            clsLicense License = new clsLicense();
             License.ApplicationID = this.ApplicationID;
             License.DriverID= DriverID;
             License.LicenseClass = this.LicenseClassID;

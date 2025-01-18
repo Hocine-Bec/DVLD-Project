@@ -8,14 +8,13 @@ using System.Threading.Tasks;
 using static DVLD_DataAccess.clsCountryData;
 using System.Net;
 using System.Security.Policy;
+using DVLD.DTOs;
 
 namespace DVLD_DataAccess
 {
     public class clsLicenseClassData
     {
-        public static bool GetLicenseClassInfoById(int licenseClassId, ref string className,
-           ref string classDescription, ref byte minimumAllowedAge, ref byte defaultValidityLength,
-           ref float classFees)
+        public static LicenseClassDTO GetLicenseClassInfoById(int licenseClassId)
         {
             const string query = "SELECT * FROM LicenseClasses WHERE LicenseClassID = @LicenseClassID";
 
@@ -31,27 +30,27 @@ namespace DVLD_DataAccess
                     {
                         if (reader.Read())
                         {
-                            className = (string)reader["ClassName"];
-                            classDescription = (string)reader["ClassDescription"];
-                            minimumAllowedAge = (byte)reader["MinimumAllowedAge"];
-                            defaultValidityLength = (byte)reader["DefaultValidityLength"];
-                            classFees = Convert.ToSingle(reader["ClassFees"]);
-                            return true;
+                            return new LicenseClassDTO
+                            {
+                                ClassName = (string)reader["ClassName"],
+                                ClassDescription = (string)reader["ClassDescription"],
+                                MinimumAllowedAge = (byte)reader["MinimumAllowedAge"],
+                                DefaultValidityLength = (byte)reader["DefaultValidityLength"],
+                                ClassFees = Convert.ToSingle(reader["ClassFees"]),
+                            };
                         }
 
-                        return false;
+                        return null;
                     }
                 }
             }
             catch
             {
-                return false;
+                return null;
             }
         }
 
-        public static bool GetLicenseClassInfoByClassName(string className, ref int licenseClassId,
-            ref string classDescription, ref byte minimumAllowedAge, ref byte defaultValidityLength,
-            ref float classFees)
+        public static LicenseClassDTO GetLicenseClassInfoByClassName(string className)
         {
             const string query = "SELECT * FROM LicenseClasses WHERE ClassName = @ClassName";
 
@@ -67,21 +66,23 @@ namespace DVLD_DataAccess
                     {
                         if (reader.Read())
                         {
-                            licenseClassId = (int)reader["LicenseClassID"];
-                            classDescription = (string)reader["ClassDescription"];
-                            minimumAllowedAge = (byte)reader["MinimumAllowedAge"];
-                            defaultValidityLength = (byte)reader["DefaultValidityLength"];
-                            classFees = Convert.ToSingle(reader["ClassFees"]);
-                            return true;
+                            return new LicenseClassDTO
+                            {
+                                ClassName = (string)reader["ClassName"],
+                                ClassDescription = (string)reader["ClassDescription"],
+                                MinimumAllowedAge = (byte)reader["MinimumAllowedAge"],
+                                DefaultValidityLength = (byte)reader["DefaultValidityLength"],
+                                ClassFees = Convert.ToSingle(reader["ClassFees"]),
+                            };
                         }
 
-                        return false;
+                        return null;
                     }
                 }
             }
             catch
             {
-                return false;
+                return null;
             }
         }
 
@@ -113,8 +114,7 @@ namespace DVLD_DataAccess
             return dataTable;
         }
 
-        public static int AddNewLicenseClass(string className, string classDescription,
-            byte minimumAllowedAge, byte defaultValidityLength, float classFees)
+        public static int AddNewLicenseClass(LicenseClassDTO licenseClassDTO)
         {
             const string query = @"
             INSERT INTO LicenseClasses 
@@ -134,11 +134,11 @@ namespace DVLD_DataAccess
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
                 using (var command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@ClassName", className);
-                    command.Parameters.AddWithValue("@ClassDescription", classDescription);
-                    command.Parameters.AddWithValue("@MinimumAllowedAge", minimumAllowedAge);
-                    command.Parameters.AddWithValue("@DefaultValidityLength", defaultValidityLength);
-                    command.Parameters.AddWithValue("@ClassFees", classFees);
+                    command.Parameters.AddWithValue("@ClassName", licenseClassDTO.ClassName);
+                    command.Parameters.AddWithValue("@ClassDescription", licenseClassDTO.ClassDescription);
+                    command.Parameters.AddWithValue("@MinimumAllowedAge", licenseClassDTO.MinimumAllowedAge);
+                    command.Parameters.AddWithValue("@DefaultValidityLength", licenseClassDTO.DefaultValidityLength);
+                    command.Parameters.AddWithValue("@ClassFees", licenseClassDTO.ClassFees);
 
                     connection.Open();
                     var result = command.ExecuteScalar();
@@ -153,8 +153,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool UpdateLicenseClass(int licenseClassId, string className,
-            string classDescription, byte minimumAllowedAge, byte defaultValidityLength, float classFees)
+        public static bool UpdateLicenseClass(LicenseClassDTO licenseClassDTO)
         {
             const string query = @"
             UPDATE LicenseClasses  
@@ -171,12 +170,12 @@ namespace DVLD_DataAccess
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
                 using (var command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@LicenseClassID", licenseClassId);
-                    command.Parameters.AddWithValue("@ClassName", className);
-                    command.Parameters.AddWithValue("@ClassDescription", classDescription);
-                    command.Parameters.AddWithValue("@MinimumAllowedAge", minimumAllowedAge);
-                    command.Parameters.AddWithValue("@DefaultValidityLength", defaultValidityLength);
-                    command.Parameters.AddWithValue("@ClassFees", classFees);
+                    command.Parameters.AddWithValue("@LicenseClassID", licenseClassDTO.LicenseClassID);
+                    command.Parameters.AddWithValue("@ClassName", licenseClassDTO.ClassName);
+                    command.Parameters.AddWithValue("@ClassDescription", licenseClassDTO.ClassDescription);
+                    command.Parameters.AddWithValue("@MinimumAllowedAge", licenseClassDTO.MinimumAllowedAge);
+                    command.Parameters.AddWithValue("@DefaultValidityLength", licenseClassDTO.DefaultValidityLength);
+                    command.Parameters.AddWithValue("@ClassFees", licenseClassDTO.ClassFees);
 
                     connection.Open();
                     var rowsAffected = command.ExecuteNonQuery();
@@ -188,6 +187,7 @@ namespace DVLD_DataAccess
                 return false;
             }
         }
+
     }
 
 }

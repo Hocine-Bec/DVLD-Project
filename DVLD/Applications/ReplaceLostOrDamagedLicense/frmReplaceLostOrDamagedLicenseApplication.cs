@@ -1,7 +1,7 @@
 ﻿using DVLD.Classes;
 using DVLD.DriverLicense;
 using DVLD.Licenses.International_License;
-using DVLD_Buisness;
+using DVLD_Business;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static DVLD_Buisness.clsLicense;
+using static DVLD_Business.clsLicense;
 
 namespace DVLD.Applications.ReplaceLostOrDamagedLicense
 {

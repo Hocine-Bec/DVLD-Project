@@ -8,14 +8,13 @@ using System.Threading.Tasks;
 using static DVLD_DataAccess.clsCountryData;
 using System.Net;
 using System.Security.Policy;
+using DVLD.DTOs;
 
 namespace DVLD_DataAccess
 {
     public class clsDetainedLicenseData
     {
-        public static bool GetDetainedLicenseInfoById(int detainId, ref int licenseId, ref DateTime detainDate,
-          ref float fineFees, ref int createdByUserId, ref bool isReleased, ref DateTime releaseDate,
-          ref int releasedByUserId, ref int releaseApplicationId)
+        public static DetainedLicensesDTO GetDetainedLicenseInfoById(int detainId)
         {
             const string query = "SELECT * FROM DetainedLicenses WHERE DetainID = @DetainID";
 
@@ -27,41 +26,41 @@ namespace DVLD_DataAccess
                     command.Parameters.AddWithValue("@DetainID", detainId);
 
                     connection.Open();
+
                     using (var reader = command.ExecuteReader())
                     {
                         if (reader.Read())
                         {
-                            licenseId = (int)reader["LicenseID"];
-                            detainDate = (DateTime)reader["DetainDate"];
-                            fineFees = Convert.ToSingle(reader["FineFees"]);
-                            createdByUserId = (int)reader["CreatedByUserID"];
-                            isReleased = (bool)reader["IsReleased"];
+                            return new DetainedLicensesDTO()
+                            {
+                                DetainID = (int)reader["DetainID"],
+                                DetainDate = (DateTime)reader["DetainDate"],
+                                FineFees = Convert.ToSingle(reader["FineFees"]),
+                                CreatedByUserID = (int)reader["CreatedByUserID"],
+                                IsReleased = (bool)reader["IsReleased"],
 
-                            releaseDate = reader["ReleaseDate"] == DBNull.Value
-                                ? DateTime.MaxValue : (DateTime)reader["ReleaseDate"];
+                                ReleaseDate = reader["ReleaseDate"] == DBNull.Value
+                               ? DateTime.MaxValue : (DateTime)reader["ReleaseDate"],
 
-                            releasedByUserId = reader["ReleasedByUserID"] == DBNull.Value
-                                ? -1 : (int)reader["ReleasedByUserID"];
+                                ReleasedByUserID = reader["ReleasedByUserID"] == DBNull.Value
+                               ? -1 : (int)reader["ReleasedByUserID"],
 
-                            releaseApplicationId = reader["ReleaseApplicationID"] == DBNull.Value
-                                ? -1 : (int)reader["ReleaseApplicationID"];
-
-                            return true;
+                                ReleaseApplicationID = reader["ReleaseApplicationID"] == DBNull.Value
+                               ? -1 : (int)reader["ReleaseApplicationID"]
+                            };
                         }
 
-                        return false;
+                        return null;
                     }
                 }
             }
             catch
             {
-                return false;
+                return null;
             }
         }
 
-        public static bool GetDetainedLicenseInfoByLicenseId(int licenseId, ref int detainId, ref DateTime detainDate,
-            ref float fineFees, ref int createdByUserId, ref bool isReleased, ref DateTime releaseDate,
-            ref int releasedByUserId, ref int releaseApplicationId)
+        public static DetainedLicensesDTO GetDetainedLicenseInfoByLicenseId(int licenseId)
         {
             const string query = "SELECT TOP 1 * FROM DetainedLicenses WHERE LicenseID = @LicenseID " +
                 "ORDER BY DetainID DESC";
@@ -79,33 +78,35 @@ namespace DVLD_DataAccess
                     {
                         if (reader.Read())
                         {
-                            detainId = (int)reader["DetainID"];
-                            detainDate = (DateTime)reader["DetainDate"];
-                            fineFees = Convert.ToSingle(reader["FineFees"]);
-                            createdByUserId = (int)reader["CreatedByUserID"];
-                            isReleased = (bool)reader["IsReleased"];
+                            return new DetainedLicensesDTO()
+                            {
+                                DetainID = (int)reader["DetainID"],
+                                DetainDate = (DateTime)reader["DetainDate"],
+                                FineFees = Convert.ToSingle(reader["FineFees"]),
+                                CreatedByUserID = (int)reader["CreatedByUserID"],
+                                IsReleased = (bool)reader["IsReleased"],
 
-                            releaseDate = reader["ReleaseDate"] == DBNull.Value
-                                ? DateTime.MaxValue : (DateTime)reader["ReleaseDate"];
+                                ReleaseDate = reader["ReleaseDate"] == DBNull.Value
+                                ? DateTime.MaxValue : (DateTime)reader["ReleaseDate"],
 
-                            releasedByUserId = reader["ReleasedByUserID"] == DBNull.Value
-                                ? -1 : (int)reader["ReleasedByUserID"];
+                                ReleasedByUserID = reader["ReleasedByUserID"] == DBNull.Value
+                                ? -1 : (int)reader["ReleasedByUserID"],
 
-                            releaseApplicationId = reader["ReleaseApplicationID"] == DBNull.Value
-                                ? -1 : (int)reader["ReleaseApplicationID"];
-
-                            return true;
+                                ReleaseApplicationID = reader["ReleaseApplicationID"] == DBNull.Value
+                                ? -1 : (int)reader["ReleaseApplicationID"]
+                            };
                         }
 
-                        return false;
+                        return null;
                     }
                 }
             }
             catch
             {
-                return false;
+                return null;
             }
         }
+
 
         public static DataTable GetAllDetainedLicenses()
         {

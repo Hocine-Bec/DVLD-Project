@@ -1,5 +1,5 @@
 ﻿using DVLD.Properties;
-using DVLD_Buisness;
+using DVLD_Business;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DVLD_Buisness;
+using DVLD_Business;
 using DVLD.Classes;
 using DVLD.People;
 using DVLD.Controls;

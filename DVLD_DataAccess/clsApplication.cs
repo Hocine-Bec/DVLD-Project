@@ -6,14 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
+using DVLD.DTOs;
 
 namespace DVLD_DataAccess
 {
+   
     public class clsApplicationData
     {
-        public static bool GetApplicationInfoById(int applicationId, ref int applicantPersonId,
-           ref DateTime applicationDate, ref int applicationTypeId, ref byte applicationStatus,
-           ref DateTime lastStatusDate, ref float paidFees, ref int createdByUserId)
+        public static ApplicationDTO GetApplicationInfoById(int applicationId)
         {
             const string query = "SELECT * FROM Applications WHERE ApplicationID = @ApplicationID";
 
@@ -29,23 +29,24 @@ namespace DVLD_DataAccess
                     {
                         if (reader.Read())
                         {
-                            applicantPersonId = (int)reader["ApplicantPersonID"];
-                            applicationDate = (DateTime)reader["ApplicationDate"];
-                            applicationTypeId = (int)reader["ApplicationTypeID"];
-                            applicationStatus = (byte)reader["ApplicationStatus"];
-                            lastStatusDate = (DateTime)reader["LastStatusDate"];
-                            paidFees = Convert.ToSingle(reader["PaidFees"]);
-                            createdByUserId = (int)reader["CreatedByUserID"];
-                            return true;
+                            return new ApplicationDTO()
+                            {
+                                ApplicantPersonID = (int)reader["ApplicantPersonID"],
+                                ApplicationDate = (DateTime)reader["ApplicationDate"],
+                                ApplicationTypeID = (int)reader["ApplicationTypeID"],
+                                ApplicationStatus = (byte)reader["ApplicationStatus"],
+                                LastStatusDate = (DateTime)reader["LastStatusDate"],
+                                PaidFees = Convert.ToSingle(reader["PaidFees"]),
+                                CreatedByUserID = (int)reader["CreatedByUserID"],
+                            };
                         }
-
-                        return false;
+                        return null;
                     }
                 }
             }
             catch
             {
-                return false;
+                return null;
             }
         }
 
@@ -77,9 +78,7 @@ namespace DVLD_DataAccess
             return dataTable;
         }
 
-        public static int AddNewApplication(int applicantPersonId, DateTime applicationDate,
-            int applicationTypeId, byte applicationStatus, DateTime lastStatusDate, float paidFees,
-            int createdByUserId)
+        public static int AddNewApplication(ApplicationDTO applicationDTO)
         {
             const string query = @"
             INSERT INTO Applications 
@@ -99,13 +98,13 @@ namespace DVLD_DataAccess
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
                 using (var command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@ApplicantPersonID", applicantPersonId);
-                    command.Parameters.AddWithValue("@ApplicationDate", applicationDate);
-                    command.Parameters.AddWithValue("@ApplicationTypeID", applicationTypeId);
-                    command.Parameters.AddWithValue("@ApplicationStatus", applicationStatus);
-                    command.Parameters.AddWithValue("@LastStatusDate", lastStatusDate);
-                    command.Parameters.AddWithValue("@PaidFees", paidFees);
-                    command.Parameters.AddWithValue("@CreatedByUserID", createdByUserId);
+                    command.Parameters.AddWithValue("@ApplicantPersonID", applicationDTO.ApplicantPersonID);
+                    command.Parameters.AddWithValue("@ApplicationDate",   applicationDTO.ApplicationDate);
+                    command.Parameters.AddWithValue("@ApplicationTypeID", applicationDTO.ApplicationTypeID);
+                    command.Parameters.AddWithValue("@ApplicationStatus", applicationDTO.ApplicationStatus);
+                    command.Parameters.AddWithValue("@LastStatusDate",    applicationDTO.LastStatusDate);
+                    command.Parameters.AddWithValue("@PaidFees",          applicationDTO.PaidFees);
+                    command.Parameters.AddWithValue("@CreatedByUserID",   applicationDTO.CreatedByUserID);
 
                     connection.Open();
                     var result = command.ExecuteScalar();
@@ -120,9 +119,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool UpdateApplication(int applicationId, int applicantPersonId, DateTime applicationDate,
-            int applicationTypeId, byte applicationStatus, DateTime lastStatusDate, float paidFees,
-            int createdByUserId)
+        public static bool UpdateApplication(ApplicationDTO applicationDTO)
         {
             const string query = @"
             UPDATE Applications  
@@ -140,15 +137,15 @@ namespace DVLD_DataAccess
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
                 using (var command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@ApplicationID", applicationId);
-                    command.Parameters.AddWithValue("@ApplicantPersonID", applicantPersonId);
-                    command.Parameters.AddWithValue("@ApplicationDate", applicationDate);
-                    command.Parameters.AddWithValue("@ApplicationTypeID", applicationTypeId);
-                    command.Parameters.AddWithValue("@ApplicationStatus", applicationStatus);
-                    command.Parameters.AddWithValue("@LastStatusDate", lastStatusDate);
-                    command.Parameters.AddWithValue("@PaidFees", paidFees);
-                    command.Parameters.AddWithValue("@CreatedByUserID", createdByUserId);
+                { 
+                    command.Parameters.AddWithValue("@ApplicationID", applicationDTO.ApplicantPersonID);
+                    command.Parameters.AddWithValue("@ApplicantPersonID", applicationDTO.ApplicationDate);
+                    command.Parameters.AddWithValue("@ApplicationDate", applicationDTO.ApplicationTypeID);
+                    command.Parameters.AddWithValue("@ApplicationTypeID", applicationDTO.ApplicationStatus);
+                    command.Parameters.AddWithValue("@ApplicationStatus", applicationDTO.LastStatusDate);
+                    command.Parameters.AddWithValue("@LastStatusDate", applicationDTO.LastStatusDate);
+                    command.Parameters.AddWithValue("@PaidFees", applicationDTO.PaidFees);
+                    command.Parameters.AddWithValue("@CreatedByUserID", applicationDTO.CreatedByUserID);
 
                     connection.Open();
                     var rowsAffected = command.ExecuteNonQuery();

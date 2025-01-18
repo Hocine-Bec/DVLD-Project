@@ -10,13 +10,13 @@ using System.Net;
 using System.Security.Policy;
 using static System.Net.Mime.MediaTypeNames;
 using System.Reflection;
+using DVLD.DTOs;
 
 namespace DVLD_DataAccess
 {
     public class clsTestData
     {
-        public static bool GetTestInfoById(int testId, ref int testAppointmentId, ref bool testResult,
-                   ref string notes, ref int createdByUserId)
+        public static TestsDTO GetTestInfoById(int testId)
         {
             const string query = "SELECT * FROM Tests WHERE TestID = @TestID";
 
@@ -32,26 +32,27 @@ namespace DVLD_DataAccess
                     {
                         if (reader.Read())
                         {
-                            testAppointmentId = (int)reader["TestAppointmentID"];
-                            testResult = (bool)reader["TestResult"];
-                            notes = reader["Notes"] == DBNull.Value ? "" : (string)reader["Notes"];
-                            createdByUserId = (int)reader["CreatedByUserID"];
-                            return true;
+                            return new TestsDTO()
+                            {
+                                TestAppointmentID = (int)reader["TestAppointmentID"],
+                                TestResult = (bool)reader["TestResult"],
+                                Notes = reader["Notes"] == DBNull.Value ? "" : (string)reader["Notes"],
+                                CreatedByUserID = (int)reader["CreatedByUserID"],
+                            };
                         }
 
-                        return false;
+                        return null;
                     }
                 }
             }
             catch
             {
-                return false;
+                return null;
             }
         }
 
-        public static bool GetLastTestByPersonAndTestTypeAndLicenseClass(int personId, int licenseClassId,
-            int testTypeId, ref int testId, ref int testAppointmentId, ref bool testResult,
-            ref string notes, ref int createdByUserId)
+        public static TestsDTO GetLastTestByPersonAndTestTypeAndLicenseClass(int personId, int licenseClassId,
+            int testTypeId)
         {
             const string query = @"
             SELECT TOP 1 
@@ -77,25 +78,26 @@ namespace DVLD_DataAccess
 
                     connection.Open();
                     using (var reader = command.ExecuteReader())
-                    {
+                   {
                         if (reader.Read())
                         {
-                            testId = (int)reader["TestID"];
-                            testAppointmentId = (int)reader["TestAppointmentID"];
-                            testResult = (bool)reader["TestResult"];
-                            notes = reader["Notes"] == DBNull.Value ? "" : (string)reader["Notes"];
-                            createdByUserId = (int)reader["CreatedByUserID"];
-
-                            return true;
+                            return new TestsDTO()
+                            {
+                                TestID = (int)reader["TestID"],
+                                TestAppointmentID = (int)reader["TestAppointmentID"],
+                                TestResult = (bool)reader["TestResult"],
+                                Notes = reader["Notes"] == DBNull.Value ? "" : (string)reader["Notes"],
+                                CreatedByUserID = (int)reader["CreatedByUserID"],
+                            };
                         }
 
-                        return false;
+                        return null;
                     }
                 }
             }
             catch
             {
-                return false;
+                return null;
             }
         }
 
@@ -127,7 +129,7 @@ namespace DVLD_DataAccess
             return dataTable;
         }
 
-        public static int AddNewTest(int testAppointmentId, bool testResult, string notes, int createdByUserId)
+        public static int AddNewTest(TestsDTO testsDTO)
         {
             const string query = @"
             INSERT INTO Tests (TestAppointmentID, TestResult, Notes, CreatedByUserID)
@@ -144,10 +146,10 @@ namespace DVLD_DataAccess
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
                 using (var command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@TestAppointmentID", testAppointmentId);
-                    command.Parameters.AddWithValue("@TestResult", testResult);
-                    command.Parameters.AddWithValue("@Notes", string.IsNullOrEmpty(notes) ? DBNull.Value : (object)notes);
-                    command.Parameters.AddWithValue("@CreatedByUserID", createdByUserId);
+                    command.Parameters.AddWithValue("@TestAppointmentID", testsDTO.TestAppointmentID);
+                    command.Parameters.AddWithValue("@TestResult", testsDTO.TestResult);
+                    command.Parameters.AddWithValue("@Notes", string.IsNullOrEmpty(testsDTO.Notes) ? DBNull.Value : (object)testsDTO.Notes);
+                    command.Parameters.AddWithValue("@CreatedByUserID", testsDTO.CreatedByUserID);
 
                     connection.Open();
                     var result = command.ExecuteScalar();
@@ -162,7 +164,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool UpdateTest(int testId, int testAppointmentId, bool testResult, string notes, int createdByUserId)
+        public static bool UpdateTest(TestsDTO testsDTO)
         {
             const string query = @"
             UPDATE Tests  
@@ -178,11 +180,11 @@ namespace DVLD_DataAccess
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
                 using (var command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@TestID", testId);
-                    command.Parameters.AddWithValue("@TestAppointmentID", testAppointmentId);
-                    command.Parameters.AddWithValue("@TestResult", testResult);
-                    command.Parameters.AddWithValue("@Notes", notes);
-                    command.Parameters.AddWithValue("@CreatedByUserID", createdByUserId);
+                    command.Parameters.AddWithValue("@TestID", testsDTO.TestID);
+                    command.Parameters.AddWithValue("@TestAppointmentID", testsDTO.TestAppointmentID);
+                    command.Parameters.AddWithValue("@TestResult", testsDTO.TestResult);
+                    command.Parameters.AddWithValue("@Notes", string.IsNullOrEmpty(testsDTO.Notes) ? DBNull.Value : (object)testsDTO.Notes);
+                    command.Parameters.AddWithValue("@CreatedByUserID", testsDTO.CreatedByUserID);
 
                     connection.Open();
                     var rowsAffected = command.ExecuteNonQuery();

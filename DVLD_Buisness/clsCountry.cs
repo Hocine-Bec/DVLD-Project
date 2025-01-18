@@ -2,7 +2,7 @@
 using System.Data;
 using DVLD_DataAccess;
 
-namespace DVLD_Buisness
+namespace DVLD_Business
 {
     public class clsCountry
     {

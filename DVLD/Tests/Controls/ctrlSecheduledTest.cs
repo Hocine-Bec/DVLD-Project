@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DVLD.Properties;
-using DVLD_Buisness;
+using DVLD_Business;
 using DVLD.Classes;
 
 namespace DVLD.Tests

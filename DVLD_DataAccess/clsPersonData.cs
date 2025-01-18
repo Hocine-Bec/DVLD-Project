@@ -1,16 +1,14 @@
-﻿using System;
+﻿using DVLD.DTOs;
+using System;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 
 namespace DVLD_DataAccess
 {
-    public class clsPersonData
+    public class clsPersonData 
     {
-        public static bool GetPersonInfoById(int personId, ref string firstName, ref string secondName,
-           ref string thirdName, ref string lastName, ref string nationalNo, ref DateTime dateOfBirth,
-           ref short gender, ref string address, ref string phone, ref string email,
-           ref int nationalityCountryId, ref string imagePath)
+        public static PersonDTO GetPersonInfoById(int personId)
         {
             const string query = "SELECT * FROM People WHERE PersonID = @PersonID";
 
@@ -26,78 +24,79 @@ namespace DVLD_DataAccess
                     {
                         if (reader.Read())
                         {
-                            firstName = (string)reader["FirstName"];
-                            secondName = (string)reader["SecondName"];
-                            thirdName = reader["ThirdName"] == DBNull.Value ? "" : (string)reader["ThirdName"];
-                            lastName = (string)reader["LastName"];
-                            nationalNo = (string)reader["NationalNo"];
-                            dateOfBirth = (DateTime)reader["DateOfBirth"];
-                            gender = (byte)reader["Gendor"];
-                            address = (string)reader["Address"];
-                            phone = (string)reader["Phone"];
-                            email = reader["Email"] == DBNull.Value ? "" : (string)reader["Email"];
-                            nationalityCountryId = (int)reader["NationalityCountryID"];
-                            imagePath = reader["ImagePath"] == DBNull.Value ? "" : (string)reader["ImagePath"];
-                            return true;
+                            return new PersonDTO
+                            {
+                                PersonID = personId,
+                                FirstName = (string)reader["FirstName"],
+                                SecondName = (string)reader["SecondName"],
+                                ThirdName = reader["ThirdName"] == DBNull.Value ? "" : (string)reader["ThirdName"],
+                                LastName = (string)reader["LastName"],
+                                NationalNo = (string)reader["NationalNo"],
+                                DateOfBirth = (DateTime)reader["DateOfBirth"],
+                                Gender = (byte)reader["Gendor"],
+                                Address = (string)reader["Address"],
+                                Phone = (string)reader["Phone"],
+                                Email = reader["Email"] == DBNull.Value ? "" : (string)reader["Email"],
+                                NationalityCountryID = (int)reader["NationalityCountryID"],
+                                ImagePath = reader["ImagePath"] == DBNull.Value ? "" : (string)reader["ImagePath"]
+                            };
                         }
 
-                        return false;
+                        return null; 
                     }
                 }
             }
             catch
             {
-                return false;
+                return null; 
             }
         }
 
-        public static bool GetPersonInfoByNationalNo(string nationalNo, ref int personId, ref string firstName,
-            ref string secondName, ref string thirdName, ref string lastName, ref DateTime dateOfBirth,
-            ref short gender, ref string address, ref string phone, ref string email,
-            ref int nationalityCountryId, ref string imagePath)
+        public static PersonDTO GetPersonInfoByNationalNo(string nationalNo)
         {
-            const string query = "SELECT * FROM People WHERE NationalNo = @NationalNo";
+            const string query = "SELECT * FROM People WHERE NationalNo = @nationalNo";
 
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
                 using (var command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@NationalNo", nationalNo);
+                    command.Parameters.AddWithValue("@nationalNo", nationalNo);
 
                     connection.Open();
                     using (var reader = command.ExecuteReader())
                     {
                         if (reader.Read())
                         {
-                            personId = (int)reader["PersonID"];
-                            firstName = (string)reader["FirstName"];
-                            secondName = (string)reader["SecondName"];
-                            thirdName = reader["ThirdName"] == DBNull.Value ? "" : (string)reader["ThirdName"];
-                            lastName = (string)reader["LastName"];
-                            dateOfBirth = (DateTime)reader["DateOfBirth"];
-                            gender = (byte)reader["Gendor"];
-                            address = (string)reader["Address"];
-                            phone = (string)reader["Phone"];
-                            email = reader["Email"] == DBNull.Value ? "" : (string)reader["Email"];
-                            nationalityCountryId = (int)reader["NationalityCountryID"];
-                            imagePath = reader["ImagePath"] == DBNull.Value ? "" : (string)reader["ImagePath"];
-                            return true;
+                            return new PersonDTO
+                            {
+                                PersonID = (int)reader["PersonID"],
+                                FirstName = (string)reader["FirstName"],
+                                SecondName = (string)reader["SecondName"],
+                                ThirdName = reader["ThirdName"] == DBNull.Value ? "" : (string)reader["ThirdName"],
+                                LastName = (string)reader["LastName"],
+                                NationalNo = nationalNo,
+                                DateOfBirth = (DateTime)reader["DateOfBirth"],
+                                Gender = (byte)reader["Gendor"],
+                                Address = (string)reader["Address"],
+                                Phone = (string)reader["Phone"],
+                                Email = reader["Email"] == DBNull.Value ? "" : (string)reader["Email"],
+                                NationalityCountryID = (int)reader["NationalityCountryID"],
+                                ImagePath = reader["ImagePath"] == DBNull.Value ? "" : (string)reader["ImagePath"]
+                            };
                         }
 
-                        return false;
+                        return null;
                     }
                 }
             }
             catch
             {
-                return false;
+                return null;
             }
         }
 
-        public static int AddNewPerson(string firstName, string secondName, string thirdName, string lastName,
-            string nationalNo, DateTime dateOfBirth, short gender, string address, string phone, string email,
-            int nationalityCountryId, string imagePath)
+        public static int AddNewPerson(PersonDTO person)
         {
             const string query = @"
             INSERT INTO People 
@@ -117,18 +116,18 @@ namespace DVLD_DataAccess
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
                 using (var command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@FirstName", firstName);
-                    command.Parameters.AddWithValue("@SecondName", secondName);
-                    command.Parameters.AddWithValue("@ThirdName", string.IsNullOrEmpty(thirdName) ? DBNull.Value : (object)thirdName);
-                    command.Parameters.AddWithValue("@LastName", lastName);
-                    command.Parameters.AddWithValue("@NationalNo", nationalNo);
-                    command.Parameters.AddWithValue("@DateOfBirth", dateOfBirth);
-                    command.Parameters.AddWithValue("@gender", gender);
-                    command.Parameters.AddWithValue("@Address", address);
-                    command.Parameters.AddWithValue("@Phone", phone);
-                    command.Parameters.AddWithValue("@Email", string.IsNullOrEmpty(email) ? DBNull.Value : (object)email);
-                    command.Parameters.AddWithValue("@NationalityCountryID", nationalityCountryId);
-                    command.Parameters.AddWithValue("@ImagePath", string.IsNullOrEmpty(imagePath) ? DBNull.Value : (object)imagePath);
+                    command.Parameters.AddWithValue("@FirstName", person.FirstName);
+                    command.Parameters.AddWithValue("@SecondName", person.SecondName);
+                    command.Parameters.AddWithValue("@ThirdName", string.IsNullOrEmpty(person.ThirdName) ? DBNull.Value : (object)person.ThirdName);
+                    command.Parameters.AddWithValue("@LastName", person.LastName);
+                    command.Parameters.AddWithValue("@NationalNo", person.NationalNo);
+                    command.Parameters.AddWithValue("@DateOfBirth", person.DateOfBirth);
+                    command.Parameters.AddWithValue("@gender", person.Gender);
+                    command.Parameters.AddWithValue("@Address", person.Address);
+                    command.Parameters.AddWithValue("@Phone", person.Phone);
+                    command.Parameters.AddWithValue("@Email", string.IsNullOrEmpty(person.Email) ? DBNull.Value : (object)person.Email);
+                    command.Parameters.AddWithValue("@NationalityCountryID", person.NationalityCountryID);
+                    command.Parameters.AddWithValue("@ImagePath", string.IsNullOrEmpty(person.Email) ? DBNull.Value : (object)person.Email);
 
                     connection.Open();
                     var result = command.ExecuteScalar();
@@ -143,9 +142,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool UpdatePerson(int personId, string firstName, string secondName, string thirdName,
-            string lastName, string nationalNo, DateTime dateOfBirth, short gender, string address, string phone,
-            string email, int nationalityCountryId, string imagePath)
+        public static bool UpdatePerson(PersonDTO person)
         {
             const string query = @"
             UPDATE People  
@@ -169,19 +166,20 @@ namespace DVLD_DataAccess
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
                 using (var command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@PersonID", personId);
-                    command.Parameters.AddWithValue("@FirstName", firstName);
-                    command.Parameters.AddWithValue("@SecondName", secondName);
-                    command.Parameters.AddWithValue("@ThirdName", string.IsNullOrEmpty(thirdName) ? DBNull.Value : (object)thirdName);
-                    command.Parameters.AddWithValue("@LastName", lastName);
-                    command.Parameters.AddWithValue("@NationalNo", nationalNo);
-                    command.Parameters.AddWithValue("@DateOfBirth", dateOfBirth);
-                    command.Parameters.AddWithValue("@Gendor", gender);
-                    command.Parameters.AddWithValue("@Address", address);
-                    command.Parameters.AddWithValue("@Phone", phone);
-                    command.Parameters.AddWithValue("@Email", string.IsNullOrEmpty(email) ? DBNull.Value : (object)email);
-                    command.Parameters.AddWithValue("@NationalityCountryID", nationalityCountryId);
-                    command.Parameters.AddWithValue("@ImagePath", string.IsNullOrEmpty(imagePath) ? DBNull.Value : (object)imagePath);
+                    command.Parameters.AddWithValue("@PersonID", person.PersonID);
+                    command.Parameters.AddWithValue("@FirstName", person.FirstName);
+                    command.Parameters.AddWithValue("@SecondName", person.SecondName);
+                    command.Parameters.AddWithValue("@ThirdName", string.IsNullOrEmpty(person.ThirdName) ? DBNull.Value : (object)person.ThirdName);
+                    command.Parameters.AddWithValue("@LastName", person.LastName);
+                    command.Parameters.AddWithValue("@NationalNo", person.NationalNo);
+                    command.Parameters.AddWithValue("@DateOfBirth", person.DateOfBirth);
+                    command.Parameters.AddWithValue("@gender", person.Gender);
+                    command.Parameters.AddWithValue("@Address", person.Address);
+                    command.Parameters.AddWithValue("@Phone", person.Phone);
+                    command.Parameters.AddWithValue("@Email", string.IsNullOrEmpty(person.Email) ? DBNull.Value : (object)person.Email);
+                    command.Parameters.AddWithValue("@NationalityCountryID", person.NationalityCountryID);
+                    command.Parameters.AddWithValue("@ImagePath", string.IsNullOrEmpty(person.Email) ? DBNull.Value : (object)person.Email);
+                    command.Parameters.AddWithValue("@ImagePath", string.IsNullOrEmpty(person.ImagePath) ? DBNull.Value : (object)person.ImagePath);
 
                     connection.Open();
                     var rowsAffected = command.ExecuteNonQuery();

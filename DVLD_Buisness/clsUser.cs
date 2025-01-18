@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Data;
 using System.Runtime.InteropServices;
+using DVLD.DTOs;
 using DVLD_DataAccess;
 
-namespace DVLD_Buisness
+namespace DVLD_Business
 {
     public  class clsUser
     {
@@ -27,79 +28,73 @@ namespace DVLD_Buisness
             Mode = enMode.AddNew;
         }
 
-        private clsUser(int UserID, int PersonID, string Username,string Password,
-            bool IsActive)
-
+        private clsUser(UsersDTO usersDTO)
         {
-            this.UserID = UserID; 
-            this.PersonID = PersonID;
+            this.UserID = usersDTO.UserID; 
+            this.PersonID = usersDTO.PersonID;
             this.PersonInfo = clsPerson.Find(PersonID);
-            this.UserName = Username;
-            this.Password = Password;
-            this.IsActive = IsActive;
+            this.UserName = usersDTO.Username;
+            this.Password = usersDTO.Password;
+            this.IsActive = usersDTO.IsActive;
 
             Mode = enMode.Update;
         }
 
         private bool _AddNewUser()
         {
-            //call DataAccess Layer 
+            var usersDTO = new UsersDTO()
+            {
+                PersonID = this.PersonID,
+                Username = this.UserName,
+                Password = this.Password,
+                IsActive = this.IsActive
+            };
 
-            this.UserID = clsUserData.AddNewUser(this.PersonID,this.UserName,
-                this.Password,this.IsActive);
+            this.UserID = clsUserData.AddNewUser(usersDTO);
 
             return (this.UserID != -1);
         }
+
         private bool _UpdateUser()
         {
-            //call DataAccess Layer 
+            var usersDTO = new UsersDTO()
+            {
+                UserID = this.UserID,
+                PersonID = this.PersonID,
+                Username = this.UserName,
+                Password = this.Password,
+                IsActive = this.IsActive
+            };
 
-            return clsUserData.UpdateUser(this.UserID,this.PersonID,this.UserName,
-                this.Password,this.IsActive);
+            return clsUserData.UpdateUser(usersDTO);
         }
+ 
         public static clsUser FindByUserID(int UserID)
         {
-            int PersonID = -1;
-            string UserName = "", Password = "";
-            bool IsActive = false;
+            var usersDTO = clsUserData.GetUserInfoByUserId(UserID);
 
-            bool IsFound = clsUserData.GetUserInfoByUserId
-                                ( UserID,ref PersonID, ref UserName,ref Password,ref IsActive);
-
-            if (IsFound)
-                //we return new object of that User with the right data
-                return new clsUser(UserID,PersonID,UserName,Password,IsActive);
+            if (usersDTO != null)
+                return new clsUser(usersDTO);
             else
                 return null;
         }
+        
         public static clsUser FindByPersonID(int PersonID)
         {
-            int UserID = -1;
-            string UserName = "", Password = "";
-            bool IsActive = false;
+            var usersDTO = clsUserData.GetUserInfoByPersonId(PersonID);
 
-            bool IsFound = clsUserData.GetUserInfoByPersonId
-                                (PersonID, ref UserID, ref UserName, ref Password, ref IsActive);
-
-            if (IsFound)
-                //we return new object of that User with the right data
-                return new clsUser(UserID, UserID, UserName, Password, IsActive);
+            if (usersDTO != null)
+                return new clsUser(usersDTO);
             else
                 return null;
         }
-        public static clsUser FindByUsernameAndPassword(string UserName,string Password)
+        
+        public static clsUser FindByUsernameAndPassword(string username,string password)
         {
-            int UserID = -1;
-            int PersonID=-1;
+            var usersDTO = clsUserData.GetUserInfoByUsernameAndPassword(username, password);
 
-            bool IsActive = false;
-
-            bool IsFound = clsUserData.GetUserInfoByUsernameAndPassword
-                                (UserName , Password,ref UserID,ref PersonID, ref IsActive);
-
-            if (IsFound)
-                //we return new object of that User with the right data
-                return new clsUser(UserID, PersonID, UserName, Password, IsActive);
+            if (usersDTO != null)
+                return new clsUser(usersDTO);
             else
                 return null;
         }

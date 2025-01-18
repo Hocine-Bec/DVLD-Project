@@ -3,11 +3,10 @@ using System.Data;
 using System.Diagnostics.Eventing.Reader;
 using DVLD_DataAccess;
 
-namespace DVLD_Buisness
+namespace DVLD_Business
 {
     public class clsDriver
     {
-
         public enum enMode { AddNew = 0, Update = 1 };
         public enMode Mode = enMode.AddNew;
 
@@ -60,7 +59,6 @@ namespace DVLD_Buisness
 
         public static clsDriver FindByDriverID(int DriverID)
         {
-            
             int PersonID = -1; int CreatedByUserID = -1;DateTime CreatedDate= DateTime.Now; 
 
             if (clsDriverData.GetDriverInfoByDriverId(DriverID, ref PersonID,ref CreatedByUserID,ref CreatedDate))
