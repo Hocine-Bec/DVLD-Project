@@ -20,6 +20,14 @@ Driving License Management Department (DVLD) is a comprehensive Windows forms ap
 - **Data Access**: ADO.NET
 - **Architecture**: 3-Tier Architecture
 
+## Improvement Record
+For a detailed history of improvements, see the [CHANGELOG.md](./CHANGELOG.md) file.
+
+## Recent Improvements
+This section showcases my growth as a developer and documents key improvements made to the project, along with the dates they were implemented.
+- **Resource Management**: Implemented proper resource disposal patterns [2025-01-15]
+- **Data Transfer**: Introduced DTOs for cleaner data handling [2025-01-18]
+
 ## License Classes Supported
 1. Small Motorcycle License
 2. Heavy Motorcycle License
