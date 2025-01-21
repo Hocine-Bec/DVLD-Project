@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Data;
+using DVLD.DTOs;
 using DVLD_DataAccess;
 
 
-namespace DVLD_Buisness
+namespace DVLD_Business
 {
     public   class clsApplication
     {
@@ -26,6 +27,7 @@ namespace DVLD_Buisness
         }
         public DateTime ApplicationDate { set; get; }
         public int ApplicationTypeID { set; get; }
+
         public clsApplicationType ApplicationTypeInfo;
         public enApplicationStatus ApplicationStatus { set; get; } 
         public string StatusText   
@@ -49,10 +51,10 @@ namespace DVLD_Buisness
         public DateTime LastStatusDate { set; get; }
         public float PaidFees { set; get; }
         public int CreatedByUserID { set; get; }
+
         public clsUser CreatedByUserInfo;
 
         public clsApplication()
-
         {
             this.ApplicationID = -1;
             this.ApplicantPersonID = -1;
@@ -64,71 +66,68 @@ namespace DVLD_Buisness
             this.CreatedByUserID = -1;
            
             Mode = enMode.AddNew;
-
         }
 
-        private clsApplication(int ApplicationID, int ApplicantPersonID, 
-            DateTime ApplicationDate, int ApplicationTypeID,
-             enApplicationStatus ApplicationStatus, DateTime LastStatusDate,
-             float PaidFees, int CreatedByUserID)
-
+        private clsApplication(ApplicationDTO applicationDTO)
         {
-            this.ApplicationID = ApplicationID;
-            this.ApplicantPersonID = ApplicantPersonID;
-            this.ApplicationDate = ApplicationDate;
-            this.ApplicationTypeID = ApplicationTypeID;
+            this.ApplicationID = applicationDTO.ApplicationID;
+            this.ApplicantPersonID = applicationDTO.ApplicantPersonID;
+            this.ApplicationDate = applicationDTO.ApplicationDate;
+            this.ApplicationTypeID = applicationDTO.ApplicationTypeID;
             this.ApplicationTypeInfo = clsApplicationType.Find(ApplicationTypeID);
-            this.ApplicationStatus = ApplicationStatus;
-            this.LastStatusDate = LastStatusDate;
-            this.PaidFees = PaidFees;
-            this.CreatedByUserID = CreatedByUserID;
+            this.ApplicationStatus = (enApplicationStatus)applicationDTO.ApplicationStatus;
+            this.LastStatusDate = applicationDTO.LastStatusDate;
+            this.PaidFees = applicationDTO.PaidFees;
+            this.CreatedByUserID = applicationDTO.CreatedByUserID;
             this.CreatedByUserInfo = clsUser.FindByUserID(CreatedByUserID);
             Mode = enMode.Update;
         }
 
         private bool _AddNewApplication()
         {
-            //call DataAccess Layer 
+            var applicationDTO = new ApplicationDTO
+            {
+                ApplicationID = this.ApplicationID,
+                ApplicantPersonID = this.ApplicantPersonID,
+                ApplicationDate = this.ApplicationDate,
+                ApplicationTypeID = this.ApplicationTypeID,
+                ApplicationStatus = (byte)this.ApplicationStatus,
+                LastStatusDate = this.LastStatusDate,
+                PaidFees = this.PaidFees,
+                CreatedByUserID = this.CreatedByUserID
+            };
 
-            this.ApplicationID = clsApplicationData.AddNewApplication(
-                this.ApplicantPersonID, this.ApplicationDate,
-                this.ApplicationTypeID, (byte) this.ApplicationStatus,
-                this.LastStatusDate, this.PaidFees, this.CreatedByUserID);
+            this.ApplicationID = clsApplicationData.AddNewApplication(applicationDTO);
 
             return (this.ApplicationID != -1);
         }
 
         private bool _UpdateApplication()
         {
-            //call DataAccess Layer 
 
-            return clsApplicationData.UpdateApplication(this.ApplicationID, this.ApplicantPersonID, this.ApplicationDate,
-                this.ApplicationTypeID, (byte) this.ApplicationStatus,
-                this.LastStatusDate, this.PaidFees, this.CreatedByUserID);
-           
+            var applicationDTO = new ApplicationDTO
+            {
+                ApplicationID = this.ApplicationID,
+                ApplicantPersonID = this.ApplicantPersonID, 
+                ApplicationDate = this.ApplicationDate,
+                ApplicationTypeID = this.ApplicationTypeID, 
+                ApplicationStatus = (byte) this.ApplicationStatus,
+                LastStatusDate = this.LastStatusDate, 
+                PaidFees = this.PaidFees, 
+                CreatedByUserID = this.CreatedByUserID
+            };
+
+            return clsApplicationData.UpdateApplication(applicationDTO);
         }
 
-        public  static clsApplication FindBaseApplication(int ApplicationID)
+        public static clsApplication FindBaseApplication(int applicationId)
         {
-            int ApplicantPersonID=-1;
-            DateTime ApplicationDate=DateTime.Now ;  int ApplicationTypeID=-1;
-            byte ApplicationStatus =1; DateTime LastStatusDate= DateTime.Now;
-            float PaidFees = 0  ;  int CreatedByUserID = -1;
+            var applicationDTO = clsApplicationData.GetApplicationInfoById(applicationId);
 
-            bool IsFound = clsApplicationData.GetApplicationInfoByID 
-                                (
-                                    ApplicationID, ref  ApplicantPersonID, 
-                                    ref  ApplicationDate, ref  ApplicationTypeID,
-                                    ref   ApplicationStatus, ref  LastStatusDate,
-                                    ref  PaidFees, ref  CreatedByUserID
-                                );
-
-            if (IsFound)
-                //we return new object of that person with the right data
-                return new clsApplication(ApplicationID,  ApplicantPersonID,
-                                     ApplicationDate,  ApplicationTypeID,
-                                    (enApplicationStatus) ApplicationStatus,  LastStatusDate,
-                                     PaidFees,  CreatedByUserID);
+            if (applicationDTO != null)
+            {
+                return new clsApplication(applicationDTO);
+            }
             else
                 return null;
         }
@@ -192,12 +191,12 @@ namespace DVLD_Buisness
 
         public static int GetActiveApplicationID(int PersonID, clsApplication.enApplicationType  ApplicationTypeID)
         {
-            return clsApplicationData.GetActiveApplicationID(PersonID,(int) ApplicationTypeID);
+            return clsApplicationData.GetActiveApplicationId(PersonID,(int) ApplicationTypeID);
         }
 
         public static int GetActiveApplicationIDForLicenseClass(int PersonID, clsApplication.enApplicationType ApplicationTypeID,int LicenseClassID)
         {
-            return clsApplicationData.GetActiveApplicationIDForLicenseClass(PersonID, (int)ApplicationTypeID,LicenseClassID );
+            return clsApplicationData.GetActiveApplicationIdForLicenseClass(PersonID, (int)ApplicationTypeID,LicenseClassID );
         }
        
         public  int GetActiveApplicationID(clsApplication.enApplicationType ApplicationTypeID)

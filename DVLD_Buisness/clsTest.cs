@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Data;
 using System.Diagnostics.Eventing.Reader;
+using DVLD.DTOs;
 using DVLD_DataAccess;
 
-namespace DVLD_Buisness
+namespace DVLD_Business
 {
     public class clsTest
     {
@@ -31,16 +32,15 @@ namespace DVLD_Buisness
 
         }
 
-        public clsTest(int TestID,int TestAppointmentID,
-            bool TestResult, string Notes, int CreatedByUserID)
+        public clsTest(TestsDTO testsDTO)
 
         {
-            this.TestID = TestID;
-            this.TestAppointmentID = TestAppointmentID;
+            this.TestID = testsDTO.TestID;
+            this.TestAppointmentID = testsDTO.TestAppointmentID;
             this.TestAppointmentInfo = clsTestAppointment.Find(TestAppointmentID);
-            this.TestResult = TestResult;
-            this.Notes = Notes;
-            this.CreatedByUserID = CreatedByUserID;
+            this.TestResult = testsDTO.TestResult;
+            this.Notes = testsDTO.Notes;
+            this.CreatedByUserID = testsDTO.CreatedByUserID;
 
             Mode = enMode.Update;
         }
@@ -49,8 +49,15 @@ namespace DVLD_Buisness
         {
             //call DataAccess Layer 
 
-            this.TestID = clsTestData.AddNewTest(this.TestAppointmentID,
-                this.TestResult,this.Notes,this.CreatedByUserID);
+            var testsDTO = new TestsDTO
+            {
+                TestAppointmentID = this.TestAppointmentID,
+                TestResult = this.TestResult,
+                Notes = this.Notes,
+                CreatedByUserID = this.CreatedByUserID
+            };
+
+            this.TestID = clsTestData.AddNewTest(testsDTO);
               
 
             return (this.TestID != -1);
@@ -58,44 +65,37 @@ namespace DVLD_Buisness
 
         private bool _UpdateTest()
         {
-            //call DataAccess Layer 
+            var testsDTO = new TestsDTO
+            {
+                TestID = this.TestID,
+                TestAppointmentID = this.TestAppointmentID,
+                TestResult = this.TestResult,
+                Notes = this.Notes,
+                CreatedByUserID = this.CreatedByUserID
+            };
 
-            return clsTestData.UpdateTest(this.TestID, this.TestAppointmentID,
-                this.TestResult, this.Notes, this.CreatedByUserID);
+            return clsTestData.UpdateTest(testsDTO);
         }
 
         public static clsTest Find(int TestID)
         {
-            int TestAppointmentID = -1;
-            bool TestResult = false; string Notes = "";int CreatedByUserID = -1;
+            var testsDTO = clsTestData.GetTestInfoById(TestID);
 
-            if (clsTestData.GetTestInfoByID( TestID,
-            ref  TestAppointmentID, ref  TestResult,
-            ref  Notes, ref  CreatedByUserID))
-
-                return new clsTest(TestID,
-                        TestAppointmentID,  TestResult,
-                        Notes,  CreatedByUserID);
+            if (testsDTO != null)
+                return new clsTest(testsDTO);
             else
                 return null;
 
         }
 
-        public static clsTest FindLastTestPerPersonAndLicenseClass
-            (int PersonID, int LicenseClassID, clsTestType.enTestType TestTypeID)
+        public static clsTest FindLastTestPerPersonAndLicenseClass(int PersonID, int LicenseClassID, 
+            clsTestType.enTestType TestTypeID)
         {
-            int TestID = -1;
-            int TestAppointmentID = -1;
-            bool TestResult = false; string Notes = ""; int CreatedByUserID = -1;
+            var testsDTO = clsTestData.GetLastTestByPersonAndTestTypeAndLicenseClass
+                (PersonID, LicenseClassID, (int)TestTypeID);
 
-            if (clsTestData.GetLastTestByPersonAndTestTypeAndLicenseClass
-                (PersonID,LicenseClassID,(int) TestTypeID, ref TestID,
-            ref TestAppointmentID, ref TestResult,
-            ref Notes, ref CreatedByUserID))
-
-                return new clsTest(TestID,
-                        TestAppointmentID, TestResult,
-                        Notes, CreatedByUserID);
+            if (testsDTO != null)
+                return new clsTest(testsDTO);
             else
                 return null;
 
@@ -104,7 +104,6 @@ namespace DVLD_Buisness
         public static DataTable GetAllTests()
         {
             return clsTestData.GetAllTests();
-
         }
 
         public bool Save()

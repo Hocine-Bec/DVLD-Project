@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using DVLD.Classes;
-using DVLD_Buisness;
+using DVLD_Business;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace DVLD.People
@@ -31,7 +31,7 @@ namespace DVLD.People
             _dtAllPeople = clsPerson.GetAllPeople();
             _dtPeople = _dtAllPeople.DefaultView.ToTable(false, "PersonID", "NationalNo",
                                                        "FirstName", "SecondName", "ThirdName", "LastName",
-                                                       "GendorCaption", "DateOfBirth", "CountryName",
+                                                       "GenderCaption", "DateOfBirth", "CountryName",
                                                        "Phone", "Email");
 
             dgvPeople.DataSource = _dtPeople;
@@ -72,7 +72,7 @@ namespace DVLD.People
                 dgvPeople.Columns[5].HeaderText = "Last Name";
                 dgvPeople.Columns[5].Width = 120;
 
-                dgvPeople.Columns[6].HeaderText = "Gendor";
+                dgvPeople.Columns[6].HeaderText = "Gender";
                 dgvPeople.Columns[6].Width = 120;
 
                 dgvPeople.Columns[7].HeaderText = "Date Of Birth";
@@ -127,8 +127,8 @@ namespace DVLD.People
                     FilterColumn = "CountryName";
                     break;
 
-                case "Gendor":
-                    FilterColumn = "GendorCaption";
+                case "Gender":
+                    FilterColumn = "GenderCaption";
                     break;
 
                 case "Phone":

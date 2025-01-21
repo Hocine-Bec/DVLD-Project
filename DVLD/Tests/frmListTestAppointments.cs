@@ -1,6 +1,6 @@
 ﻿using DVLD.Controls.ApplicationControls;
 using DVLD.Properties;
-using DVLD_Buisness;
+using DVLD_Business;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static DVLD_Buisness.clsTestType;
+using static DVLD_Business.clsTestType;
 
 namespace DVLD.Tests
 {
@@ -98,7 +98,7 @@ namespace DVLD.Tests
         private void btnAddNewAppointment_Click(object sender, EventArgs e)
         {
 
-            clsLocalDrivingLicenseApplication localDrivingLicenseApplication = clsLocalDrivingLicenseApplication.FindByLocalDrivingAppLicenseID(_LocalDrivingLicenseApplicationID);
+            clsLocalDLA localDrivingLicenseApplication = clsLocalDLA.FindByLocalDrivingAppLicenseID(_LocalDrivingLicenseApplicationID);
 
 
             if (localDrivingLicenseApplication.IsThereAnActiveScheduledTest( _TestType))

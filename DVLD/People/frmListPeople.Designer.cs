@@ -194,7 +194,7 @@
             "Third Name",
             "Last Name",
             "Nationality",
-            "Gendor",
+            "Gender",
             "Phone",
             "Email"});
             this.cbFilterBy.Location = new System.Drawing.Point(90, 252);

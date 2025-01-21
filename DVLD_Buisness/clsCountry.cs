@@ -2,7 +2,7 @@
 using System.Data;
 using DVLD_DataAccess;
 
-namespace DVLD_Buisness
+namespace DVLD_Business
 {
     public class clsCountry
     {
@@ -29,7 +29,7 @@ namespace DVLD_Buisness
         {
             string CountryName = "";
 
-            if (clsCountryData.GetCountryInfoByID(ID, ref CountryName))
+            if (clsCountryData.GetCountryInfoById(ID, ref CountryName))
 
                 return new clsCountry(ID, CountryName);
             else

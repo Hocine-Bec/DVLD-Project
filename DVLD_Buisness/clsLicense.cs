@@ -2,10 +2,11 @@
 using System.Data;
 using System.Diagnostics.Eventing.Reader;
 using System.Xml.Linq;
+using DVLD.DTOs;
 using DVLD_DataAccess;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace DVLD_Buisness
+namespace DVLD_Business
 {
     public class clsLicense
     {
@@ -59,37 +60,45 @@ namespace DVLD_Buisness
 
         }
 
-        public clsLicense(int LicenseID,int ApplicationID, int DriverID, int LicenseClass,
-            DateTime IssueDate, DateTime ExpirationDate, string Notes,
-            float PaidFees, bool IsActive,enIssueReason IssueReason, int CreatedByUserID)
+        public clsLicense(LicenseDTO licenseDTO)
 
         {
-            this.LicenseID = LicenseID;
-            this.ApplicationID = ApplicationID;
-            this.DriverID = DriverID;
-            this.LicenseClass = LicenseClass;
-            this.IssueDate = IssueDate;
-            this.ExpirationDate = ExpirationDate;
-            this.Notes = Notes;
-            this.PaidFees = PaidFees;
-            this.IsActive = IsActive;
-            this.IssueReason = IssueReason;
-            this.CreatedByUserID = CreatedByUserID;
+            this.LicenseID = licenseDTO.LicenseID;
+            this.ApplicationID = licenseDTO.ApplicationID;
+            this.DriverID = licenseDTO.DriverID;
+            this.LicenseClass = licenseDTO.LicenseClass;
+            this.IssueDate = licenseDTO.IssueDate;
+            this.ExpirationDate = licenseDTO.ExpirationDate;
+            this.Notes = licenseDTO.Notes;
+            this.PaidFees = licenseDTO.PaidFees;
+            this.IsActive = licenseDTO.IsActive;
+            this.IssueReason = (enIssueReason)licenseDTO.IssueReason;
+            this.CreatedByUserID = licenseDTO.CreatedByUserID;
 
             this.DriverInfo = clsDriver.FindByDriverID(this.DriverID);
             this.LicenseClassIfo = clsLicenseClass.Find(this.LicenseClass);
-            this.DetainedInfo=clsDetainedLicense.FindByLicenseID(this.LicenseID);   
+            this.DetainedInfo = clsDetainedLicense.FindByLicenseID(this.LicenseID);
 
             Mode = enMode.Update;
         }
 
         private bool _AddNewLicense()
         {
-            //call DataAccess Layer 
+            var licenseDTO = new LicenseDTO()
+            {
+                ApplicationID = this.ApplicationID,
+                DriverID = this.DriverID,
+                LicenseClass = this.LicenseClass,
+                IssueDate = this.IssueDate,
+                ExpirationDate = this.ExpirationDate,
+                Notes = this.Notes,
+                PaidFees = this.PaidFees,
+                IsActive = this.IsActive,
+                IssueReason = (byte)this.IssueReason,
+                CreatedByUserID = this.CreatedByUserID
+            };
 
-            this.LicenseID = clsLicenseData.AddNewLicense(this.ApplicationID, this.DriverID, this.LicenseClass,
-               this.IssueDate, this.ExpirationDate, this.Notes, this.PaidFees,
-               this.IsActive,(byte) this.IssueReason, this.CreatedByUserID);
+            this.LicenseID = clsLicenseData.AddNewLicense(licenseDTO);
 
 
             return (this.LicenseID != -1);
@@ -97,27 +106,31 @@ namespace DVLD_Buisness
 
         private bool _UpdateLicense()
         {
-            //call DataAccess Layer 
+            var licenseDTO = new LicenseDTO()
+            {
+                ApplicationID = this.ApplicationID, 
+                LicenseID = this.LicenseID, 
+                DriverID = this.DriverID, 
+                LicenseClass = this.LicenseClass,
+                IssueDate = this.IssueDate, 
+                ExpirationDate = this.ExpirationDate, 
+                Notes = this.Notes, 
+                PaidFees = this.PaidFees,
+                IsActive = this.IsActive,
+                IssueReason = (byte) this.IssueReason, 
+                CreatedByUserID = this.CreatedByUserID
+            };
 
-            return clsLicenseData.UpdateLicense(this.ApplicationID, this.LicenseID, this.DriverID, this.LicenseClass,
-               this.IssueDate, this.ExpirationDate, this.Notes, this.PaidFees,
-               this.IsActive,(byte) this.IssueReason, this.CreatedByUserID);
+            return clsLicenseData.UpdateLicense(licenseDTO);
         }
 
         public static clsLicense Find(int LicenseID)
         {
-            int ApplicationID = -1; int DriverID = -1; int LicenseClass = -1;
-            DateTime IssueDate = DateTime.Now; DateTime ExpirationDate = DateTime.Now;
-            string Notes = "";
-            float PaidFees = 0; bool IsActive = true; int CreatedByUserID = 1;
-            byte IssueReason = 1;
-            if (clsLicenseData.GetLicenseInfoByID(LicenseID,ref ApplicationID, ref DriverID, ref LicenseClass,
-            ref IssueDate, ref ExpirationDate, ref Notes,
-            ref PaidFees, ref IsActive,ref IssueReason, ref CreatedByUserID))
+            var licenseDTO = clsLicenseData.GetLicenseInfoById(LicenseID);
 
-                return new clsLicense(LicenseID,ApplicationID, DriverID, LicenseClass,
-                                     IssueDate, ExpirationDate, Notes,
-                                     PaidFees, IsActive,(enIssueReason) IssueReason, CreatedByUserID);
+            if (licenseDTO != null)
+
+                return new clsLicense(licenseDTO);
             else
                 return null;
 
@@ -162,7 +175,7 @@ namespace DVLD_Buisness
         public static int GetActiveLicenseIDByPersonID(int PersonID, int LicenseClassID)
         {
 
-            return clsLicenseData.GetActiveLicenseIDByPersonID(PersonID, LicenseClassID);
+            return clsLicenseData.GetActiveLicenseIdByPersonId(PersonID, LicenseClassID);
 
         }
 
@@ -185,7 +198,6 @@ namespace DVLD_Buisness
 
         public static string GetIssueReasonText(enIssueReason IssueReason)
         {
-
             switch (IssueReason)
             {
                 case enIssueReason.FirstTime:
@@ -222,7 +234,7 @@ namespace DVLD_Buisness
         public bool ReleaseDetainedLicense(int ReleasedByUserID,ref int ApplicationID)
         {
 
-            //First Create Applicaiton 
+            //First Create Application 
             clsApplication Application = new clsApplication();
 
             Application.ApplicantPersonID = this.DriverInfo.PersonID;
@@ -249,7 +261,7 @@ namespace DVLD_Buisness
         public clsLicense RenewLicense(string Notes, int CreatedByUserID)
         {
 
-            //First Create Applicaiton 
+            //First Create Application 
             clsApplication Application = new clsApplication();
 
             Application.ApplicantPersonID = this.DriverInfo.PersonID;

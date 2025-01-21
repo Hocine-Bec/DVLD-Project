@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -48,15 +49,21 @@
     <Compile Include="clsTestAppointment.cs" />
     <Compile Include="clsTest.cs" />
     <Compile Include="clsTestType.cs" />
-    <Compile Include="clsLocalDrivingLicenseApplicationData.cs" />
+    <Compile Include="clsLocalDLAdata.cs" />
     <Compile Include="LicenseClass.cs" />
     <Compile Include="clsApplication.cs" />
     <Compile Include="ApplicationType.cs" />
-    <Compile Include="clsDataAccessSettings.cs" />
+    <Compile Include="DbConfig.cs" />
     <Compile Include="clsUserData.cs" />
     <Compile Include="clsPersonData.cs" />
     <Compile Include="clsCountryData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DVLD.DTOs\DVLD.DTOs.csproj">
+      <Project>{0128d7c1-ab15-4132-8658-60bbc52da075}</Project>
+      <Name>DVLD.DTOs</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

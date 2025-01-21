@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DVLD.Properties;
-using DVLD_Buisness;
+using DVLD_Business;
 using DVLD.Classes;
 
 namespace DVLD.Tests
@@ -19,7 +19,7 @@ namespace DVLD.Tests
         private clsTestType.enTestType _TestTypeID;
         private int _TestID=-1;
 
-        private clsLocalDrivingLicenseApplication _LocalDrivingLicenseApplication;
+        private clsLocalDLA _LocalDrivingLicenseApplication;
 
         public clsTestType.enTestType TestTypeID
         {
@@ -99,7 +99,7 @@ namespace DVLD.Tests
             _TestID = _TestAppointment.TestID;
             
             _LocalDrivingLicenseApplicationID = _TestAppointment.LocalDrivingLicenseApplicationID;
-            _LocalDrivingLicenseApplication = clsLocalDrivingLicenseApplication.FindByLocalDrivingAppLicenseID(_LocalDrivingLicenseApplicationID);
+            _LocalDrivingLicenseApplication = clsLocalDLA.FindByLocalDrivingAppLicenseID(_LocalDrivingLicenseApplicationID);
 
             if (_LocalDrivingLicenseApplication == null)
             {

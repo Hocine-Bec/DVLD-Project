@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Data;
 using System.Diagnostics.Eventing.Reader;
+using DVLD.DTOs;
 using DVLD_DataAccess;
 
-namespace DVLD_Buisness
+namespace DVLD_Business
 {
     public class clsTestType
     {
@@ -27,40 +28,49 @@ namespace DVLD_Buisness
 
         }
 
-        public clsTestType(clsTestType.enTestType ID, string TestTypeTitel,string Description,float TestTypeFees)
-
+        public clsTestType(TestTypesDTO testTypesDTO)
         {
-            this.ID = ID;
-            this.Title = TestTypeTitel;
-            this.Description = Description;
-
-            this.Fees = TestTypeFees;
+            this.ID = (enTestType)testTypesDTO.TestTypeID;
+            this.Title = testTypesDTO.Title;
+            this.Description = testTypesDTO.Description;
+            this.Fees = testTypesDTO.Fees;
             Mode = enMode.Update;
         }
 
         private bool _AddNewTestType()
         {
-            //call DataAccess Layer 
+            var testTypeDTO = new TestTypesDTO()
+            {
+                Title = this.Title,
+                Description = this.Description, 
+                Fees = this.Fees
+            };
 
-            this.ID =(clsTestType.enTestType) clsTestTypeData.AddNewTestType(this.Title,this.Description, this.Fees);
+            this.ID = (clsTestType.enTestType) clsTestTypeData.AddNewTestType(testTypeDTO);
               
             return (this.Title !="");
         }
 
         private bool _UpdateTestType()
         {
-            //call DataAccess Layer 
+            var testTypeDTO = new TestTypesDTO()
+            {
+                TestTypeID = (int)this.ID,
+                Title = this.Title,
+                Description = this.Description,
+                Fees = this.Fees
+            };
 
-            return clsTestTypeData.UpdateTestType((int) this.ID,this.Title,this.Description,this.Fees);
+            return clsTestTypeData.UpdateTestType(testTypeDTO);
         }
 
-        public static clsTestType Find(clsTestType.enTestType TestTypeID)
+        public static clsTestType Find(clsTestType.enTestType testTypeID)
         {
-            string Title = "", Description=""; float Fees=0;
+            var testTypeDTO = clsTestTypeData.GetTestTypeInfoById((int)testTypeID);
 
-            if (clsTestTypeData.GetTestTypeInfoByID((int) TestTypeID, ref Title,ref Description, ref Fees))
+            if (testTypeDTO != null)
 
-                return new clsTestType(TestTypeID, Title, Description,Fees);
+                return new clsTestType(testTypeDTO);
             else
                 return null;
 

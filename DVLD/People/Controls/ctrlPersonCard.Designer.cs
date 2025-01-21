@@ -33,7 +33,7 @@
             this.lblCountry = new System.Windows.Forms.Label();
             this.lblPhone = new System.Windows.Forms.Label();
             this.lblDateOfBirth = new System.Windows.Forms.Label();
-            this.lblGendor = new System.Windows.Forms.Label();
+            this.lblGender = new System.Windows.Forms.Label();
             this.lblAddress = new System.Windows.Forms.Label();
             this.lblEmail = new System.Windows.Forms.Label();
             this.lblNationalNo = new System.Windows.Forms.Label();
@@ -42,7 +42,7 @@
             this.label22 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.lblPersonID = new System.Windows.Forms.Label();
-            this.pbGendor = new System.Windows.Forms.PictureBox();
+            this.pbGender = new System.Windows.Forms.PictureBox();
             this.pictureBox8 = new System.Windows.Forms.PictureBox();
             this.pictureBox7 = new System.Windows.Forms.PictureBox();
             this.pictureBox6 = new System.Windows.Forms.PictureBox();
@@ -59,7 +59,7 @@
             this.pbPersonImage = new System.Windows.Forms.PictureBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbGendor)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbGender)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
@@ -75,7 +75,7 @@
             this.groupBox1.Controls.Add(this.lblCountry);
             this.groupBox1.Controls.Add(this.lblPhone);
             this.groupBox1.Controls.Add(this.lblDateOfBirth);
-            this.groupBox1.Controls.Add(this.lblGendor);
+            this.groupBox1.Controls.Add(this.lblGender);
             this.groupBox1.Controls.Add(this.lblAddress);
             this.groupBox1.Controls.Add(this.lblEmail);
             this.groupBox1.Controls.Add(this.lblNationalNo);
@@ -84,7 +84,7 @@
             this.groupBox1.Controls.Add(this.label22);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.lblPersonID);
-            this.groupBox1.Controls.Add(this.pbGendor);
+            this.groupBox1.Controls.Add(this.pbGender);
             this.groupBox1.Controls.Add(this.pictureBox8);
             this.groupBox1.Controls.Add(this.pictureBox7);
             this.groupBox1.Controls.Add(this.pictureBox6);
@@ -154,16 +154,16 @@
             this.lblDateOfBirth.TabIndex = 136;
             this.lblDateOfBirth.Text = "[????]";
             // 
-            // lblGendor
+            // lblGender
             // 
-            this.lblGendor.AutoSize = true;
-            this.lblGendor.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblGendor.Location = new System.Drawing.Point(156, 144);
-            this.lblGendor.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblGendor.Name = "lblGendor";
-            this.lblGendor.Size = new System.Drawing.Size(53, 20);
-            this.lblGendor.TabIndex = 135;
-            this.lblGendor.Text = "[????]";
+            this.lblGender.AutoSize = true;
+            this.lblGender.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblGender.Location = new System.Drawing.Point(156, 144);
+            this.lblGender.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblGender.Name = "lblGender";
+            this.lblGender.Size = new System.Drawing.Size(53, 20);
+            this.lblGender.TabIndex = 135;
+            this.lblGender.Text = "[????]";
             // 
             // lblAddress
             // 
@@ -240,7 +240,7 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(74, 20);
             this.label5.TabIndex = 129;
-            this.label5.Text = "Gendor:";
+            this.label5.Text = "Gender:";
             // 
             // lblPersonID
             // 
@@ -253,15 +253,15 @@
             this.lblPersonID.TabIndex = 127;
             this.lblPersonID.Text = "[????]";
             // 
-            // pbGendor
+            // pbGender
             // 
-            this.pbGendor.Image = global::DVLD.Properties.Resources.Man_32;
-            this.pbGendor.Location = new System.Drawing.Point(118, 144);
-            this.pbGendor.Name = "pbGendor";
-            this.pbGendor.Size = new System.Drawing.Size(31, 26);
-            this.pbGendor.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbGendor.TabIndex = 130;
-            this.pbGendor.TabStop = false;
+            this.pbGender.Image = global::DVLD.Properties.Resources.Man_32;
+            this.pbGender.Location = new System.Drawing.Point(118, 144);
+            this.pbGender.Name = "pbGender";
+            this.pbGender.Size = new System.Drawing.Size(31, 26);
+            this.pbGender.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbGender.TabIndex = 130;
+            this.pbGender.TabStop = false;
             // 
             // pictureBox8
             // 
@@ -427,7 +427,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbGendor)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbGender)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
@@ -445,7 +445,7 @@
         private System.Windows.Forms.Label lblCountry;
         private System.Windows.Forms.Label lblPhone;
         private System.Windows.Forms.Label lblDateOfBirth;
-        private System.Windows.Forms.Label lblGendor;
+        private System.Windows.Forms.Label lblGender;
         private System.Windows.Forms.Label lblAddress;
         private System.Windows.Forms.Label lblEmail;
         private System.Windows.Forms.Label lblNationalNo;
@@ -454,7 +454,7 @@
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label lblPersonID;
-        private System.Windows.Forms.PictureBox pbGendor;
+        private System.Windows.Forms.PictureBox pbGender;
         private System.Windows.Forms.PictureBox pictureBox8;
         private System.Windows.Forms.PictureBox pictureBox7;
         private System.Windows.Forms.PictureBox pictureBox6;

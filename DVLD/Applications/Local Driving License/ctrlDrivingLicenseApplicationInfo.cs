@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DVLD_Buisness;
+using DVLD_Business;
 using DVLD.Classes;
 using static System.Net.Mime.MediaTypeNames;
 using DVLD.Tests;
@@ -18,7 +18,7 @@ namespace DVLD.Controls.ApplicationControls
     public partial class ctrlDrivingLicenseApplicationInfo: UserControl
     {
 
-        private clsLocalDrivingLicenseApplication _LocalDrivingLicenseApplication;
+        private clsLocalDLA _LocalDrivingLicenseApplication;
 
         private int _LocalDrivingLicenseApplicationID = -1;
 
@@ -36,7 +36,7 @@ namespace DVLD.Controls.ApplicationControls
 
         public void LoadApplicationInfoByLocalDrivingAppID(int LocalDrivingLicenseApplicationID)
         {
-            _LocalDrivingLicenseApplication = clsLocalDrivingLicenseApplication.FindByLocalDrivingAppLicenseID(LocalDrivingLicenseApplicationID);
+            _LocalDrivingLicenseApplication = clsLocalDLA.FindByLocalDrivingAppLicenseID(LocalDrivingLicenseApplicationID);
             if (_LocalDrivingLicenseApplication == null)
             {
                 _ResetLocalDrivingLicenseApplicationInfo();
@@ -51,7 +51,7 @@ namespace DVLD.Controls.ApplicationControls
 
         public void LoadApplicationInfoByApplicationID(int ApplicationID)
         {
-            _LocalDrivingLicenseApplication = clsLocalDrivingLicenseApplication.FindByApplicationID(ApplicationID);
+            _LocalDrivingLicenseApplication = clsLocalDLA.FindByApplicationID(ApplicationID);
             if (_LocalDrivingLicenseApplication == null)
             {
                 _ResetLocalDrivingLicenseApplicationInfo();

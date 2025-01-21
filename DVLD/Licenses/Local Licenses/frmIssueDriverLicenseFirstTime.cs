@@ -1,5 +1,5 @@
 ﻿using DVLD.Classes;
-using DVLD_Buisness;
+using DVLD_Business;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,7 +15,7 @@ namespace DVLD.DriverLicense
     public partial class frmIssueDriverLicenseFirstTime : Form
     {
         private int _LocalDrivingLicenseApplicationID;
-        private  clsLocalDrivingLicenseApplication _LocalDrivingLicenseApplication;
+        private  clsLocalDLA _LocalDrivingLicenseApplication;
 
         public frmIssueDriverLicenseFirstTime(int LocalDrivingLicenseApplicationID)
         {
@@ -33,7 +33,7 @@ namespace DVLD.DriverLicense
         {
 
             txtNotes.Focus();            
-            _LocalDrivingLicenseApplication = clsLocalDrivingLicenseApplication.FindByLocalDrivingAppLicenseID(_LocalDrivingLicenseApplicationID);
+            _LocalDrivingLicenseApplication = clsLocalDLA.FindByLocalDrivingAppLicenseID(_LocalDrivingLicenseApplicationID);
 
             if (_LocalDrivingLicenseApplication ==null)
             {

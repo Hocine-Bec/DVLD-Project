@@ -1,7 +1,7 @@
 ﻿using DVLD.Classes;
 using DVLD.People;
 using DVLD.Properties;
-using DVLD_Buisness;
+using DVLD_Business;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

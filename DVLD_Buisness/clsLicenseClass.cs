@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Data;
 using System.Diagnostics.Eventing.Reader;
+using DVLD.DTOs;
 using DVLD_DataAccess;
 
-namespace DVLD_Buisness
+namespace DVLD_Business
 {
     public class clsLicenseClass
     {
@@ -32,26 +33,31 @@ namespace DVLD_Buisness
 
         }
 
-        public clsLicenseClass(int LicenseClassID, string ClassName,
-            string ClassDescription,
-            byte MinimumAllowedAge, byte DefaultValidityLength, float ClassFees)
+        public clsLicenseClass(LicenseClassDTO licenseClassDTO)
 
         {
-            this.LicenseClassID = LicenseClassID;
-            this.ClassName = ClassName;
-            this.ClassDescription = ClassDescription;
-            this.MinimumAllowedAge = MinimumAllowedAge;
-            this.DefaultValidityLength = DefaultValidityLength;
-            this.ClassFees = ClassFees;
+            this.LicenseClassID = licenseClassDTO.LicenseClassID;
+            this.ClassName = licenseClassDTO.ClassName;
+            this.ClassDescription = licenseClassDTO.ClassDescription;
+            this.MinimumAllowedAge = licenseClassDTO.MinimumAllowedAge;
+            this.DefaultValidityLength = licenseClassDTO.DefaultValidityLength;
+            this.ClassFees = licenseClassDTO.ClassFees;
             Mode = enMode.Update;
         }
 
         private bool _AddNewLicenseClass()
         {
-            //call DataAccess Layer 
 
-            this.LicenseClassID = clsLicenseClassData.AddNewLicenseClass(this.ClassName,this.ClassDescription,
-                this.MinimumAllowedAge,this.DefaultValidityLength,this.ClassFees);
+            var licenseClassDTO = new LicenseClassDTO
+            {
+                ClassName = this.ClassName,
+                ClassDescription = this.ClassDescription,
+                MinimumAllowedAge = this.MinimumAllowedAge,
+                DefaultValidityLength = this.DefaultValidityLength,
+                ClassFees = this.ClassFees
+            };
+
+            this.LicenseClassID = clsLicenseClassData.AddNewLicenseClass(licenseClassDTO);
               
 
             return (this.LicenseClassID != -1);
@@ -59,40 +65,39 @@ namespace DVLD_Buisness
 
         private bool _UpdateLicenseClass()
         {
-            //call DataAccess Layer 
+            var licenseClassDTO = new LicenseClassDTO
+            {
+                LicenseClassID = this.LicenseClassID,
+                ClassName = this.ClassName,
+                ClassDescription = this.ClassDescription,
+                MinimumAllowedAge = this.MinimumAllowedAge,
+                DefaultValidityLength = this.DefaultValidityLength,
+                ClassFees = this.ClassFees
+            };
 
-            return clsLicenseClassData.UpdateLicenseClass(this.LicenseClassID, this.ClassName, this.ClassDescription,
-                this.MinimumAllowedAge, this.DefaultValidityLength, this.ClassFees);
+            return clsLicenseClassData.UpdateLicenseClass(licenseClassDTO);
         }
 
         public static clsLicenseClass Find(int LicenseClassID)
         {
-            string ClassName = ""; string ClassDescription = "";
-            byte MinimumAllowedAge = 18; byte DefaultValidityLength = 10; float ClassFees = 0;
 
-            if (clsLicenseClassData.GetLicenseClassInfoByID(LicenseClassID, ref ClassName, ref ClassDescription,
-                    ref  MinimumAllowedAge,  ref DefaultValidityLength, ref ClassFees))
+            var licenseClassDTO = clsLicenseClassData.GetLicenseClassInfoById(LicenseClassID);
 
-                return new clsLicenseClass(LicenseClassID,ClassName ,ClassDescription,
-                    MinimumAllowedAge,DefaultValidityLength,ClassFees);
+            if (licenseClassDTO != null)
+                return new clsLicenseClass(licenseClassDTO);
             else
                 return null;
 
         }
 
-        public static clsLicenseClass Find(string ClassName)
+        public static clsLicenseClass Find(string className)
         {
-            int LicenseClassID = -1; string ClassDescription = "";
-            byte MinimumAllowedAge = 18; byte DefaultValidityLength = 10; float ClassFees = 0;
+            var licenseClassDTO = clsLicenseClassData.GetLicenseClassInfoByClassName(className);
 
-            if (clsLicenseClassData.GetLicenseClassInfoByClassName( ClassName, ref  LicenseClassID, ref ClassDescription,
-                    ref MinimumAllowedAge, ref DefaultValidityLength, ref ClassFees))
-
-                return new clsLicenseClass(LicenseClassID, ClassName, ClassDescription,
-                    MinimumAllowedAge, DefaultValidityLength, ClassFees);
+            if (licenseClassDTO != null)
+                return new clsLicenseClass(licenseClassDTO);
             else
                 return null;
-
         }
 
         public static DataTable GetAllLicenseClasses()

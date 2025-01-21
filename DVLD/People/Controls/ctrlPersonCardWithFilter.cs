@@ -1,5 +1,5 @@
 ﻿using DVLD.People;
-using DVLD_Buisness;
+using DVLD_Business;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

@@ -2,7 +2,7 @@
 using DVLD.DriverLicense;
 using DVLD.Licenses.International_License;
 using DVLD.Licenses.International_Licenses;
-using DVLD_Buisness;
+using DVLD_Business;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,7 +13,7 @@ using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static DVLD_Buisness.clsApplication;
+using static DVLD_Business.clsApplication;
 
 namespace DVLD.Applications.International_License
 {

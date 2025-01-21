@@ -1,6 +1,6 @@
 ﻿using DVLD.Classes;
 using DVLD.People;
-using DVLD_Buisness;
+using DVLD_Business;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,7 +24,7 @@ namespace DVLD.Applications
         private enMode _Mode;
         private int _LocalDrivingLicenseApplicationID = -1;
         private int _SelectedPersonID = -1;
-        clsLocalDrivingLicenseApplication _LocalDrivingLicenseApplication;
+        clsLocalDLA _LocalDrivingLicenseApplication;
 
         public frmAddUpdateLocalDrivingLicesnseApplication()
         {
@@ -62,7 +62,7 @@ namespace DVLD.Applications
                 
                 lblTitle.Text = "New Local Driving License Application";
                 this.Text = "New Local Driving License Application";
-                _LocalDrivingLicenseApplication = new clsLocalDrivingLicenseApplication();
+                _LocalDrivingLicenseApplication = new clsLocalDLA();
                 ctrlPersonCardWithFilter1.FilterFocus();
                 tpApplicationInfo.Enabled = false;
               
@@ -88,7 +88,7 @@ namespace DVLD.Applications
         {
 
             ctrlPersonCardWithFilter1.FilterEnabled = false;
-            _LocalDrivingLicenseApplication = clsLocalDrivingLicenseApplication.FindByLocalDrivingAppLicenseID(_LocalDrivingLicenseApplicationID);
+            _LocalDrivingLicenseApplication = clsLocalDLA.FindByLocalDrivingAppLicenseID(_LocalDrivingLicenseApplicationID);
 
             if (_LocalDrivingLicenseApplication == null)
             {
