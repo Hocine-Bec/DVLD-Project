@@ -55,7 +55,7 @@
     <Compile Include="ApplicationType.cs" />
     <Compile Include="DbConfig.cs" />
     <Compile Include="clsUserData.cs" />
-    <Compile Include="clsPersonData.cs" />
+    <Compile Include="PersonRepository.cs" />
     <Compile Include="clsCountryData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

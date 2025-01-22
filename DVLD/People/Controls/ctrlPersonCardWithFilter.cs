@@ -69,7 +69,7 @@ namespace DVLD.Controls
             get { return ctrlPersonCard1.PersonID; }   
         }
 
-        public clsPerson SelectedPersonInfo
+        public PersonService SelectedPersonInfo
         {
             get { return ctrlPersonCard1.SelectedPersonInfo; }
         }
@@ -148,7 +148,7 @@ namespace DVLD.Controls
 
         private void btnAddNewPerson_Click(object sender, EventArgs e)
         {
-            frmAddUpdatePerson frm1 = new frmAddUpdatePerson();
+            AddUpdatePersonForm frm1 = new AddUpdatePersonForm();
             frm1.DataBack += DataBackEvent; // Subscribe to the event
             frm1.ShowDialog();  
 

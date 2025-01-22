@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 
 namespace DVLD_DataAccess
 {
-    public class clsPersonData 
+    public class PersonRepository 
     {
         public static PersonDTO GetPersonInfoById(int personId)
         {
@@ -33,7 +33,7 @@ namespace DVLD_DataAccess
                                 LastName = (string)reader["LastName"],
                                 NationalNo = (string)reader["NationalNo"],
                                 DateOfBirth = (DateTime)reader["DateOfBirth"],
-                                Gender = (byte)reader["Gendor"],
+                                Gender = (byte)reader["Gender"],
                                 Address = (string)reader["Address"],
                                 Phone = (string)reader["Phone"],
                                 Email = reader["Email"] == DBNull.Value ? "" : (string)reader["Email"],
@@ -77,7 +77,7 @@ namespace DVLD_DataAccess
                                 LastName = (string)reader["LastName"],
                                 NationalNo = nationalNo,
                                 DateOfBirth = (DateTime)reader["DateOfBirth"],
-                                Gender = (byte)reader["Gendor"],
+                                Gender = (byte)reader["Gender"],
                                 Address = (string)reader["Address"],
                                 Phone = (string)reader["Phone"],
                                 Email = reader["Email"] == DBNull.Value ? "" : (string)reader["Email"],
@@ -101,7 +101,7 @@ namespace DVLD_DataAccess
             const string query = @"
             INSERT INTO People 
             (
-                FirstName, SecondName, ThirdName, LastName, NationalNo, DateOfBirth, Gendor, 
+                FirstName, SecondName, ThirdName, LastName, NationalNo, DateOfBirth, Gender, 
                 Address, Phone, Email, NationalityCountryID, ImagePath
             )
             VALUES 
@@ -153,7 +153,7 @@ namespace DVLD_DataAccess
                 LastName = @LastName, 
                 NationalNo = @NationalNo,
                 DateOfBirth = @DateOfBirth,
-                Gendor = @Gendor,
+                Gender = @Gender,
                 Address = @Address,  
                 Phone = @Phone,
                 Email = @Email, 
@@ -198,11 +198,11 @@ namespace DVLD_DataAccess
             SELECT 
                 People.PersonID, People.NationalNo,
                 People.FirstName, People.SecondName, People.ThirdName, People.LastName,
-                People.DateOfBirth, People.Gendor,  
+                People.DateOfBirth, People.Gender,  
                 CASE
-                    WHEN People.Gendor = 0 THEN 'Male'
+                    WHEN People.Gender = 0 THEN 'Male'
                     ELSE 'Female'
-                END AS GendorCaption,
+                END AS GenderCaption,
                 People.Address, People.Phone, People.Email, 
                 People.NationalityCountryID, Countries.CountryName, People.ImagePath
             FROM People 

@@ -22,7 +22,7 @@ namespace DVLD_Business
         {
             get
             {
-                return clsPerson.Find(ApplicantPersonID).FullName;
+                return PersonService.Find(ApplicantPersonID).FullName;
             }
         }
         public DateTime ApplicationDate { set; get; }

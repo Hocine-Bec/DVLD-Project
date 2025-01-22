@@ -17,7 +17,7 @@ namespace DVLD.Controls
 {
     public partial class ctrlPersonCard : UserControl
     {
-        private clsPerson _Person;
+        private PersonService _Person;
 
         private int  _PersonID=-1;
 
@@ -26,7 +26,7 @@ namespace DVLD.Controls
             get { return _PersonID; }   
         }
 
-        public clsPerson SelectedPersonInfo
+        public PersonService SelectedPersonInfo
         {
             get { return _Person; }
         }
@@ -38,7 +38,7 @@ namespace DVLD.Controls
 
         public void LoadPersonInfo(int PersonID)
         {
-            _Person=clsPerson.Find(PersonID);
+            _Person=PersonService.Find(PersonID);
             if (_Person == null)
             {
                 ResetPersonInfo();
@@ -51,7 +51,7 @@ namespace DVLD.Controls
 
         public void LoadPersonInfo(string NationalNo)
         {
-            _Person = clsPerson.Find(NationalNo);
+            _Person = PersonService.Find(NationalNo);
             if (_Person == null)
             {
                 ResetPersonInfo();
@@ -117,7 +117,7 @@ namespace DVLD.Controls
 
         private void llEditPersonInfo_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            frmAddUpdatePerson frm = new frmAddUpdatePerson( _PersonID );
+            AddUpdatePersonForm frm = new AddUpdatePersonForm( _PersonID );
             frm.ShowDialog();
 
             //refresh

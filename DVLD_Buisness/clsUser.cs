@@ -13,7 +13,7 @@ namespace DVLD_Business
 
         public int UserID { set; get; }
         public int PersonID { set; get; }
-        public clsPerson PersonInfo;
+        public PersonService PersonInfo;
         public string UserName { set; get; }
         public string Password { set; get; }
         public bool IsActive { set; get; }
@@ -32,7 +32,7 @@ namespace DVLD_Business
         {
             this.UserID = usersDTO.UserID; 
             this.PersonID = usersDTO.PersonID;
-            this.PersonInfo = clsPerson.Find(PersonID);
+            this.PersonInfo = PersonService.Find(PersonID);
             this.UserName = usersDTO.Username;
             this.Password = usersDTO.Password;
             this.IsActive = usersDTO.IsActive;

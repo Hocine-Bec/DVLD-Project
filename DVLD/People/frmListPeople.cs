@@ -18,17 +18,17 @@ namespace DVLD.People
     public partial class frmListPeople : Form
     {
 
-      private static DataTable _dtAllPeople = clsPerson.GetAllPeople();
+      private static DataTable _dtAllPeople = PersonService.GetAllPeople();
         
         //only select the columns that you want to show in the grid
       private DataTable _dtPeople = _dtAllPeople.DefaultView.ToTable(false, "PersonID", "NationalNo",
                                                        "FirstName", "SecondName", "ThirdName", "LastName",
-                                                       "GendorCaption", "DateOfBirth", "CountryName",
+                                                       "GenderCaption", "DateOfBirth", "CountryName",
                                                        "Phone", "Email");
 
         private void _RefreshPeoplList()
         {
-            _dtAllPeople = clsPerson.GetAllPeople();
+            _dtAllPeople = PersonService.GetAllPeople();
             _dtPeople = _dtAllPeople.DefaultView.ToTable(false, "PersonID", "NationalNo",
                                                        "FirstName", "SecondName", "ThirdName", "LastName",
                                                        "GenderCaption", "DateOfBirth", "CountryName",
@@ -188,7 +188,7 @@ namespace DVLD.People
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
            
-            Form frm = new frmAddUpdatePerson((int)dgvPeople.CurrentRow.Cells[0].Value);
+            Form frm = new AddUpdatePersonForm((int)dgvPeople.CurrentRow.Cells[0].Value);
             frm.ShowDialog();
 
             _RefreshPeoplList();
@@ -215,7 +215,7 @@ namespace DVLD.People
             {
 
                 //Perform Delele and refresh
-                if (clsPerson.DeletePerson((int)dgvPeople.CurrentRow.Cells[0].Value))
+                if (PersonService.DeletePerson((int)dgvPeople.CurrentRow.Cells[0].Value))
                 {
                     MessageBox.Show("Person Deleted Successfully.", "Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     _RefreshPeoplList();
@@ -230,7 +230,7 @@ namespace DVLD.People
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            Form frm = new frmAddUpdatePerson();
+            Form frm = new AddUpdatePersonForm();
             frm.ShowDialog();
 
             _RefreshPeoplList();
@@ -238,7 +238,7 @@ namespace DVLD.People
 
         private void btnAddPerson_Click(object sender, EventArgs e)
         {
-            Form frm1 = new frmAddUpdatePerson();
+            Form frm1 = new AddUpdatePersonForm();
             frm1.ShowDialog();
             _RefreshPeoplList();
         }

@@ -10,7 +10,7 @@ namespace DVLD_Business
         public enum enMode { AddNew = 0, Update = 1 };
         public enMode Mode = enMode.AddNew;
 
-        public clsPerson PersonInfo;
+        public PersonService PersonInfo;
 
         public int DriverID { set; get; }
         public int PersonID { set; get; }
@@ -35,7 +35,7 @@ namespace DVLD_Business
             this.PersonID = PersonID;
             this.CreatedByUserID = CreatedByUserID;
             this.CreatedDate = CreatedDate;
-            this.PersonInfo = clsPerson.Find(PersonID);
+            this.PersonInfo = PersonService.Find(PersonID);
 
             Mode = enMode.Update;
         }
