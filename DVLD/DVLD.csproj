@@ -108,7 +108,7 @@
     </Compile>
     <Compile Include="Global Classes\clsGlobal.cs" />
     <Compile Include="Global Classes\clsFormat.cs" />
-    <Compile Include="Global Classes\clsValidatoin.cs" />
+    <Compile Include="Global Classes\clsValidation.cs" />
     <Compile Include="Applications\Controls\ctrlApplicationBasicInfo.cs">
       <SubType>UserControl</SubType>
     </Compile>

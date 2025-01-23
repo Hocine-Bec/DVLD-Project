@@ -1,6 +1,6 @@
 ﻿namespace DVLD.Controls
 {
-    partial class ctrlPersonCard
+    partial class PersonCardConrol
     {
         /// <summary> 
         /// Required designer variable.

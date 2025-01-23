@@ -54,7 +54,11 @@
     <Compile Include="clsCountry.cs" />
     <Compile Include="clsApplication.cs" />
     <Compile Include="clsUser.cs" />
-    <Compile Include="PersonService.cs" />
+    <Compile Include="Person\Person.cs" />
+    <Compile Include="Person\PersonMapper.cs" />
+    <Compile Include="Person\PersonRepoService.cs" />
+    <Compile Include="Person\PersonService.cs" />
+    <Compile Include="Person\PersonValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

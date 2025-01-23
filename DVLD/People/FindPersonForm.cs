@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace DVLD.People
 {
-    public partial class frmFindPerson : Form
+    public partial class FindPersonForm : Form
     {
 
         // Declare a delegate
@@ -20,7 +20,7 @@ namespace DVLD.People
         public event DataBackEventHandler DataBack;
 
 
-        public frmFindPerson()
+        public FindPersonForm()
         {
             InitializeComponent();
         }

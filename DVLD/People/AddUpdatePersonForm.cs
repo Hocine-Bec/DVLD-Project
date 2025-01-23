@@ -31,11 +31,14 @@ namespace DVLD.People
 
         private Mode _mode;
         private int _personId = -1;
-        private PersonService _person;
+        private Person _person;
+        private PersonService _personService;
 
         public AddUpdatePersonForm()
         {
             InitializeComponent();
+            _personService = new PersonService();
+            _person = new Person();
             _mode = Mode.AddNew;
         }
 
@@ -43,18 +46,17 @@ namespace DVLD.People
         {
             InitializeComponent();
             _mode = Mode.Update;
-            _personId = personId;
+            _personService = new PersonService();
+            _person = _personService.Find(personId);
         }
 
         private void ResetDefaultValues()
         {
-            // This will initialize and reset the default values
-            FillCountriesInComboBox();
 
             if (_mode == Mode.AddNew)
             {
                 lblTitle.Text = "Add New Person";
-                _person = new PersonService();
+                _person = new Person();
             }
             else
             {
@@ -62,10 +64,7 @@ namespace DVLD.People
             }
 
             // Set default image for the person
-            if (rbMale.Checked)
-                pbPersonImage.Image = Resources.Male_512;
-            else
-                pbPersonImage.Image = Resources.Female_512;
+            pbPersonImage.Image = (rbMale.Checked) ? Resources.Male_512 : Resources.Female_512;
 
             // Hide/show the remove link in case there is no image for the person
             llRemoveImage.Visible = (pbPersonImage.ImageLocation != null);
@@ -80,6 +79,11 @@ namespace DVLD.People
             // Set default country to Jordan
             cbCountry.SelectedIndex = cbCountry.FindString("Jordan");
 
+            EmptyTextBoxFields();
+        }
+
+        private void EmptyTextBoxFields()
+        {
             txtFirstName.Text = "";
             txtSecondName.Text = "";
             txtThirdName.Text = "";
@@ -103,15 +107,22 @@ namespace DVLD.People
 
         private void LoadData()
         {
-            _person = PersonService.Find(_personId);
-
             if (_person == null)
             {
-                MessageBox.Show("No Person with ID = " + _personId, "Person Not Found", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show($"No Person with ID [{_personId}] Exists", "Person Not Found",
+                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 this.Close();
                 return;
             }
 
+            FillFormWithPersonData();
+
+            // Hide/show the remove link in case there is no image for the person
+            llRemoveImage.Visible = (_person.ImagePath != "");
+        }
+
+        private void FillFormWithPersonData()
+        {
             // The following code will not be executed if the person was not found
             lblPersonID.Text = _personId.ToString();
             txtFirstName.Text = _person.FirstName;
@@ -121,40 +132,40 @@ namespace DVLD.People
             txtNationalNo.Text = _person.NationalNo;
             dtpDateOfBirth.Value = _person.DateOfBirth;
 
-            if (_person.Gender == 0)
-                rbMale.Checked = true;
-            else
-                rbFemale.Checked = true;
+            rbMale.Checked = (_person.Gender == 0) ? true : true;
 
             txtAddress.Text = _person.Address;
             txtPhone.Text = _person.Phone;
             txtEmail.Text = _person.Email;
-            cbCountry.SelectedIndex = cbCountry.FindString(_person.CountryInfo.CountryName);
+
+            cbCountry.SelectedIndex = cbCountry.FindString(_person.Country.CountryName);
+
+            //cbCountry.SelectedIndex = _person.NationalityCountryID;
 
             // Load person image in case it was set
-            if (_person.ImagePath != "")
-            {
-                pbPersonImage.ImageLocation = _person.ImagePath;
-            }
+            pbPersonImage.ImageLocation = (_person.ImagePath != string.Empty) ? _person.ImagePath : "";
 
-            // Hide/show the remove link in case there is no image for the person
-            llRemoveImage.Visible = (_person.ImagePath != "");
         }
 
         private void AddUpdatePersonForm_Load(object sender, EventArgs e)
         {
-            ResetDefaultValues();
+            // This will initialize and reset the default values
+            FillCountriesInComboBox();
 
             if (_mode == Mode.Update)
                 LoadData();
+            else
+                ResetDefaultValues();
         }
 
         private bool HandlePersonImage()
         {
-            // This procedure will handle the person image,
-            // it will take care of deleting the old image from the folder
-            // in case the image changed. It will rename the new image with a GUID and
-            // place it in the images folder.
+            /* 
+             * This procedure will handle the person image,
+             * it will take care of deleting the old image from the folder
+             * in case the image changed. It will rename the new image with a GUID and
+             * place it in the images folder.
+            */
 
             // _person.ImagePath contains the old image, we check if it changed then we copy the new image
             if (_person.ImagePath != pbPersonImage.ImageLocation)
@@ -198,41 +209,23 @@ namespace DVLD.People
             if (!this.ValidateChildren())
             {
                 // Here we don't continue because the form is not valid
-                MessageBox.Show("Some fields are not valid! Put the mouse over the red icon(s) to see the error", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Some fields are not valid! Put the mouse over the red icon(s) to see the error",
+                    "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             if (!HandlePersonImage())
                 return;
 
-            int nationalityCountryID = clsCountry.Find(cbCountry.Text).ID;
+            FillPersonData();
 
-            _person.FirstName = txtFirstName.Text.Trim();
-            _person.SecondName = txtSecondName.Text.Trim();
-            _person.ThirdName = txtThirdName.Text.Trim();
-            _person.LastName = txtLastName.Text.Trim();
-            _person.NationalNo = txtNationalNo.Text.Trim();
-            _person.Email = txtEmail.Text.Trim();
-            _person.Phone = txtPhone.Text.Trim();
-            _person.Address = txtAddress.Text.Trim();
-            _person.DateOfBirth = dtpDateOfBirth.Value;
+            bool success = (_mode == Mode.AddNew) ? 
+                _personService.AddNewPerson(_person) : _personService.UpdatePerson(_person);
 
-            if (rbMale.Checked)
-                _person.Gender = (short)Gender.Male;
-            else
-                _person.Gender = (short)Gender.Female;
 
-            _person.NationalityCountryID = nationalityCountryID;
-
-            if (pbPersonImage.ImageLocation != null)
-                _person.ImagePath = pbPersonImage.ImageLocation;
-            else
-                _person.ImagePath = "";
-
-            if (_person.Save())
+            if (success)
             {
                 lblPersonID.Text = _person.PersonID.ToString();
-                // Change form mode to update
                 _mode = Mode.Update;
                 lblTitle.Text = "Update Person";
 
@@ -245,6 +238,26 @@ namespace DVLD.People
             {
                 MessageBox.Show("Error: Data Is not Saved Successfully.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void FillPersonData()
+        {
+            _person.FirstName = txtFirstName.Text.Trim();
+            _person.SecondName = txtSecondName.Text.Trim();
+            _person.ThirdName = txtThirdName.Text.Trim();
+            _person.LastName = txtLastName.Text.Trim();
+            _person.NationalNo = txtNationalNo.Text.Trim();
+            _person.Email = txtEmail.Text.Trim();
+            _person.Phone = txtPhone.Text.Trim();
+            _person.Address = txtAddress.Text.Trim();
+            _person.DateOfBirth = dtpDateOfBirth.Value;
+            _person.NationalityCountryID = clsCountry.Find(cbCountry.Text).ID;
+
+            _person.Gender = (rbMale.Checked) ? (short)Gender.Male : (short)Gender.Female;
+
+            _person.ImagePath = !string.IsNullOrEmpty(pbPersonImage.ImageLocation)
+                ? pbPersonImage.ImageLocation : "";
+
         }
 
         private void LlSetImage_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -265,12 +278,7 @@ namespace DVLD.People
         private void LlRemoveImage_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             pbPersonImage.ImageLocation = null;
-
-            if (rbMale.Checked)
-                pbPersonImage.Image = Resources.Male_512;
-            else
-                pbPersonImage.Image = Resources.Female_512;
-
+            pbPersonImage.Image = (rbMale.Checked) ? Resources.Male_512 : Resources.Female_512;
             llRemoveImage.Visible = false;
         }
 
@@ -310,7 +318,7 @@ namespace DVLD.People
                 return;
 
             // Validate email format
-            if (!clsValidatoin.ValidateEmail(txtEmail.Text))
+            if (!clsValidation.ValidateEmail(txtEmail.Text))
             {
                 e.Cancel = true;
                 errorProvider1.SetError(txtEmail, "Invalid Email Address Format!");
@@ -335,7 +343,7 @@ namespace DVLD.People
             }
 
             // Make sure the national number is not used by another person
-            if (txtNationalNo.Text.Trim() != _person.NationalNo && PersonService.IsPersonExist(txtNationalNo.Text.Trim()))
+            if (txtNationalNo.Text.Trim() != _person.NationalNo && _personService.IsPersonExist(txtNationalNo.Text.Trim()))
             {
                 e.Cancel = true;
                 errorProvider1.SetError(txtNationalNo, "National Number is used for another person!");
@@ -347,3 +355,5 @@ namespace DVLD.People
         }
     }
 }
+
+

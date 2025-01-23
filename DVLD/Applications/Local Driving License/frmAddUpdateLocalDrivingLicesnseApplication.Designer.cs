@@ -32,7 +32,7 @@
             this.tcApplicationInfo = new System.Windows.Forms.TabControl();
             this.tpPersonalInfo = new System.Windows.Forms.TabPage();
             this.btnApplicationInfoNext = new System.Windows.Forms.Button();
-            this.ctrlPersonCardWithFilter1 = new DVLD.Controls.ctrlPersonCardWithFilter();
+            this.ctrlPersonCardWithFilter1 = new DVLD.Controls.PersonCardWithFilterConrol();
             this.tpApplicationInfo = new System.Windows.Forms.TabPage();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -389,6 +389,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblCreatedByUser;
         private System.Windows.Forms.PictureBox pictureBox2;
-        private Controls.ctrlPersonCardWithFilter ctrlPersonCardWithFilter1;
+        private Controls.PersonCardWithFilterConrol ctrlPersonCardWithFilter1;
     }
 }

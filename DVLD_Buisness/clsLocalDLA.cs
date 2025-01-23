@@ -11,8 +11,10 @@ using static DVLD_Business.clsTestType;
 namespace DVLD_Business
 {
     public   class clsLocalDLA : clsApplication
-
     {
+        //This is for testing purpose, it will be updated later
+        private PersonService _personService = new PersonService();
+
         public enum enMode { AddNew = 0, Update = 1 };
         public enMode Mode = enMode.AddNew;
 
@@ -22,7 +24,7 @@ namespace DVLD_Business
         public string PersonFullName   
         {
             get { 
-                return PersonService.Find(ApplicantPersonID).FullName; 
+                return _personService.Find(ApplicantPersonID).FullName; 
             }   
             
         }

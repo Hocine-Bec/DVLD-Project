@@ -8,7 +8,7 @@ namespace DVLD_DataAccess
 {
     public class PersonRepository 
     {
-        public static PersonDTO GetPersonInfoById(int personId)
+        public PersonDTO GetPersonById(int personId)
         {
             const string query = "SELECT * FROM People WHERE PersonID = @PersonID";
 
@@ -52,7 +52,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static PersonDTO GetPersonInfoByNationalNo(string nationalNo)
+        public PersonDTO GetPersonByNationalNo(string nationalNo)
         {
             const string query = "SELECT * FROM People WHERE NationalNo = @nationalNo";
 
@@ -96,7 +96,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static int AddNewPerson(PersonDTO person)
+        public int AddNewPerson(PersonDTO person)
         {
             const string query = @"
             INSERT INTO People 
@@ -142,7 +142,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool UpdatePerson(PersonDTO person)
+        public bool UpdatePerson(PersonDTO person)
         {
             const string query = @"
             UPDATE People  
@@ -178,7 +178,6 @@ namespace DVLD_DataAccess
                     command.Parameters.AddWithValue("@Phone", person.Phone);
                     command.Parameters.AddWithValue("@Email", string.IsNullOrEmpty(person.Email) ? DBNull.Value : (object)person.Email);
                     command.Parameters.AddWithValue("@NationalityCountryID", person.NationalityCountryID);
-                    command.Parameters.AddWithValue("@ImagePath", string.IsNullOrEmpty(person.Email) ? DBNull.Value : (object)person.Email);
                     command.Parameters.AddWithValue("@ImagePath", string.IsNullOrEmpty(person.ImagePath) ? DBNull.Value : (object)person.ImagePath);
 
                     connection.Open();
@@ -192,7 +191,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static DataTable GetAllPeople()
+        public DataTable GetAllPeople()
         {
             const string query = @"
             SELECT 
@@ -234,7 +233,7 @@ namespace DVLD_DataAccess
             return dataTable;
         }
 
-        public static bool DeletePerson(int personId)
+        public bool DeletePerson(int personId)
         {
             const string query = "DELETE FROM People WHERE PersonID = @PersonID";
 
@@ -256,7 +255,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool IsPersonExist(int personId)
+        public bool IsPersonExist(int personId)
         {
             const string query = "SELECT Found = 1 FROM People WHERE PersonID = @PersonID";
 
@@ -280,7 +279,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool IsPersonExist(string nationalNo)
+        public bool IsPersonExist(string nationalNo)
         {
             const string query = "SELECT Found = 1 FROM People WHERE NationalNo = @NationalNo";
 

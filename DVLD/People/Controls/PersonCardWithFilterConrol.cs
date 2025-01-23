@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace DVLD.Controls
 {
-    public partial class ctrlPersonCardWithFilter : UserControl
+    public partial class PersonCardWithFilterConrol : UserControl
     {
         
         // Define a custom event handler delegate with parameters
@@ -28,17 +28,17 @@ namespace DVLD.Controls
         }
 
 
-       private bool _ShowAddPerson=true;
+       private bool _showAddPerson = true;
        public bool ShowAddPerson
         {
             get
             {
-                return _ShowAddPerson;
+                return _showAddPerson;
             }
             set
             {
-                _ShowAddPerson=value;
-                btnAddNewPerson.Visible = _ShowAddPerson;
+                _showAddPerson=value;
+                btnAddNewPerson.Visible = _showAddPerson;
             }
         }
 
@@ -56,7 +56,7 @@ namespace DVLD.Controls
             }
         }
 
-        public ctrlPersonCardWithFilter()
+        public PersonCardWithFilterConrol()
         {
             InitializeComponent();
         }
@@ -69,9 +69,9 @@ namespace DVLD.Controls
             get { return ctrlPersonCard1.PersonID; }   
         }
 
-        public PersonService SelectedPersonInfo
+        public Person SelectedPersonInfo
         {
-            get { return ctrlPersonCard1.SelectedPersonInfo; }
+            get { return ctrlPersonCard1.Person; }
         }
 
         public void LoadPersonInfo(int PersonID )
@@ -115,8 +115,9 @@ namespace DVLD.Controls
         {
             if (!this.ValidateChildren())
             {
-                //Here we dont continue becuase the form is not valid
-                MessageBox.Show("Some fileds are not valide!, put the mouse over the red icon(s) to see the erro", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //Here we don't continue because the form is not valid
+                MessageBox.Show("Some fields are not valid!, put the mouse over the red icon(s) to see the error", 
+                    "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
 
             }
@@ -173,15 +174,12 @@ namespace DVLD.Controls
             // Check if the pressed key is Enter (character code 13)
             if (e.KeyChar == (char)13)
             {
-
                 btnFind.PerformClick();
             }
 
             //this will allow only digits if person id is selected
             if (cbFilterBy.Text == "Person ID")
                 e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
-
-
 
         }
     }

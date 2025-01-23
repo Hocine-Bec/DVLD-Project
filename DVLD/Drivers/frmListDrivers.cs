@@ -16,10 +16,11 @@ namespace DVLD.Drivers
     public partial class frmListDrivers : Form
     {
         private DataTable _dtAllDrivers;
-
+        private PersonService _personService;
         public frmListDrivers()
         {
             InitializeComponent();
+            _personService = new PersonService();
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -132,7 +133,7 @@ namespace DVLD.Drivers
         private void showDetailsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int PersonID = (int)dgvDrivers.CurrentRow.Cells[1].Value;
-            frmShowPersonInfo frm = new frmShowPersonInfo(PersonID);
+            ShowPersonInfoForm frm = new ShowPersonInfoForm(PersonID);
             frm.ShowDialog();
             //refresh
             frmListDrivers_Load(null, null);

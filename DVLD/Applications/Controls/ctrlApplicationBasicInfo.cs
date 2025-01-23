@@ -18,6 +18,7 @@ namespace DVLD.Controls.ApplicationControls
     {
 
         private clsApplication _Application;
+        private PersonService _personService;
 
         private int _ApplicationID = -1;
 
@@ -29,7 +30,7 @@ namespace DVLD.Controls.ApplicationControls
         public ctrlApplicationBasicInfo()
         {
             InitializeComponent();
-  
+            _personService = new PersonService();
         }
 
         public void LoadApplicationInfo(int ApplicationID)
@@ -74,7 +75,7 @@ namespace DVLD.Controls.ApplicationControls
 
         private void llViewPersonInfo_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            frmShowPersonInfo frm = new frmShowPersonInfo(_Application.ApplicantPersonID);
+            ShowPersonInfoForm frm = new ShowPersonInfoForm(_Application.ApplicantPersonID);
             frm.ShowDialog();
 
             //Refresh

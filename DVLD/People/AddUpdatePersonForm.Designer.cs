@@ -597,7 +597,7 @@
             this.pictureBox10.TabIndex = 113;
             this.pictureBox10.TabStop = false;
             // 
-            // frmAddUpdatePerson
+            // AddUpdatePersonForm
             // 
             this.AcceptButton = this.btnSave;
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -614,7 +614,7 @@
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.Name = "frmAddUpdatePerson";
+            this.Name = "AddUpdatePersonForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add / Edit Person Info.";
             this.Load += new System.EventHandler(this.AddUpdatePersonForm_Load);

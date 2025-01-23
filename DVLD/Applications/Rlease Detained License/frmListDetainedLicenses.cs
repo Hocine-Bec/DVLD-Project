@@ -19,10 +19,12 @@ namespace DVLD.Applications.Rlease_Detained_License
     {
 
         private DataTable _dtDetainedLicenses;
+        private PersonService _personService;
 
         public frmListDetainedLicenses()
         {
             InitializeComponent();
+            _personService = new PersonService();
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -205,7 +207,7 @@ namespace DVLD.Applications.Rlease_Detained_License
             int LicenseID = (int)dgvDetainedLicenses.CurrentRow.Cells[1].Value;
             int PersonID = clsLicense.Find(LicenseID).DriverInfo.PersonID;
 
-            frmShowPersonInfo frm = new frmShowPersonInfo(PersonID);
+            ShowPersonInfoForm frm = new ShowPersonInfoForm(PersonID);
             frm.ShowDialog();
         }
 
