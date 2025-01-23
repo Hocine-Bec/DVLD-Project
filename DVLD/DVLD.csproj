@@ -164,17 +164,17 @@
     <Compile Include="Licenses\Controls\ctrlDriverLicenses.Designer.cs">
       <DependentUpon>ctrlDriverLicenses.cs</DependentUpon>
     </Compile>
-    <Compile Include="People\Controls\ctrlPersonCard.cs">
+    <Compile Include="People\Controls\PersonCardControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="People\Controls\ctrlPersonCard.Designer.cs">
-      <DependentUpon>ctrlPersonCard.cs</DependentUpon>
+    <Compile Include="People\Controls\PersonCardControl.Designer.cs">
+      <DependentUpon>PersonCardControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="People\Controls\ctrlPersonCardWithFilter.cs">
+    <Compile Include="People\Controls\PersonCardWithFilterControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="People\Controls\ctrlPersonCardWithFilter.Designer.cs">
-      <DependentUpon>ctrlPersonCardWithFilter.cs</DependentUpon>
+    <Compile Include="People\Controls\PersonCardWithFilterControl.Designer.cs">
+      <DependentUpon>PersonCardWithFilterControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -223,23 +223,23 @@
     <Compile Include="People\AddUpdatePersonForm.Designer.cs">
       <DependentUpon>AddUpdatePersonForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="People\frmFindPerson.cs">
+    <Compile Include="People\FindPersonForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="People\frmFindPerson.Designer.cs">
-      <DependentUpon>frmFindPerson.cs</DependentUpon>
+    <Compile Include="People\FindPersonForm.Designer.cs">
+      <DependentUpon>FindPersonForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="People\frmListPeople.cs">
+    <Compile Include="People\ListPeopleForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="People\frmListPeople.Designer.cs">
-      <DependentUpon>frmListPeople.cs</DependentUpon>
+    <Compile Include="People\ListPeopleForm.Designer.cs">
+      <DependentUpon>ListPeopleForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="People\frmShowPersonInfo.cs">
+    <Compile Include="People\ShowPersonInfoForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="People\frmShowPersonInfo.Designer.cs">
-      <DependentUpon>frmShowPersonInfo.cs</DependentUpon>
+    <Compile Include="People\ShowPersonInfoForm.Designer.cs">
+      <DependentUpon>ShowPersonInfoForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -372,11 +372,11 @@
     <EmbeddedResource Include="Licenses\Controls\ctrlDriverLicenses.resx">
       <DependentUpon>ctrlDriverLicenses.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="People\Controls\ctrlPersonCard.resx">
-      <DependentUpon>ctrlPersonCard.cs</DependentUpon>
+    <EmbeddedResource Include="People\Controls\PersonCardControl.resx">
+      <DependentUpon>PersonCardControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="People\Controls\ctrlPersonCardWithFilter.resx">
-      <DependentUpon>ctrlPersonCardWithFilter.cs</DependentUpon>
+    <EmbeddedResource Include="People\Controls\PersonCardWithFilterControl.resx">
+      <DependentUpon>PersonCardWithFilterControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="User\ctrlUserCard.resx">
       <DependentUpon>ctrlUserCard.cs</DependentUpon>
@@ -399,14 +399,14 @@
     <EmbeddedResource Include="People\AddUpdatePersonForm.resx">
       <DependentUpon>AddUpdatePersonForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="People\frmFindPerson.resx">
-      <DependentUpon>frmFindPerson.cs</DependentUpon>
+    <EmbeddedResource Include="People\FindPersonForm.resx">
+      <DependentUpon>FindPersonForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="People\frmListPeople.resx">
-      <DependentUpon>frmListPeople.cs</DependentUpon>
+    <EmbeddedResource Include="People\ListPeopleForm.resx">
+      <DependentUpon>ListPeopleForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="People\frmShowPersonInfo.resx">
-      <DependentUpon>frmShowPersonInfo.cs</DependentUpon>
+    <EmbeddedResource Include="People\ShowPersonInfoForm.resx">
+      <DependentUpon>ShowPersonInfoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
