@@ -25,8 +25,9 @@ For a detailed history of improvements, see the [CHANGELOG.md](./CHANGELOG.md) f
 
 ## Recent Improvements
 This section showcases my growth as a developer and documents key improvements made to the project, along with the dates they were implemented.
-- **Resource Management**: Implemented proper resource disposal patterns [2025-01-15]
+- **Single Responsibility Principle (SRP)**: Refactored the `clsPerson` class into smaller, single-responsibility classes (`Person`, `PersonService`, `PersonRepoService`, `PersonValidator`, and `PersonMapper`) to improve maintainability and adhere to SOLID principles [2025-01-23]
 - **Data Transfer**: Introduced DTOs for cleaner data handling [2025-01-18]
+- **Resource Management**: Implemented proper resource disposal patterns [2025-01-15]
 
 ## License Classes Supported
 1. Small Motorcycle License
