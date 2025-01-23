@@ -38,7 +38,7 @@ namespace DVLD
 
         private void peopleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form frm = new frmListPeople();
+            Form frm = new ListPeopleForm();
             frm.ShowDialog();
         }
 

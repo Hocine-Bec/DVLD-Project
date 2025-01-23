@@ -8,12 +8,15 @@ namespace DVLD_Business
 {
     public  class clsUser
     {
+        //This is for testing purpose, it will be updated later
+        private PersonService _personService = new PersonService();
+
         public enum enMode { AddNew = 0, Update = 1 };
         public enMode Mode = enMode.AddNew;
 
         public int UserID { set; get; }
         public int PersonID { set; get; }
-        public clsPerson PersonInfo;
+        public Person PersonInfo;
         public string UserName { set; get; }
         public string Password { set; get; }
         public bool IsActive { set; get; }
@@ -32,7 +35,7 @@ namespace DVLD_Business
         {
             this.UserID = usersDTO.UserID; 
             this.PersonID = usersDTO.PersonID;
-            this.PersonInfo = clsPerson.Find(PersonID);
+            this.PersonInfo = _personService.Find(PersonID);
             this.UserName = usersDTO.Username;
             this.Password = usersDTO.Password;
             this.IsActive = usersDTO.IsActive;

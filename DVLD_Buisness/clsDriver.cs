@@ -7,10 +7,13 @@ namespace DVLD_Business
 {
     public class clsDriver
     {
+        //This is for testing purpose, it will be updated later
+        private PersonService _personService = new PersonService();
+
         public enum enMode { AddNew = 0, Update = 1 };
         public enMode Mode = enMode.AddNew;
 
-        public clsPerson PersonInfo;
+        public Person PersonInfo;
 
         public int DriverID { set; get; }
         public int PersonID { set; get; }
@@ -35,7 +38,7 @@ namespace DVLD_Business
             this.PersonID = PersonID;
             this.CreatedByUserID = CreatedByUserID;
             this.CreatedDate = CreatedDate;
-            this.PersonInfo = clsPerson.Find(PersonID);
+            this.PersonInfo = _personService.Find(PersonID);
 
             Mode = enMode.Update;
         }

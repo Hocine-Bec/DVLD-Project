@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DVLD.Controls;
+using DVLD_Business;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,17 +12,16 @@ using System.Windows.Forms;
 
 namespace DVLD.People
 {
-    public partial class frmShowPersonInfo : Form
+    public partial class ShowPersonInfoForm : Form
     {
-        
-        public frmShowPersonInfo(int PersonID)
+
+        public ShowPersonInfoForm(int PersonID)
         {
             InitializeComponent();
             ctrlPersonCard1.LoadPersonInfo(PersonID);
-
         }
 
-        public frmShowPersonInfo(string NationalNo)
+        public ShowPersonInfoForm(string NationalNo)
         {
             InitializeComponent();
             ctrlPersonCard1.LoadPersonInfo(NationalNo);

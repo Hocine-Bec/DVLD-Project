@@ -8,6 +8,9 @@ namespace DVLD_Business
 {
     public   class clsApplication
     {
+        //This is for testing purpose, it will be updated later
+        private PersonService _personService = new PersonService();
+
         public enum enMode { AddNew = 0, Update = 1 };
         public enum enApplicationType { NewDrivingLicense = 1, RenewDrivingLicense = 2, ReplaceLostDrivingLicense=3,
             ReplaceDamagedDrivingLicense=4, ReleaseDetainedDrivingLicsense=5, NewInternationalLicense=6,RetakeTest=7
@@ -22,7 +25,7 @@ namespace DVLD_Business
         {
             get
             {
-                return clsPerson.Find(ApplicantPersonID).FullName;
+                return _personService.Find(ApplicantPersonID).FullName;
             }
         }
         public DateTime ApplicationDate { set; get; }

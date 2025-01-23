@@ -31,7 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.tcUserInfo = new System.Windows.Forms.TabControl();
             this.tpPersonalInfo = new System.Windows.Forms.TabPage();
-            this.ctrlPersonCardWithFilter1 = new DVLD.Controls.ctrlPersonCardWithFilter();
+            this.ctrlPersonCardWithFilter1 = new DVLD.Controls.PersonCardWithFilterConrol();
             this.btnPersonInfoNext = new System.Windows.Forms.Button();
             this.tpLoginInfo = new System.Windows.Forms.TabPage();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
@@ -372,6 +372,6 @@
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.Button btnPersonInfoNext;
         private System.Windows.Forms.PictureBox pictureBox2;
-        private Controls.ctrlPersonCardWithFilter ctrlPersonCardWithFilter1;
+        private Controls.PersonCardWithFilterConrol ctrlPersonCardWithFilter1;
     }
 }

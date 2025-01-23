@@ -15,38 +15,36 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace DVLD.People
 {
-    public partial class frmListPeople : Form
+    public partial class ListPeopleForm : Form
     {
+        //This is for testing purpose, it will be updated later
+        private PersonService _personService;
 
-      private static DataTable _dtAllPeople = clsPerson.GetAllPeople();
-        
-        //only select the columns that you want to show in the grid
-      private DataTable _dtPeople = _dtAllPeople.DefaultView.ToTable(false, "PersonID", "NationalNo",
-                                                       "FirstName", "SecondName", "ThirdName", "LastName",
-                                                       "GendorCaption", "DateOfBirth", "CountryName",
-                                                       "Phone", "Email");
+        private DataTable _dtAllPeople;
 
-        private void _RefreshPeoplList()
+        private void _RefreshPeopleList()
         {
-            _dtAllPeople = clsPerson.GetAllPeople();
-            _dtPeople = _dtAllPeople.DefaultView.ToTable(false, "PersonID", "NationalNo",
+            _dtAllPeople = _personService.GetAllPeople();
+            _dtAllPeople = _dtAllPeople.DefaultView.ToTable(false, "PersonID", "NationalNo",
                                                        "FirstName", "SecondName", "ThirdName", "LastName",
                                                        "GenderCaption", "DateOfBirth", "CountryName",
                                                        "Phone", "Email");
 
-            dgvPeople.DataSource = _dtPeople;
+            dgvPeople.DataSource = _dtAllPeople;
             lblRecordsCount.Text = dgvPeople.Rows.Count.ToString();
         }
 
-        public frmListPeople()
+        public ListPeopleForm()
         {
             InitializeComponent();
+            _personService = new PersonService();
         }
 
         private void frmListPeople_Load(object sender, EventArgs e)
         {
-                 
-            dgvPeople.DataSource = _dtPeople;
+
+            _RefreshPeopleList();
+
             cbFilterBy.SelectedIndex = 0;
             lblRecordsCount.Text = dgvPeople.Rows.Count.ToString();
             if (dgvPeople.Rows.Count > 0)
@@ -91,10 +89,10 @@ namespace DVLD.People
             }
 
         }
-    
+
         private void txtFilterValue_TextChanged(object sender, EventArgs e)
         {
-           
+
             string FilterColumn = "";
             //Map Selected Filter to real Column name 
             switch (cbFilterBy.Text)
@@ -148,7 +146,7 @@ namespace DVLD.People
             //Reset the filters in case nothing selected or filter value conains nothing.
             if (txtFilterValue.Text.Trim() == "" || FilterColumn == "None")
             {
-                _dtPeople.DefaultView.RowFilter = "";
+                _dtAllPeople.DefaultView.RowFilter = "";
                 lblRecordsCount.Text = dgvPeople.Rows.Count.ToString();
                 return;
             }
@@ -156,19 +154,19 @@ namespace DVLD.People
 
             if (FilterColumn == "PersonID")
                 //in this case we deal with integer not string.
-                
-              _dtPeople.DefaultView.RowFilter = string.Format("[{0}] = {1}", FilterColumn, txtFilterValue.Text.Trim());
+
+                _dtAllPeople.DefaultView.RowFilter = string.Format("[{0}] = {1}", FilterColumn, txtFilterValue.Text.Trim());
             else
-             _dtPeople.DefaultView.RowFilter = string.Format("[{0}] LIKE '{1}%'", FilterColumn, txtFilterValue.Text.Trim());
-       
-         lblRecordsCount.Text= dgvPeople.Rows.Count.ToString();
+                _dtAllPeople.DefaultView.RowFilter = string.Format("[{0}] LIKE '{1}%'", FilterColumn, txtFilterValue.Text.Trim());
+
+            lblRecordsCount.Text = dgvPeople.Rows.Count.ToString();
 
         }
 
         private void cbFilterBy_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-           txtFilterValue.Visible = (cbFilterBy.Text != "None");
+            txtFilterValue.Visible = (cbFilterBy.Text != "None");
 
             if (txtFilterValue.Visible)
             {
@@ -181,17 +179,17 @@ namespace DVLD.People
         private void showDetailsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int PersonID = (int)dgvPeople.CurrentRow.Cells[0].Value;
-            Form frm = new frmShowPersonInfo(PersonID);
+            var frm = new ShowPersonInfoForm(PersonID);
             frm.ShowDialog();
         }
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
-           
-            Form frm = new frmAddUpdatePerson((int)dgvPeople.CurrentRow.Cells[0].Value);
+
+            Form frm = new AddUpdatePersonForm((int)dgvPeople.CurrentRow.Cells[0].Value);
             frm.ShowDialog();
 
-            _RefreshPeoplList();
+            _RefreshPeopleList();
 
         }
 
@@ -209,16 +207,17 @@ namespace DVLD.People
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-           
-            if (MessageBox.Show("Are you sure you want to delete Person [" + dgvPeople.CurrentRow.Cells[0].Value + "]", "Confirm Delete", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+
+            if (MessageBox.Show("Are you sure you want to delete Person [" + dgvPeople.CurrentRow.Cells[0].Value + "]", 
+                "Confirm Delete", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
 
             {
 
                 //Perform Delele and refresh
-                if (clsPerson.DeletePerson((int)dgvPeople.CurrentRow.Cells[0].Value))
+                if (_personService.DeletePerson((int)dgvPeople.CurrentRow.Cells[0].Value))
                 {
                     MessageBox.Show("Person Deleted Successfully.", "Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    _RefreshPeoplList();
+                    _RefreshPeopleList();
                 }
 
                 else
@@ -230,17 +229,17 @@ namespace DVLD.People
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            Form frm = new frmAddUpdatePerson();
+            Form frm = new AddUpdatePersonForm();
             frm.ShowDialog();
 
-            _RefreshPeoplList();
+            _RefreshPeopleList();
         }
 
         private void btnAddPerson_Click(object sender, EventArgs e)
         {
-            Form frm1 = new frmAddUpdatePerson();
+            Form frm1 = new AddUpdatePersonForm();
             frm1.ShowDialog();
-            _RefreshPeoplList();
+            _RefreshPeopleList();
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -250,15 +249,16 @@ namespace DVLD.People
 
         private void dgvPeople_DoubleClick(object sender, EventArgs e)
         {
-            Form frm = new frmShowPersonInfo((int)dgvPeople.CurrentRow.Cells[0].Value);
+            int id = (int)dgvPeople.CurrentRow.Cells[0].Value;
+            Form frm = new ShowPersonInfoForm(id);
             frm.ShowDialog();
         }
 
         private void txtFilterValue_KeyPress(object sender, KeyPressEventArgs e)
         {
             //we allow number incase person id is selected.
-            if (cbFilterBy.Text=="Person ID")
-              e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
+            if (cbFilterBy.Text == "Person ID")
+                e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
         }
     }
 }

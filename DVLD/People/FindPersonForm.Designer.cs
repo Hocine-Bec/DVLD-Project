@@ -1,6 +1,6 @@
 ﻿namespace DVLD.People
 {
-    partial class frmShowPersonInfo
+    partial class FindPersonForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,10 +28,34 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnClose = new System.Windows.Forms.Button();
-            this.ctrlPersonCard1 = new DVLD.Controls.ctrlPersonCard();
+            this.ctrlPersonCardWithFilter1 = new DVLD.Controls.PersonCardWithFilterConrol();
             this.lblTitle = new System.Windows.Forms.Label();
+            this.btnClose = new System.Windows.Forms.Button();
             this.SuspendLayout();
+            // 
+            // ctrlPersonCardWithFilter1
+            // 
+            this.ctrlPersonCardWithFilter1.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            this.ctrlPersonCardWithFilter1.BackColor = System.Drawing.Color.White;
+            this.ctrlPersonCardWithFilter1.FilterEnabled = true;
+            this.ctrlPersonCardWithFilter1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ctrlPersonCardWithFilter1.Location = new System.Drawing.Point(4, 57);
+            this.ctrlPersonCardWithFilter1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.ctrlPersonCardWithFilter1.Name = "ctrlPersonCardWithFilter1";
+            this.ctrlPersonCardWithFilter1.ShowAddPerson = true;
+            this.ctrlPersonCardWithFilter1.Size = new System.Drawing.Size(867, 405);
+            this.ctrlPersonCardWithFilter1.TabIndex = 1;
+            // 
+            // lblTitle
+            // 
+            this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lblTitle.Location = new System.Drawing.Point(312, 18);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(239, 39);
+            this.lblTitle.TabIndex = 101;
+            this.lblTitle.Text = "Find Person Info";
+            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnClose
             // 
@@ -39,61 +63,38 @@
             this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnClose.Image = global::DVLD.Properties.Resources.Close_32;
             this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClose.Location = new System.Drawing.Point(714, 381);
+            this.btnClose.Location = new System.Drawing.Point(732, 477);
             this.btnClose.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(126, 37);
-            this.btnClose.TabIndex = 17;
+            this.btnClose.TabIndex = 115;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // ctrlPersonCard1
+            // frmFindPerson
             // 
-            this.ctrlPersonCard1.BackColor = System.Drawing.Color.White;
-            this.ctrlPersonCard1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ctrlPersonCard1.Location = new System.Drawing.Point(12, 82);
-            this.ctrlPersonCard1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.ctrlPersonCard1.Name = "ctrlPersonCard1";
-            this.ctrlPersonCard1.Size = new System.Drawing.Size(839, 300);
-            this.ctrlPersonCard1.TabIndex = 0;
-            // 
-            // lblTitle
-            // 
-            this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.lblTitle.Location = new System.Drawing.Point(300, 27);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(258, 39);
-            this.lblTitle.TabIndex = 89;
-            this.lblTitle.Text = "Person Details";
-            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // frmShowPersonInfo
-            // 
-            this.AcceptButton = this.btnClose;
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(867, 433);
-            this.Controls.Add(this.lblTitle);
+            this.ClientSize = new System.Drawing.Size(884, 528);
             this.Controls.Add(this.btnClose);
-            this.Controls.Add(this.ctrlPersonCard1);
+            this.Controls.Add(this.lblTitle);
+            this.Controls.Add(this.ctrlPersonCardWithFilter1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.Name = "frmShowPersonInfo";
+            this.Name = "frmFindPerson";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Person Details";
+            this.Text = "frmFindPerson";
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private Controls.ctrlPersonCard ctrlPersonCard1;
-        private System.Windows.Forms.Button btnClose;
+        private Controls.PersonCardWithFilterConrol ctrlPersonCardWithFilter1;
         private System.Windows.Forms.Label lblTitle;
+        private System.Windows.Forms.Button btnClose;
     }
 }

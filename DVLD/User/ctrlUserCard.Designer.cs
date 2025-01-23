@@ -35,7 +35,7 @@
             this.lblUserID = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.ctrlPersonCard1 = new DVLD.Controls.ctrlPersonCard();
+            this.ctrlPersonCard1 = new DVLD.Controls.PersonCardConrol();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -155,6 +155,6 @@
         private System.Windows.Forms.Label lblUserID;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label1;
-        private ctrlPersonCard ctrlPersonCard1;
+        private PersonCardConrol ctrlPersonCard1;
     }
 }

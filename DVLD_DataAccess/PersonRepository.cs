@@ -6,9 +6,9 @@ using System.Data.SqlClient;
 
 namespace DVLD_DataAccess
 {
-    public class clsPersonData 
+    public class PersonRepository 
     {
-        public static PersonDTO GetPersonInfoById(int personId)
+        public PersonDTO GetPersonById(int personId)
         {
             const string query = "SELECT * FROM People WHERE PersonID = @PersonID";
 
@@ -33,7 +33,7 @@ namespace DVLD_DataAccess
                                 LastName = (string)reader["LastName"],
                                 NationalNo = (string)reader["NationalNo"],
                                 DateOfBirth = (DateTime)reader["DateOfBirth"],
-                                Gender = (byte)reader["Gendor"],
+                                Gender = (byte)reader["Gender"],
                                 Address = (string)reader["Address"],
                                 Phone = (string)reader["Phone"],
                                 Email = reader["Email"] == DBNull.Value ? "" : (string)reader["Email"],
@@ -52,7 +52,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static PersonDTO GetPersonInfoByNationalNo(string nationalNo)
+        public PersonDTO GetPersonByNationalNo(string nationalNo)
         {
             const string query = "SELECT * FROM People WHERE NationalNo = @nationalNo";
 
@@ -77,7 +77,7 @@ namespace DVLD_DataAccess
                                 LastName = (string)reader["LastName"],
                                 NationalNo = nationalNo,
                                 DateOfBirth = (DateTime)reader["DateOfBirth"],
-                                Gender = (byte)reader["Gendor"],
+                                Gender = (byte)reader["Gender"],
                                 Address = (string)reader["Address"],
                                 Phone = (string)reader["Phone"],
                                 Email = reader["Email"] == DBNull.Value ? "" : (string)reader["Email"],
@@ -96,12 +96,12 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static int AddNewPerson(PersonDTO person)
+        public int AddNewPerson(PersonDTO person)
         {
             const string query = @"
             INSERT INTO People 
             (
-                FirstName, SecondName, ThirdName, LastName, NationalNo, DateOfBirth, Gendor, 
+                FirstName, SecondName, ThirdName, LastName, NationalNo, DateOfBirth, Gender, 
                 Address, Phone, Email, NationalityCountryID, ImagePath
             )
             VALUES 
@@ -142,7 +142,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool UpdatePerson(PersonDTO person)
+        public bool UpdatePerson(PersonDTO person)
         {
             const string query = @"
             UPDATE People  
@@ -153,7 +153,7 @@ namespace DVLD_DataAccess
                 LastName = @LastName, 
                 NationalNo = @NationalNo,
                 DateOfBirth = @DateOfBirth,
-                Gendor = @Gendor,
+                Gender = @Gender,
                 Address = @Address,  
                 Phone = @Phone,
                 Email = @Email, 
@@ -178,7 +178,6 @@ namespace DVLD_DataAccess
                     command.Parameters.AddWithValue("@Phone", person.Phone);
                     command.Parameters.AddWithValue("@Email", string.IsNullOrEmpty(person.Email) ? DBNull.Value : (object)person.Email);
                     command.Parameters.AddWithValue("@NationalityCountryID", person.NationalityCountryID);
-                    command.Parameters.AddWithValue("@ImagePath", string.IsNullOrEmpty(person.Email) ? DBNull.Value : (object)person.Email);
                     command.Parameters.AddWithValue("@ImagePath", string.IsNullOrEmpty(person.ImagePath) ? DBNull.Value : (object)person.ImagePath);
 
                     connection.Open();
@@ -192,17 +191,17 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static DataTable GetAllPeople()
+        public DataTable GetAllPeople()
         {
             const string query = @"
             SELECT 
                 People.PersonID, People.NationalNo,
                 People.FirstName, People.SecondName, People.ThirdName, People.LastName,
-                People.DateOfBirth, People.Gendor,  
+                People.DateOfBirth, People.Gender,  
                 CASE
-                    WHEN People.Gendor = 0 THEN 'Male'
+                    WHEN People.Gender = 0 THEN 'Male'
                     ELSE 'Female'
-                END AS GendorCaption,
+                END AS GenderCaption,
                 People.Address, People.Phone, People.Email, 
                 People.NationalityCountryID, Countries.CountryName, People.ImagePath
             FROM People 
@@ -234,7 +233,7 @@ namespace DVLD_DataAccess
             return dataTable;
         }
 
-        public static bool DeletePerson(int personId)
+        public bool DeletePerson(int personId)
         {
             const string query = "DELETE FROM People WHERE PersonID = @PersonID";
 
@@ -256,7 +255,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool IsPersonExist(int personId)
+        public bool IsPersonExist(int personId)
         {
             const string query = "SELECT Found = 1 FROM People WHERE PersonID = @PersonID";
 
@@ -280,7 +279,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool IsPersonExist(string nationalNo)
+        public bool IsPersonExist(string nationalNo)
         {
             const string query = "SELECT Found = 1 FROM People WHERE NationalNo = @NationalNo";
 

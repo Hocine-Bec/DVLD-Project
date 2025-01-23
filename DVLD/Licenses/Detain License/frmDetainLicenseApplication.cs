@@ -124,7 +124,7 @@ namespace DVLD.Applications.Detain_License
             };
 
 
-            if (!clsValidatoin.IsNumber(txtFineFees.Text))
+            if (!clsValidation.IsNumber(txtFineFees.Text))
             {
                 e.Cancel = true;
                 errorProvider1.SetError(txtFineFees, "Invalid Number.");

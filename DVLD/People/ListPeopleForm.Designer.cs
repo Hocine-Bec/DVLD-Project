@@ -1,6 +1,6 @@
 ﻿namespace DVLD.People
 {
-    partial class frmListPeople
+    partial class ListPeopleForm
     {
         /// <summary>
         /// Required designer variable.

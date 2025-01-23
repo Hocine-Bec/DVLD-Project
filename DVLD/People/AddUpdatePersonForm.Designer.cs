@@ -1,6 +1,6 @@
 ﻿namespace DVLD.People
 {
-    partial class frmAddUpdatePerson
+    partial class AddUpdatePersonForm
     {
         /// <summary>
         /// Required designer variable.
@@ -145,7 +145,7 @@
             this.llRemoveImage.TabIndex = 112;
             this.llRemoveImage.TabStop = true;
             this.llRemoveImage.Text = "Remove";
-            this.llRemoveImage.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llRemoveImage_LinkClicked);
+            this.llRemoveImage.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LlRemoveImage_LinkClicked);
             // 
             // pictureBox9
             // 
@@ -176,7 +176,7 @@
             this.rbFemale.TabIndex = 8;
             this.rbFemale.Text = "Female";
             this.rbFemale.UseVisualStyleBackColor = true;
-            this.rbFemale.Click += new System.EventHandler(this.rbFemale_Click);
+            this.rbFemale.Click += new System.EventHandler(this.RbFemale_Click);
             // 
             // rbMale
             // 
@@ -189,7 +189,7 @@
             this.rbMale.TabStop = true;
             this.rbMale.Text = "Male";
             this.rbMale.UseVisualStyleBackColor = true;
-            this.rbMale.Click += new System.EventHandler(this.rbMale_Click);
+            this.rbMale.Click += new System.EventHandler(this.RbMale_Click);
             // 
             // label5
             // 
@@ -274,7 +274,7 @@
             this.llSetImage.TabIndex = 13;
             this.llSetImage.TabStop = true;
             this.llSetImage.Text = "Set Image";
-            this.llSetImage.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llSetImage_LinkClicked);
+            this.llSetImage.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LlSetImage_LinkClicked);
             // 
             // pictureBox7
             // 
@@ -402,7 +402,7 @@
             this.txtEmail.Name = "txtEmail";
             this.txtEmail.Size = new System.Drawing.Size(167, 26);
             this.txtEmail.TabIndex = 10;
-            this.txtEmail.Validating += new System.ComponentModel.CancelEventHandler(this.txtEmail_Validating);
+            this.txtEmail.Validating += new System.ComponentModel.CancelEventHandler(this.TxtEmail_Validating);
             // 
             // label6
             // 
@@ -455,7 +455,7 @@
             this.txtNationalNo.Name = "txtNationalNo";
             this.txtNationalNo.Size = new System.Drawing.Size(167, 26);
             this.txtNationalNo.TabIndex = 5;
-            this.txtNationalNo.Validating += new System.ComponentModel.CancelEventHandler(this.txtNationalNo_Validating);
+            this.txtNationalNo.Validating += new System.ComponentModel.CancelEventHandler(this.TxtNationalNo_Validating);
             // 
             // label2
             // 
@@ -544,7 +544,7 @@
             this.btnSave.TabIndex = 14;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            this.btnSave.Click += new System.EventHandler(this.BtnSave_Click);
             // 
             // lblPersonID
             // 
@@ -597,7 +597,7 @@
             this.pictureBox10.TabIndex = 113;
             this.pictureBox10.TabStop = false;
             // 
-            // frmAddUpdatePerson
+            // AddUpdatePersonForm
             // 
             this.AcceptButton = this.btnSave;
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -614,10 +614,10 @@
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.Name = "frmAddUpdatePerson";
+            this.Name = "AddUpdatePersonForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add / Edit Person Info.";
-            this.Load += new System.EventHandler(this.frmAddUpdatePerson_Load);
+            this.Load += new System.EventHandler(this.AddUpdatePersonForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox9)).EndInit();

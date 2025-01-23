@@ -1,6 +1,6 @@
 ﻿namespace DVLD.Controls
 {
-    partial class ctrlPersonCardWithFilter
+    partial class PersonCardWithFilterConrol
     {
         /// <summary> 
         /// Required designer variable.
@@ -36,7 +36,7 @@
             this.cbFilterBy = new System.Windows.Forms.ComboBox();
             this.txtFilterValue = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.ctrlPersonCard1 = new DVLD.Controls.ctrlPersonCard();
+            this.ctrlPersonCard1 = new DVLD.Controls.PersonCardConrol();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.gbFilters.SuspendLayout();
             this.SuspendLayout();
@@ -147,7 +147,7 @@
 
         #endregion
 
-        private ctrlPersonCard ctrlPersonCard1;
+        private PersonCardConrol ctrlPersonCard1;
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.GroupBox gbFilters;
         private System.Windows.Forms.Button btnAddNewPerson;

@@ -19,10 +19,12 @@ namespace DVLD.Applications.International_License
     public partial class frmListInternationalLicesnseApplications : Form
     {
         private DataTable _dtInternationalLicenseApplications;
+        private PersonService _personService;
 
         public frmListInternationalLicesnseApplications()
         {
             InitializeComponent();
+            _personService = new PersonService();
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -86,7 +88,7 @@ namespace DVLD.Applications.International_License
             int DriverID = (int)dgvInternationalLicenses.CurrentRow.Cells[2].Value;
             int PersonID = clsDriver.FindByDriverID(DriverID).PersonID;
 
-            frmShowPersonInfo frm = new frmShowPersonInfo(PersonID);
+            ShowPersonInfoForm frm = new ShowPersonInfoForm(PersonID);
             frm.ShowDialog();
 
         }

@@ -32,7 +32,7 @@
             this.pbPersonImage = new System.Windows.Forms.PictureBox();
             this.btnClose = new System.Windows.Forms.Button();
             this.ctrlDriverLicenses1 = new DVLD.Licenses.Local_Licenses.Controls.ctrlDriverLicenses();
-            this.ctrlPersonCardWithFilter1 = new DVLD.Controls.ctrlPersonCardWithFilter();
+            this.ctrlPersonCardWithFilter1 = new DVLD.Controls.PersonCardWithFilterConrol();
             ((System.ComponentModel.ISupportInitialize)(this.pbPersonImage)).BeginInit();
             this.SuspendLayout();
             // 
@@ -129,6 +129,6 @@
         private System.Windows.Forms.PictureBox pbPersonImage;
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Button btnClose;
-        private DVLD.Controls.ctrlPersonCardWithFilter ctrlPersonCardWithFilter1;
+        private DVLD.Controls.PersonCardWithFilterConrol ctrlPersonCardWithFilter1;
     }
 }
