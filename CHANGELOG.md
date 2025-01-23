@@ -7,18 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [Unreleased]
+## [1.2.0] - 2025-01-23
 ### Added
-- (New features or functionality being worked on.)
-
+- **PersonValidator**: A new class to handle validation logic for person data.
+- **PersonMapper**: A new class to map data between `Person` and `PersonDTO`.
+- **PersonRepoService**: A new class to handle data access logic.
+  
 ### Changed
-- (Changes to existing functionality.)
+- **Refactored `clsPerson`**: Split the `clsPerson` class into multiple classes, each with a single responsibility:
+  - `Person`: Encapsulates person data.
+  - `PersonService`: Manages business logic and workflows.
+  - `PersonRepoService`: Handles data access logic.
+- **Updated Presentation Layer**: Adjusted forms to use the new `PersonService` and related classes.
+- **Adhered to C# Naming Conventions**: Updated class, method, and variable names to follow C# naming conventions.
 
 ### Fixed
-- (Bug fixes in progress.)
+- **Naming Inconsistencies**: Fixed naming issues to ensure consistency across the codebase.
 
 ### Removed
-- (Code or features being removed.)
+- **Redundant Code**: Removed redundant methods and logic from the old `clsPerson` class.
 
 ---
 
@@ -72,3 +79,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 - N/A
+ 
+---
+
+### Links
+- **[Refactor/SRP-People](https://github.com/Hocine-Bec/DVLD-Project/compare/v1.1.0...v1.2.0)**: Improved `clsPerson` class to adhere to the **Single Responsibility Principle (SRP)**.
+- **[Refactor/Add-DTOs](https://github.com/Hocine-Bec/DVLD-Project/compare/v1.0.0...v1.1.0)**: Introduced **Data Transfer Objects (DTOs)** for cleaner data handling.
+- **[Initial Release](https://github.com/Hocine-Bec/DVLD-Project/tree/v1.0.0)**: Initial implementation of the project.
