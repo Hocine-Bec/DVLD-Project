@@ -102,6 +102,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ---
 
 ### Links
-- **[Refactor/SRP-People](https://github.com/Hocine-Bec/DVLD-Project/compare/v1.1.0...v1.2.0)**: Improved `clsPerson` class to adhere to the **Single Responsibility Principle (SRP)**.
+- **[Refactor/SRP-People-Data-Access-Layer](https://github.com/Hocine-Bec/DVLD-Project/compare/v1.2.0...v1.3.0)**: Improved `PersonRepository` class to adhere to the **Don't Repeat Yourself Principle (DRY)**.
+- **[Refactor/SRP-People-Business-Layer](https://github.com/Hocine-Bec/DVLD-Project/compare/v1.1.0...v1.2.0)**: Improved `clsPerson` class to adhere to the **Single Responsibility Principle (SRP)**.
 - **[Refactor/Add-DTOs](https://github.com/Hocine-Bec/DVLD-Project/compare/v1.0.0...v1.1.0)**: Introduced **Data Transfer Objects (DTOs)** for cleaner data handling.
 - **[Initial Release](https://github.com/Hocine-Bec/DVLD-Project/tree/v1.0.0)**: Initial implementation of the project.
