@@ -7,10 +7,10 @@ namespace DVLD_DataAccess
     {
         public static void FillSqlCommandParameters(SqlCommand command, UsersDTO user)
         {
-            command.Parameters.AddWithValue("@PersonID", user.PersonID);
-            command.Parameters.AddWithValue("@UserName", user.Username);
-            command.Parameters.AddWithValue("@Password", user.Password);
-            command.Parameters.AddWithValue("@IsActive", user.IsActive);
+            command.Parameters.AddWithValue($"@{nameof(user.PersonID)}", user.PersonID);
+            command.Parameters.AddWithValue($"@{nameof(user.Username)}", user.Username);
+            command.Parameters.AddWithValue($"@{nameof(user.Password)}", user.Password);
+            command.Parameters.AddWithValue($"@{nameof(user.IsActive)}", user.IsActive);
         }
     }
 }
