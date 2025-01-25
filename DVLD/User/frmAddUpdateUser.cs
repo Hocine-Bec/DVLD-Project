@@ -227,7 +227,7 @@ namespace DVLD.User
             if (ctrlPersonCardWithFilter1.PersonID!=-1)
             {
                 
-                if (clsUser.isUserExistForPersonID(ctrlPersonCardWithFilter1.PersonID))
+                if (clsUser.IsUserExistByPersonId(ctrlPersonCardWithFilter1.PersonID))
                 {
 
                     MessageBox.Show("Selected Person already has a user, choose another one.", "Select another Person", MessageBoxButtons.OK, MessageBoxIcon.Error);

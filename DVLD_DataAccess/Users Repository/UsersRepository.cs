@@ -6,16 +6,14 @@ using System.Data.SqlClient;
 
 namespace DVLD_DataAccess
 {
-    public class clsUserData
+    public class UsersRepository
     {
         public static UsersDTO GetUserInfoByUserId(int userId)
         {
-            const string query = "SELECT * FROM Users WHERE UserID = @UserID";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(UserSqlStatements.GetByUserId, connection))
                 {
                     command.Parameters.AddWithValue("@UserID", userId);
 
@@ -24,13 +22,7 @@ namespace DVLD_DataAccess
                     {
                         if (reader.Read())
                         {
-                            return new UsersDTO
-                            {
-                                PersonID = (int)reader["PersonID"],
-                                Username = (string)reader["UserName"],
-                                Password = (string)reader["Password"],
-                                IsActive = (bool)reader["IsActive"]
-                            };
+                            return UserDataMapper.MapToUserDTO(reader);
                         }
 
                         return null;
@@ -45,12 +37,10 @@ namespace DVLD_DataAccess
 
         public static UsersDTO GetUserInfoByPersonId(int personId)
         {
-            const string query = "SELECT * FROM Users WHERE PersonID = @PersonID";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(UserSqlStatements.GetByPersonId, connection))
                 {
                     command.Parameters.AddWithValue("@PersonID", personId);
 
@@ -59,14 +49,7 @@ namespace DVLD_DataAccess
                     {
                         if (reader.Read())
                         {
-                            return new UsersDTO()
-                            {
-                                UserID = (int)reader["UserID"],
-                                Username = (string)reader["UserName"],
-                                Password = (string)reader["Password"],
-                                IsActive = (bool)reader["IsActive"]
-                            };
-                          
+                            return UserDataMapper.MapToUserDTO(reader);
                         }
 
                         return null;
@@ -81,12 +64,10 @@ namespace DVLD_DataAccess
 
         public static UsersDTO GetUserInfoByUsernameAndPassword(string userName, string password)
         {
-            const string query = "SELECT * FROM Users WHERE Username = @Username AND Password = @Password";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(UserSqlStatements.GetByUsernameAndPassword, connection))
                 {
                     command.Parameters.AddWithValue("@Username", userName);
                     command.Parameters.AddWithValue("@Password", password);
@@ -96,14 +77,7 @@ namespace DVLD_DataAccess
                     {
                         if (reader.Read())
                         {
-                            return new UsersDTO()
-                            {
-                                UserID = (int)reader["UserID"],
-                                PersonID = (int)reader["PersonID"],
-                                Username = (string)reader["UserName"],
-                                Password = (string)reader["Password"],
-                                IsActive = (bool)reader["IsActive"]
-                            };
+                            return UserDataMapper.MapToUserDTO(reader);
                         }
 
                         return null;
@@ -118,20 +92,12 @@ namespace DVLD_DataAccess
 
         public static int AddNewUser(UsersDTO usersDTO)
         {
-            const string query = @"
-            INSERT INTO Users (PersonID, UserName, Password, IsActive)
-            VALUES (@PersonID, @UserName, @Password, @IsActive);
-            SELECT SCOPE_IDENTITY();";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(UserSqlStatements.AddNewUser, connection))
                 {
-                    command.Parameters.AddWithValue("@PersonID", usersDTO.PersonID);
-                    command.Parameters.AddWithValue("@UserName", usersDTO.Username);
-                    command.Parameters.AddWithValue("@Password", usersDTO.Password);
-                    command.Parameters.AddWithValue("@IsActive", usersDTO.IsActive);
+                    UserParameterBuilder.FillSqlCommandParameters(command, usersDTO);
 
                     connection.Open();
                     var result = command.ExecuteScalar();
@@ -148,25 +114,13 @@ namespace DVLD_DataAccess
 
         public static bool UpdateUser(UsersDTO usersDTO)
         {
-            const string query = @"
-            UPDATE Users  
-            SET 
-                PersonID = @PersonID,
-                UserName = @UserName,
-                Password = @Password,
-                IsActive = @IsActive
-            WHERE UserID = @UserID";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(UserSqlStatements.UpdateUser, connection))
                 {
-                    command.Parameters.AddWithValue("@PersonID", usersDTO.PersonID);
-                    command.Parameters.AddWithValue("@UserName", usersDTO.Username);
-                    command.Parameters.AddWithValue("@Password", usersDTO.Password);
-                    command.Parameters.AddWithValue("@IsActive", usersDTO.IsActive);
                     command.Parameters.AddWithValue("@UserID", usersDTO.UserID);
+                    UserParameterBuilder.FillSqlCommandParameters(command, usersDTO);
 
                     connection.Open();
                     var rowsAffected = command.ExecuteNonQuery();
@@ -181,20 +135,12 @@ namespace DVLD_DataAccess
 
         public static DataTable GetAllUsers()
         {
-            const string query = @"
-            SELECT 
-                Users.UserID, Users.PersonID,
-                FullName = People.FirstName + ' ' + People.SecondName + ' ' + ISNULL(People.ThirdName, '') + ' ' + People.LastName,
-                Users.UserName, Users.IsActive
-            FROM Users 
-            INNER JOIN People ON Users.PersonID = People.PersonID";
-
             var dataTable = new DataTable();
 
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(UserSqlStatements.GetAllUsers, connection))
                 {
                     connection.Open();
                     using (var reader = command.ExecuteReader())
@@ -216,12 +162,10 @@ namespace DVLD_DataAccess
 
         public static bool DeleteUser(int userId)
         {
-            const string query = "DELETE FROM Users WHERE UserID = @UserID";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(UserSqlStatements.DeleteUser, connection))
                 {
                     command.Parameters.AddWithValue("@UserID", userId);
 
@@ -238,12 +182,10 @@ namespace DVLD_DataAccess
 
         public static bool IsUserExist(int userId)
         {
-            const string query = "SELECT Found = 1 FROM Users WHERE UserID = @UserID";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(UserSqlStatements.IsUserExistById, connection))
                 {
                     command.Parameters.AddWithValue("@UserID", userId);
 
@@ -262,12 +204,10 @@ namespace DVLD_DataAccess
 
         public static bool IsUserExist(string userName)
         {
-            const string query = "SELECT Found = 1 FROM Users WHERE UserName = @UserName";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(UserSqlStatements.IsUserExistByUsername, connection))
                 {
                     command.Parameters.AddWithValue("@UserName", userName);
 
@@ -284,14 +224,12 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool IsUserExistForPersonId(int personId)
+        public static bool IsUserExistByPersonId(int personId)
         {
-            const string query = "SELECT Found = 1 FROM Users WHERE PersonID = @PersonID";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(UserSqlStatements.IsUserExistByPersonId, connection))
                 {
                     command.Parameters.AddWithValue("@PersonID", personId);
 
@@ -310,12 +248,10 @@ namespace DVLD_DataAccess
 
         public static bool DoesPersonHaveUser(int personId)
         {
-            const string query = "SELECT Found = 1 FROM Users WHERE PersonID = @PersonID";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(UserSqlStatements.IsPersonHaveUser, connection))
                 {
                     command.Parameters.AddWithValue("@PersonID", personId);
 
@@ -334,15 +270,10 @@ namespace DVLD_DataAccess
 
         public static bool ChangePassword(int userId, string newPassword)
         {
-            const string query = @"
-            UPDATE Users  
-            SET Password = @Password
-            WHERE UserID = @UserID";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(UserSqlStatements.ChangePassword, connection))
                 {
                     command.Parameters.AddWithValue("@UserID", userId);
                     command.Parameters.AddWithValue("@Password", newPassword);
@@ -359,5 +290,4 @@ namespace DVLD_DataAccess
         }
 
     }
-
 }
