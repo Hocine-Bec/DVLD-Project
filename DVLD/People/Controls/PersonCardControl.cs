@@ -67,7 +67,7 @@ namespace DVLD.Controls
         {
             pbPersonImage.Image = (_person.Gender == 0) ? Resources.Male_512 : Resources.Female_512;
 
-            if (string.IsNullOrEmpty(_person.ImagePath))
+            if (!string.IsNullOrEmpty(_person.ImagePath))
             {
                 if (File.Exists(_person.ImagePath))
                 {

@@ -55,8 +55,11 @@
     <Compile Include="ApplicationType.cs" />
     <Compile Include="DbConfig.cs" />
     <Compile Include="clsUserData.cs" />
-    <Compile Include="PersonRepository.cs" />
+    <Compile Include="Person Repository\PersonDataMapper.cs" />
+    <Compile Include="Person Repository\PersonParameterBuilder.cs" />
+    <Compile Include="Person Repository\PersonRepository.cs" />
     <Compile Include="clsCountryData.cs" />
+    <Compile Include="Person Repository\PersonSqlStatements.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
