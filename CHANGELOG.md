@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.3.0] - 2025-01-25
+### Added
+- **PersonSqlStatements**: A new class to centralize SQL queries.
+- **PersonParameterBuilder**: A new class to handle `SqlCommand` parameter logic.
+- **PersonDataMapper**: A new class to manage mapping between database results and `PersonDTO`.
+
+### Changed
+- **Refactored `PersonRepository`**:
+  - Created new helper classes, each with a single responsibility.
+  - Updated `PersonRepository` to use the new helper classes.
+
+### Fixed
+- **Correct Logic for Checking Person Image Path**: The code incorrectly checked if the image path was null or empty. This has been fixed by adding a '!' (not operator) to the conditional statement.
+
+### Removed
+- **Redundant Code**: Removed redundant methods and logic from the old `PersonRepository` class.
+
+---
+
 ## [1.2.0] - 2025-01-23
 ### Added
 - **PersonValidator**: A new class to handle validation logic for person data.
