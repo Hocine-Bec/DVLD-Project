@@ -61,7 +61,7 @@ namespace DVLD_Business
 
         private bool _AddNewDetainedLicense()
         {
-            this.DetainID = clsDetainedLicenseData.AddNewDetainedLicense( 
+            this.DetainID = DetainedLicenseRepository.AddNewDetainedLicense( 
                 this.LicenseID,this.DetainDate,this.FineFees,this.CreatedByUserID);
             
             return (this.DetainID != -1);
@@ -69,13 +69,13 @@ namespace DVLD_Business
 
         private bool _UpdateDetainedLicense()
         {
-            return clsDetainedLicenseData.UpdateDetainedLicense(
+            return DetainedLicenseRepository.UpdateDetainedLicense(
                 this.DetainID,this.LicenseID,this.DetainDate,this.FineFees,this.CreatedByUserID);
         }
 
         public static clsDetainedLicense Find(int detainID)
         {
-            var detainedLicenseDTO = clsDetainedLicenseData.GetDetainedLicenseInfoById(detainID);
+            var detainedLicenseDTO = DetainedLicenseRepository.GetDetainedLicenseInfoById(detainID);
 
             if (detainedLicenseDTO != null)
                 return new clsDetainedLicense(detainedLicenseDTO);
@@ -86,12 +86,12 @@ namespace DVLD_Business
 
         public static DataTable GetAllDetainedLicenses()
         {
-            return clsDetainedLicenseData.GetAllDetainedLicenses();
+            return DetainedLicenseRepository.GetAllDetainedLicenses();
         }
 
         public static clsDetainedLicense FindByLicenseID(int LicenseID)
         {
-            var detainedLicenseDTO = clsDetainedLicenseData.GetDetainedLicenseInfoByLicenseId(LicenseID);
+            var detainedLicenseDTO = DetainedLicenseRepository.GetDetainedLicenseInfoByLicenseId(LicenseID);
 
             if (detainedLicenseDTO != null)
                 return new clsDetainedLicense(detainedLicenseDTO);
@@ -126,12 +126,12 @@ namespace DVLD_Business
 
         public static bool IsLicenseDetained(int LicenseID)
         {
-            return clsDetainedLicenseData.IsLicenseDetained(LicenseID);
+            return DetainedLicenseRepository.IsLicenseDetained(LicenseID);
         }
 
         public bool ReleaseDetainedLicense(int ReleasedByUserID, int ReleaseApplicationID)
         {
-            return clsDetainedLicenseData.ReleaseDetainedLicense(this.DetainID,
+            return DetainedLicenseRepository.ReleaseDetainedLicense(this.DetainID,
                    ReleasedByUserID, ReleaseApplicationID);
         }
     }

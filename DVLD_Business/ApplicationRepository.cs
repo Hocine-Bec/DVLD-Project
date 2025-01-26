@@ -67,7 +67,7 @@ namespace DVLD_Business
             this.LastStatusDate = DateTime.Now;
             this.PaidFees = 0;
             this.CreatedByUserID = -1;
-           
+
             Mode = enMode.AddNew;
         }
 
@@ -100,7 +100,7 @@ namespace DVLD_Business
                 CreatedByUserID = this.CreatedByUserID
             };
 
-            this.ApplicationID = clsApplicationData.AddNewApplication(applicationDTO);
+            this.ApplicationID = ApplicationRepository.AddNewApplication(applicationDTO);
 
             return (this.ApplicationID != -1);
         }
@@ -120,12 +120,12 @@ namespace DVLD_Business
                 CreatedByUserID = this.CreatedByUserID
             };
 
-            return clsApplicationData.UpdateApplication(applicationDTO);
+            return ApplicationRepository.UpdateApplication(applicationDTO);
         }
 
         public static clsApplication FindBaseApplication(int applicationId)
         {
-            var applicationDTO = clsApplicationData.GetApplicationInfoById(applicationId);
+            var applicationDTO = ApplicationRepository.GetApplicationInfoById(applicationId);
 
             if (applicationDTO != null)
             {
@@ -138,13 +138,13 @@ namespace DVLD_Business
         public bool Cancel()
 
         {
-            return clsApplicationData.UpdateStatus (ApplicationID,2);
+            return ApplicationRepository.UpdateStatus (ApplicationID,2);
         }
 
         public bool SetComplete()
 
         {
-            return clsApplicationData.UpdateStatus(ApplicationID, 3);
+            return ApplicationRepository.UpdateStatus(ApplicationID, 3);
         }
 
         public bool Save()
@@ -174,17 +174,17 @@ namespace DVLD_Business
 
         public  bool Delete()
         {
-            return clsApplicationData.DeleteApplication(this.ApplicationID); 
+            return ApplicationRepository.DeleteApplication(this.ApplicationID); 
         }
 
         public static bool IsApplicationExist(int ApplicationID)
         {
-           return clsApplicationData.IsApplicationExist(ApplicationID);
+           return ApplicationRepository.IsApplicationExist(ApplicationID);
         }
 
         public static bool DoesPersonHaveActiveApplication(int PersonID,int ApplicationTypeID)
         {
-            return clsApplicationData.DoesPersonHaveActiveApplication(PersonID,ApplicationTypeID);
+            return ApplicationRepository.DoesPersonHaveActiveApplication(PersonID,ApplicationTypeID);
         }
 
         public  bool DoesPersonHaveActiveApplication( int ApplicationTypeID)
@@ -194,12 +194,12 @@ namespace DVLD_Business
 
         public static int GetActiveApplicationID(int PersonID, clsApplication.enApplicationType  ApplicationTypeID)
         {
-            return clsApplicationData.GetActiveApplicationId(PersonID,(int) ApplicationTypeID);
+            return ApplicationRepository.GetActiveApplicationId(PersonID,(int) ApplicationTypeID);
         }
 
         public static int GetActiveApplicationIDForLicenseClass(int PersonID, clsApplication.enApplicationType ApplicationTypeID,int LicenseClassID)
         {
-            return clsApplicationData.GetActiveApplicationIdForLicenseClass(PersonID, (int)ApplicationTypeID,LicenseClassID );
+            return ApplicationRepository.GetActiveApplicationIdForLicenseClass(PersonID, (int)ApplicationTypeID,LicenseClassID );
         }
        
         public  int GetActiveApplicationID(clsApplication.enApplicationType ApplicationTypeID)

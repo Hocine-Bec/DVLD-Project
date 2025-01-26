@@ -52,7 +52,7 @@
     <Compile Include="clsLicenseClass.cs" />
     <Compile Include="clsApplicationType.cs" />
     <Compile Include="clsCountry.cs" />
-    <Compile Include="clsApplication.cs" />
+    <Compile Include="ApplicationRepository.cs" />
     <Compile Include="clsUser.cs" />
     <Compile Include="People\Person.cs" />
     <Compile Include="People\PersonMapper.cs" />

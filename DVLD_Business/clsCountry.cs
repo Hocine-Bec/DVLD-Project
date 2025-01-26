@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using DVLD.DTOs;
 using DVLD_DataAccess;
 
 namespace DVLD_Business
@@ -18,41 +19,30 @@ namespace DVLD_Business
 
         }
 
-        private clsCountry(int ID, string CountryName)
+        private clsCountry(CountriesDTO countriesDTO)
 
         {
-            this.ID = ID;
-            this.CountryName = CountryName;
+            this.ID = countriesDTO.ID;
+            this.CountryName = countriesDTO.CountryName;
         }
 
         public static clsCountry Find(int ID)
         {
-            string CountryName = "";
+            var dto = CountriesRepository.GetCountryInfoById(ID);
 
-            if (clsCountryData.GetCountryInfoById(ID, ref CountryName))
-
-                return new clsCountry(ID, CountryName);
-            else
-                return null;
-
+            return (dto != null) ? new clsCountry(dto) : null;
         }
 
-        public static clsCountry Find(string CountryName)
+        public static clsCountry Find(string countryName)
         {
+            var dto = CountriesRepository.GetCountryInfoByName(countryName);
 
-            int ID = -1;
-           
-            if (clsCountryData.GetCountryInfoByName(CountryName, ref ID ))
-
-                return new clsCountry(ID, CountryName);
-            else
-                return null;
-
+            return (dto != null) ? new clsCountry(dto) : null;
         }
 
         public static DataTable GetAllCountries()
         {
-            return clsCountryData.GetAllCountries();
+            return CountriesRepository.GetAllCountries();
 
         }
 

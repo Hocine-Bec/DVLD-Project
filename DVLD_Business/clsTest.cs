@@ -57,7 +57,7 @@ namespace DVLD_Business
                 CreatedByUserID = this.CreatedByUserID
             };
 
-            this.TestID = clsTestData.AddNewTest(testsDTO);
+            this.TestID = TestRepository.AddNewTest(testsDTO);
               
 
             return (this.TestID != -1);
@@ -74,12 +74,12 @@ namespace DVLD_Business
                 CreatedByUserID = this.CreatedByUserID
             };
 
-            return clsTestData.UpdateTest(testsDTO);
+            return TestRepository.UpdateTest(testsDTO);
         }
 
         public static clsTest Find(int TestID)
         {
-            var testsDTO = clsTestData.GetTestInfoById(TestID);
+            var testsDTO = TestRepository.GetTestInfoById(TestID);
 
             if (testsDTO != null)
                 return new clsTest(testsDTO);
@@ -91,7 +91,7 @@ namespace DVLD_Business
         public static clsTest FindLastTestPerPersonAndLicenseClass(int PersonID, int LicenseClassID, 
             clsTestType.enTestType TestTypeID)
         {
-            var testsDTO = clsTestData.GetLastTestByPersonAndTestTypeAndLicenseClass
+            var testsDTO = TestRepository.GetLastTestByPersonAndTestTypeAndLicenseClass
                 (PersonID, LicenseClassID, (int)TestTypeID);
 
             if (testsDTO != null)
@@ -103,7 +103,7 @@ namespace DVLD_Business
 
         public static DataTable GetAllTests()
         {
-            return clsTestData.GetAllTests();
+            return TestRepository.GetAllTests();
         }
 
         public bool Save()
@@ -133,7 +133,7 @@ namespace DVLD_Business
 
         public static byte GetPassedTestCount(int LocalDrivingLicenseApplicationID)
         {
-            return clsTestData.GetPassedTestCount(LocalDrivingLicenseApplicationID);
+            return TestRepository.GetPassedTestCount(LocalDrivingLicenseApplicationID);
         }
 
         public static bool  PassedAllTests(int LocalDrivingLicenseApplicationID)

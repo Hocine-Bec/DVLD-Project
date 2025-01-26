@@ -42,7 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationDTO.cs" />
+    <Compile Include="ApplicationTypeDTO.cs" />
+    <Compile Include="CountriesDTO.cs" />
     <Compile Include="DetainedLicensesDTO.cs" />
+    <Compile Include="DriverDTO.cs" />
     <Compile Include="InternationalLicenseDTO.cs" />
     <Compile Include="LicenseClassDTO.cs" />
     <Compile Include="LicenseDTO.cs" />

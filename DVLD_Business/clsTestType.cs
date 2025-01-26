@@ -46,7 +46,7 @@ namespace DVLD_Business
                 Fees = this.Fees
             };
 
-            this.ID = (clsTestType.enTestType) clsTestTypeData.AddNewTestType(testTypeDTO);
+            this.ID = (clsTestType.enTestType) TestTypeRepository.AddNewTestType(testTypeDTO);
               
             return (this.Title !="");
         }
@@ -61,12 +61,12 @@ namespace DVLD_Business
                 Fees = this.Fees
             };
 
-            return clsTestTypeData.UpdateTestType(testTypeDTO);
+            return TestTypeRepository.UpdateTestType(testTypeDTO);
         }
 
         public static clsTestType Find(clsTestType.enTestType testTypeID)
         {
-            var testTypeDTO = clsTestTypeData.GetTestTypeInfoById((int)testTypeID);
+            var testTypeDTO = TestTypeRepository.GetTestTypeInfoById((int)testTypeID);
 
             if (testTypeDTO != null)
 
@@ -78,7 +78,7 @@ namespace DVLD_Business
 
         public static DataTable GetAllTestTypes()
         {
-            return clsTestTypeData.GetAllTestTypes();
+            return TestTypeRepository.GetAllTestTypes();
 
         }
 

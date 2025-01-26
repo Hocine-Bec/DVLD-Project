@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Diagnostics.Eventing.Reader;
+using DVLD.DTOs;
 using DVLD_DataAccess;
 
 namespace DVLD_Business
@@ -26,48 +27,50 @@ namespace DVLD_Business
 
         }
 
-        public clsApplicationType(int ID, string ApplicationTypeTitel,float ApplicationTypeFees)
+        public clsApplicationType(AppTypeDTO appTypeDTO)
 
         {
-            this.ID =  ID;
-            this.Title = ApplicationTypeTitel;
-            this.Fees = ApplicationTypeFees;
+            this.ID = appTypeDTO.ID;
+            this.Title = appTypeDTO.Title;
+            this.Fees = appTypeDTO.Fees;
             Mode = enMode.Update;
         }
 
         private bool _AddNewApplicationType()
         {
-            //call DataAccess Layer 
+            var dto = new AppTypeDTO()
+            {
+                Title = this.Title,
+                Fees = this.Fees
+            };
 
-            this.ID = clsApplicationTypeData.AddNewApplicationType( this.Title, this.Fees);
+            this.ID = AppTypeRepository.AddNewApplicationType(dto);
               
-
             return (this.ID != -1);
         }
 
         private bool _UpdateApplicationType()
         {
-            //call DataAccess Layer 
+            var dto = new AppTypeDTO()
+            {
+                ID = this.ID,
+                Title = this.Title,
+                Fees = this.Fees
+            };
 
-            return clsApplicationTypeData.UpdateApplicationType(this.ID,this.Title,this.Fees);
+            return AppTypeRepository.UpdateApplicationType(dto);
         }
 
         public static clsApplicationType Find(int ID)
         {
-            string Title = ""; float Fees=0;
+            var dto = AppTypeRepository.GetApplicationTypeInfoById((int)ID);
 
-            if (clsApplicationTypeData.GetApplicationTypeInfoById((int) ID, ref Title, ref Fees))
-
-                return new clsApplicationType(ID, Title,Fees);
-            else
-                return null;
-
+            return (dto != null) ? new clsApplicationType(dto) : null;
         }
 
         public static DataTable GetAllApplicationTypes()
         {
-            return clsApplicationTypeData.GetAllApplicationTypes();
-
+            return AppTypeRepository.GetAllApplicationTypes();
         }
 
         public bool Save()

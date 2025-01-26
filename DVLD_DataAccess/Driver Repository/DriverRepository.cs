@@ -1,27 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static DVLD_DataAccess.clsCountryData;
+using static DVLD_DataAccess.CountriesRepository;
 using System.Net;
 using System.Security.Policy;
+using DVLD.DTOs;
 
 namespace DVLD_DataAccess
 {
-    public class clsDriverData
+    public class DriverRepository
     {
-        public static bool GetDriverInfoByDriverId(int driverId, ref int personId, ref int createdByUserId,
-                   ref DateTime createdDate)
+        public static DriverDTO GetDriverInfoByDriverId(int driverId)
         {
-            const string query = "SELECT * FROM Drivers WHERE DriverID = @DriverID";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(DriverSqlStatements.GetByDriverId, connection))
                 {
                     command.Parameters.AddWithValue("@DriverID", driverId);
 
@@ -30,65 +27,54 @@ namespace DVLD_DataAccess
                     {
                         if (reader.Read())
                         {
-                            personId = (int)reader["PersonID"];
-                            createdByUserId = (int)reader["CreatedByUserID"];
-                            createdDate = (DateTime)reader["CreatedDate"];
-                            return true;
+                            return DriverDataMapper.MapToDriverInfo(reader);
                         }
 
-                        return false;
+                        return null;
                     }
                 }
             }
             catch
             {
-                return false;
+                return null;
             }
         }
 
-        public static bool GetDriverInfoByPersonId(int personId, ref int driverId,
-            ref int createdByUserId, ref DateTime createdDate)
+        public static DriverDTO GetDriverInfoByPersonId(int personId)
         {
-            const string query = "SELECT * FROM Drivers WHERE PersonID = @PersonID";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(DriverSqlStatements.GetByPersonId, connection))
                 {
                     command.Parameters.AddWithValue("@PersonID", personId);
 
                     connection.Open();
-
                     using (var reader = command.ExecuteReader())
                     {
                         if (reader.Read())
                         {
-                            driverId = (int)reader["DriverID"];
-                            createdByUserId = (int)reader["CreatedByUserID"];
-                            createdDate = (DateTime)reader["CreatedDate"];
-                            return true;
+                            return DriverDataMapper.MapToDriverInfo(reader);
                         }
 
-                        return false;
+                        return null;
                     }
                 }
             }
             catch
             {
-                return false;
+                return null;
             }
         }
 
         public static DataTable GetAllDrivers()
         {
-            const string query = "SELECT * FROM Drivers_View ORDER BY FullName";
             var dataTable = new DataTable();
 
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(DriverSqlStatements.GetAll, connection))
                 {
                     connection.Open();
                     using (var reader = command.ExecuteReader())
@@ -110,18 +96,12 @@ namespace DVLD_DataAccess
 
         public static int AddNewDriver(int personId, int createdByUserId)
         {
-            const string query = @"INSERT INTO Drivers (PersonID, CreatedByUserID, CreatedDate)
-                             VALUES (@PersonID, @CreatedByUserID, @CreatedDate);
-                             SELECT SCOPE_IDENTITY();";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(DriverSqlStatements.AddNew, connection))
                 {
-                    command.Parameters.AddWithValue("@PersonID", personId);
-                    command.Parameters.AddWithValue("@CreatedByUserID", createdByUserId);
-                    command.Parameters.AddWithValue("@CreatedDate", DateTime.Now);
+                    DriverParameterBuilder.FillSqlCommandParameters(command, personId, createdByUserId);
 
                     connection.Open();
                     var result = command.ExecuteScalar();
@@ -136,26 +116,17 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool UpdateDriver(int driverId, int personId, int createdByUserId)
+        public static bool UpdateDriver(DriverDTO driverDTO)
         {
-            const string query = @"UPDATE Drivers  
-                            SET PersonID = @PersonID,
-                            CreatedByUserID = @CreatedByUserID
-                            WHERE DriverID = @DriverID";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(DriverSqlStatements.Update, connection))
                 {
-                    command.Parameters.AddWithValue("@DriverID", driverId);
-                    command.Parameters.AddWithValue("@PersonID", personId);
-                    command.Parameters.AddWithValue("@CreatedByUserID", createdByUserId);
+                    DriverParameterBuilder.FillSqlCommandParameters(command, driverDTO);
 
                     connection.Open();
-
                     var rowsAffected = command.ExecuteNonQuery();
-
                     return rowsAffected > 0;
                 }
             }
@@ -165,6 +136,6 @@ namespace DVLD_DataAccess
             }
         }
 
-    }
+    }    
 
 }

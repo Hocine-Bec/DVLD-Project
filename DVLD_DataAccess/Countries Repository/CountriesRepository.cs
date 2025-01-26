@@ -5,80 +5,74 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DVLD.DTOs;
 
 namespace DVLD_DataAccess
 {
-    public class clsCountryData
+    public class CountriesRepository
     {
-        public static bool GetCountryInfoById(int countryId, ref string countryName)
+        public static CountriesDTO GetCountryInfoById(int countryId)
         {
-            const string query = "SELECT * FROM Countries WHERE CountryID = @CountryID";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(CountrySqlStatements.GetById, connection))
                 {
-                    command.Parameters.AddWithValue("@CountryID", countryId);
+                    CountryParameterBuilder.FillSqlCommandParameters(command, countryId);
 
                     connection.Open();
                     using (var reader = command.ExecuteReader())
                     {
                         if (reader.Read())
                         {
-                            countryName = (string)reader["CountryName"];
-                            return true;
+                            return CountryDataMapper.MapToCountriesDTO(reader);
                         }
 
-                        return false;
+                        return null;
                     }
                 }
             }
             catch
             {
-                return false;
+                return null;
             }
         }
 
-        public static bool GetCountryInfoByName(string countryName, ref int countryId)
+        public static CountriesDTO GetCountryInfoByName(string countryName)
         {
-            const string query = "SELECT * FROM Countries WHERE CountryName = @CountryName";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(CountrySqlStatements.GetByName, connection))
                 {
-                    command.Parameters.AddWithValue("@CountryName", countryName);
+                    CountryParameterBuilder.FillSqlCommandParameters(command, countryName);
 
                     connection.Open();
                     using (var reader = command.ExecuteReader())
                     {
                         if (reader.Read())
                         {
-                            countryId = (int)reader["CountryID"];
-                            return true;
+                            return CountryDataMapper.MapToCountriesDTO(reader);
                         }
 
-                        return false;
+                        return null;
                     }
                 }
             }
             catch
             {
-                return false;
+                return null;
             }
         }
 
         public static DataTable GetAllCountries()
         {
-            const string query = "SELECT * FROM Countries ORDER BY CountryName";
             var dataTable = new DataTable();
 
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(CountrySqlStatements.GetAllCountries, connection))
                 {
                     connection.Open();
                     using (var reader = command.ExecuteReader())
@@ -98,5 +92,6 @@ namespace DVLD_DataAccess
             return dataTable;
         }
     }
+   
 
 }
