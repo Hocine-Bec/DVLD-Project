@@ -44,6 +44,21 @@ This section showcases my growth as a developer and documents key improvements m
 For a detailed history of improvements, see the [CHANGELOG.md](./CHANGELOG.md) file.
 
 ---
+## Recent Changes
+
+- **Refactor**: Removed the Windows Forms UI (presentation layer) to focus on backend development.
+  - The Windows Forms project has been moved outside of Git.
+  - Retained the Business Logic Layer (BAL), Data Access Layer (DAL), and Data Transfer Objects (DTOs) for backend development.
+- **Current Focus**: Refactoring the backend to prepare for a modern web-based frontend.
+- **Future Goal**: Transition to a web application using ASP.NET Core.
+
+## Project Structure
+The project is now organized into a single solution file (`DVLD_Backend.sln`) that includes the following projects:
+- **BAL**: Business Logic Layer (core application logic).
+- **DAL**: Data Access Layer (database interactions).
+- **DTOs**: Data Transfer Objects (used for communication between layers).
+
+---
 
 ## License Classes Supported
 1. Small Motorcycle License
