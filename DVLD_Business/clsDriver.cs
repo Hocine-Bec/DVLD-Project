@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Diagnostics.Eventing.Reader;
+using DVLD.DTOs;
 using DVLD_DataAccess;
 
 namespace DVLD_Business
@@ -21,23 +22,20 @@ namespace DVLD_Business
         public DateTime CreatedDate {  get; }
 
         public clsDriver()
-
         {
             this.DriverID = -1;
             this.PersonID = -1;
             this.CreatedByUserID = -1;
             this.CreatedDate=DateTime.Now;
             Mode = enMode.AddNew;
-
         }
 
-        public clsDriver(int DriverID, int PersonID,int CreatedByUserID, DateTime CreatedDate)
-
+        public clsDriver(DriverDTO driverDTO)
         {
-            this.DriverID = DriverID;
-            this.PersonID = PersonID;
-            this.CreatedByUserID = CreatedByUserID;
-            this.CreatedDate = CreatedDate;
+            this.DriverID = driverDTO.DriverID;
+            this.PersonID = driverDTO.PersonID;
+            this.CreatedByUserID = driverDTO.CreatedByUserID;
+            this.CreatedDate = driverDTO.CreatedDate;
             this.PersonInfo = _personService.Find(PersonID);
 
             Mode = enMode.Update;
@@ -45,49 +43,40 @@ namespace DVLD_Business
 
         private bool _AddNewDriver()
         {
-            //call DataAccess Layer 
-
-            this.DriverID = clsDriverData.AddNewDriver( PersonID,  CreatedByUserID);
+            this.DriverID = DriverRepository.AddNewDriver( PersonID,  CreatedByUserID);
               
-
             return (this.DriverID != -1);
         }
 
         private bool _UpdateDriver()
         {
-            //call DataAccess Layer 
+            var dto = new DriverDTO()
+            {
+                PersonID = this.PersonID,
+                DriverID = this.DriverID,
+                CreatedByUserID = this.CreatedByUserID
+            };
 
-            return clsDriverData.UpdateDriver(this.DriverID,this.PersonID,this.CreatedByUserID);
+            return DriverRepository.UpdateDriver(dto);
         }
 
         public static clsDriver FindByDriverID(int DriverID)
         {
-            int PersonID = -1; int CreatedByUserID = -1;DateTime CreatedDate= DateTime.Now; 
+            var dto = DriverRepository.GetDriverInfoByDriverId(DriverID);
 
-            if (clsDriverData.GetDriverInfoByDriverId(DriverID, ref PersonID,ref CreatedByUserID,ref CreatedDate))
-
-                return new clsDriver(DriverID,  PersonID,  CreatedByUserID,  CreatedDate);
-            else
-                return null;
-
+            return (dto != null) ? new clsDriver(dto) : null;
         }
 
         public static clsDriver FindByPersonID(int PersonID)
         {
+            var dto = DriverRepository.GetDriverInfoByPersonId(PersonID);
 
-            int DriverID = -1; int CreatedByUserID = -1; DateTime CreatedDate = DateTime.Now;
-
-            if (clsDriverData.GetDriverInfoByPersonId( PersonID, ref DriverID,  ref CreatedByUserID, ref CreatedDate))
-
-                return new clsDriver(DriverID, PersonID, CreatedByUserID, CreatedDate);
-            else
-                return null;
-
+            return (dto != null) ? new clsDriver(dto) : null;
         }
 
         public static DataTable GetAllDrivers()
         {
-            return clsDriverData.GetAllDrivers();
+            return DriverRepository.GetAllDrivers();
 
         }
 

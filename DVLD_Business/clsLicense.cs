@@ -98,7 +98,7 @@ namespace DVLD_Business
                 CreatedByUserID = this.CreatedByUserID
             };
 
-            this.LicenseID = clsLicenseData.AddNewLicense(licenseDTO);
+            this.LicenseID = LicenseRepository.AddNewLicense(licenseDTO);
 
 
             return (this.LicenseID != -1);
@@ -121,12 +121,12 @@ namespace DVLD_Business
                 CreatedByUserID = this.CreatedByUserID
             };
 
-            return clsLicenseData.UpdateLicense(licenseDTO);
+            return LicenseRepository.UpdateLicense(licenseDTO);
         }
 
         public static clsLicense Find(int LicenseID)
         {
-            var licenseDTO = clsLicenseData.GetLicenseInfoById(LicenseID);
+            var licenseDTO = LicenseRepository.GetLicenseInfoById(LicenseID);
 
             if (licenseDTO != null)
 
@@ -138,7 +138,7 @@ namespace DVLD_Business
 
         public static DataTable GetAllLicenses()
         {
-            return clsLicenseData.GetAllLicenses();
+            return LicenseRepository.GetAllLicenses();
 
         }
 
@@ -175,13 +175,13 @@ namespace DVLD_Business
         public static int GetActiveLicenseIDByPersonID(int PersonID, int LicenseClassID)
         {
 
-            return clsLicenseData.GetActiveLicenseIdByPersonId(PersonID, LicenseClassID);
+            return LicenseRepository.GetActiveLicenseIdByPersonId(PersonID, LicenseClassID);
 
         }
 
         public static DataTable GetDriverLicenses(int DriverID)
         {
-            return clsLicenseData.GetDriverLicenses(DriverID);
+            return LicenseRepository.GetDriverLicenses(DriverID);
         }
 
         public Boolean IsLicenseExpired()
@@ -193,7 +193,7 @@ namespace DVLD_Business
 
         public bool DeactivateCurrentLicense()
         {
-            return (clsLicenseData.DeactivateLicense(this.LicenseID));
+            return (LicenseRepository.DeactivateLicense(this.LicenseID));
         }
 
         public static string GetIssueReasonText(enIssueReason IssueReason)

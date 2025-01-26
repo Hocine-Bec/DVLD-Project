@@ -69,7 +69,7 @@ namespace DVLD_Business
                 RetakeTestApplicationID = this.RetakeTestApplicationID
             };
 
-            this.TestAppointmentID = clsTestAppointmentData.AddNewTestAppointment(testsAppointmentsDTO);
+            this.TestAppointmentID = TestAppointmentRepository.AddNewTestAppointment(testsAppointmentsDTO);
 
             return (this.TestAppointmentID != -1);
         }
@@ -86,12 +86,12 @@ namespace DVLD_Business
                 RetakeTestApplicationID = this.RetakeTestApplicationID
             };
 
-            return clsTestAppointmentData.UpdateTestAppointment(testsAppointmentsDTO);
+            return TestAppointmentRepository.UpdateTestAppointment(testsAppointmentsDTO);
         }
 
         public static clsTestAppointment Find(int TestAppointmentID)
         {
-            var testsAppointmentsDTO = clsTestAppointmentData.GetTestAppointmentInfoById(TestAppointmentID);
+            var testsAppointmentsDTO = TestAppointmentRepository.GetTestAppointmentInfoById(TestAppointmentID);
 
             if (testsAppointmentsDTO != null)
                 return new clsTestAppointment(testsAppointmentsDTO);
@@ -102,7 +102,7 @@ namespace DVLD_Business
 
         public static clsTestAppointment GetLastTestAppointment(int LocalDrivingLicenseApplicationID, clsTestType.enTestType TestTypeID )
         {
-            var testsAppointmentsDTO = (clsTestAppointmentData.GetLastTestAppointment(
+            var testsAppointmentsDTO = (TestAppointmentRepository.GetLastTestAppointment(
                 LocalDrivingLicenseApplicationID, (int)TestTypeID));
 
             if (testsAppointmentsDTO != null)
@@ -113,19 +113,19 @@ namespace DVLD_Business
 
         public static DataTable GetAllTestAppointments()
         {
-            return clsTestAppointmentData.GetAllTestAppointments();
+            return TestAppointmentRepository.GetAllTestAppointments();
 
         }
 
         public  DataTable GetApplicationTestAppointmentsPerTestType(clsTestType.enTestType TestTypeID)
         {
-            return clsTestAppointmentData.GetApplicationTestAppointmentsPerTestType(this.LocalDrivingLicenseApplicationID,(int) TestTypeID);
+            return TestAppointmentRepository.GetApplicationTestAppointmentsPerTestType(this.LocalDrivingLicenseApplicationID,(int) TestTypeID);
 
         }
 
         public static DataTable GetApplicationTestAppointmentsPerTestType(int LocalDrivingLicenseApplicationID,clsTestType.enTestType TestTypeID)
         {
-            return clsTestAppointmentData.GetApplicationTestAppointmentsPerTestType(LocalDrivingLicenseApplicationID, (int) TestTypeID);
+            return TestAppointmentRepository.GetApplicationTestAppointmentsPerTestType(LocalDrivingLicenseApplicationID, (int) TestTypeID);
 
         }
 
@@ -156,7 +156,7 @@ namespace DVLD_Business
 
         private int  _GetTestID()
         {
-            return clsTestAppointmentData.GetTestId(TestAppointmentID);
+            return TestAppointmentRepository.GetTestId(TestAppointmentID);
         }
 
     }

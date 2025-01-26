@@ -57,7 +57,7 @@ namespace DVLD_Business
                 ClassFees = this.ClassFees
             };
 
-            this.LicenseClassID = clsLicenseClassData.AddNewLicenseClass(licenseClassDTO);
+            this.LicenseClassID = LicenseClassRepository.AddNewLicenseClass(licenseClassDTO);
               
 
             return (this.LicenseClassID != -1);
@@ -75,13 +75,13 @@ namespace DVLD_Business
                 ClassFees = this.ClassFees
             };
 
-            return clsLicenseClassData.UpdateLicenseClass(licenseClassDTO);
+            return LicenseClassRepository.UpdateLicenseClass(licenseClassDTO);
         }
 
         public static clsLicenseClass Find(int LicenseClassID)
         {
 
-            var licenseClassDTO = clsLicenseClassData.GetLicenseClassInfoById(LicenseClassID);
+            var licenseClassDTO = LicenseClassRepository.GetLicenseClassInfoById(LicenseClassID);
 
             if (licenseClassDTO != null)
                 return new clsLicenseClass(licenseClassDTO);
@@ -92,7 +92,7 @@ namespace DVLD_Business
 
         public static clsLicenseClass Find(string className)
         {
-            var licenseClassDTO = clsLicenseClassData.GetLicenseClassInfoByClassName(className);
+            var licenseClassDTO = LicenseClassRepository.GetLicenseClassInfoByClassName(className);
 
             if (licenseClassDTO != null)
                 return new clsLicenseClass(licenseClassDTO);
@@ -102,7 +102,7 @@ namespace DVLD_Business
 
         public static DataTable GetAllLicenseClasses()
         {
-            return clsLicenseClassData.GetAllLicenseClasses();
+            return LicenseClassRepository.GetAllLicenseClasses();
 
         }
 

@@ -64,7 +64,7 @@ namespace DVLD_Business
         {
             //call DataAccess Layer 
             
-            this.LocalDrivingLicenseApplicationID = clsLocalDLAdata.AddNewLocalDrivingLicenseApplication
+            this.LocalDrivingLicenseApplicationID = LocalLicenseAppRepository.AddNewLocalDrivingLicenseApplication
                 (this.ApplicationID, this.LicenseClassID);
 
             return (this.LocalDrivingLicenseApplicationID != -1);
@@ -74,7 +74,7 @@ namespace DVLD_Business
         {
             //call DataAccess Layer 
 
-            return clsLocalDLAdata.UpdateLocalDrivingLicenseApplication
+            return LocalLicenseAppRepository.UpdateLocalDrivingLicenseApplication
                 (this.LocalDrivingLicenseApplicationID ,this.ApplicationID, this.LicenseClassID);
            
         }
@@ -84,7 +84,7 @@ namespace DVLD_Business
             
             int ApplicationID=-1, LicenseClassID=-1;
 
-            bool IsFound = clsLocalDLAdata.GetLocalDrivingLicenseApplicationInfoByID
+            bool IsFound = LocalLicenseAppRepository.GetLocalDrivingLicenseApplicationInfoByID
                 (LocalDrivingLicenseApplicationID, ref ApplicationID, ref LicenseClassID);
 
             if (IsFound)
@@ -99,7 +99,7 @@ namespace DVLD_Business
         {
             int LocalDrivingLicenseApplicationID = -1, LicenseClassID = -1;
 
-            if (clsLocalDLAdata.GetLocalDrivingLicenseApplicationInfoByApplicationId
+            if (LocalLicenseAppRepository.GetLocalDrivingLicenseApplicationInfoByApplicationId
                 (ApplicationID, ref LocalDrivingLicenseApplicationID, ref LicenseClassID))
             {
                 return new clsLocalDLA(LocalDrivingLicenseApplicationID, ApplicationID, LicenseClassID);
@@ -146,7 +146,7 @@ namespace DVLD_Business
 
         public static DataTable GetAllLocalDrivingLicenseApplications()
         {
-            return clsLocalDLAdata.GetAllLocalDrivingLicenseApplications();
+            return LocalLicenseAppRepository.GetAllLocalDrivingLicenseApplications();
         }
 
         public  bool Delete()
@@ -154,7 +154,7 @@ namespace DVLD_Business
             bool IsLocalDrivingApplicationDeleted = false;
             bool IsBaseApplicationDeleted = false;
             //First we delete the Local Driving License Application
-            IsLocalDrivingApplicationDeleted = clsLocalDLAdata.DeleteLocalDrivingLicenseApplication(this.LocalDrivingLicenseApplicationID);
+            IsLocalDrivingApplicationDeleted = LocalLicenseAppRepository.DeleteLocalDrivingLicenseApplication(this.LocalDrivingLicenseApplicationID);
            
             if (!IsLocalDrivingApplicationDeleted)
                 return false;
@@ -167,7 +167,7 @@ namespace DVLD_Business
         public bool DoesPassTestType(clsTestType.enTestType  TestTypeID)
 
         {
-            return clsLocalDLAdata.DoesPassTestType( this.LocalDrivingLicenseApplicationID,(int) TestTypeID);
+            return LocalLicenseAppRepository.DoesPassTestType( this.LocalDrivingLicenseApplicationID,(int) TestTypeID);
         }
 
         public bool DoesPassPreviousTest(clsTestType.enTestType CurrentTestType)
@@ -200,50 +200,50 @@ namespace DVLD_Business
         public static bool DoesPassTestType(int LocalDrivingLicenseApplicationID, clsTestType.enTestType TestTypeID)
 
         {
-            return clsLocalDLAdata.DoesPassTestType(LocalDrivingLicenseApplicationID,(int) TestTypeID);
+            return LocalLicenseAppRepository.DoesPassTestType(LocalDrivingLicenseApplicationID,(int) TestTypeID);
         }
 
         public  bool DoesAttendTestType( clsTestType.enTestType TestTypeID)
 
         {
-            return clsLocalDLAdata.DoesAttendTestType(this.LocalDrivingLicenseApplicationID, (int)TestTypeID);
+            return LocalLicenseAppRepository.DoesAttendTestType(this.LocalDrivingLicenseApplicationID, (int)TestTypeID);
         }
 
         public  byte TotalTrialsPerTest( clsTestType.enTestType TestTypeID)
         {
-            return clsLocalDLAdata.TotalTrialsPerTest(this.LocalDrivingLicenseApplicationID, (int)TestTypeID);
+            return LocalLicenseAppRepository.TotalTrialsPerTest(this.LocalDrivingLicenseApplicationID, (int)TestTypeID);
         }
 
         public static byte TotalTrialsPerTest(int LocalDrivingLicenseApplicationID, clsTestType.enTestType TestTypeID)
 
         {
-            return clsLocalDLAdata.TotalTrialsPerTest(LocalDrivingLicenseApplicationID, (int)TestTypeID);
+            return LocalLicenseAppRepository.TotalTrialsPerTest(LocalDrivingLicenseApplicationID, (int)TestTypeID);
         }
 
         public static bool AttendedTest(int LocalDrivingLicenseApplicationID, clsTestType.enTestType TestTypeID)
 
         {
-            return clsLocalDLAdata.TotalTrialsPerTest(LocalDrivingLicenseApplicationID, (int)TestTypeID) >0;
+            return LocalLicenseAppRepository.TotalTrialsPerTest(LocalDrivingLicenseApplicationID, (int)TestTypeID) >0;
         }
 
         public  bool AttendedTest( clsTestType.enTestType TestTypeID)
 
         {
-            return clsLocalDLAdata.TotalTrialsPerTest(this.LocalDrivingLicenseApplicationID, (int)TestTypeID) > 0;
+            return LocalLicenseAppRepository.TotalTrialsPerTest(this.LocalDrivingLicenseApplicationID, (int)TestTypeID) > 0;
         }
 
         public static bool IsThereAnActiveScheduledTest(int LocalDrivingLicenseApplicationID, clsTestType.enTestType TestTypeID)
 
         {
             
-            return clsLocalDLAdata.IsThereAnActiveScheduledTest(LocalDrivingLicenseApplicationID, (int)TestTypeID);
+            return LocalLicenseAppRepository.IsThereAnActiveScheduledTest(LocalDrivingLicenseApplicationID, (int)TestTypeID);
         }
 
         public  bool IsThereAnActiveScheduledTest( clsTestType.enTestType TestTypeID)
 
         {
 
-            return clsLocalDLAdata.IsThereAnActiveScheduledTest(this.LocalDrivingLicenseApplicationID, (int)TestTypeID);
+            return LocalLicenseAppRepository.IsThereAnActiveScheduledTest(this.LocalDrivingLicenseApplicationID, (int)TestTypeID);
         }
 
         public clsTest GetLastTestPerTestType(clsTestType.enTestType TestTypeID)
