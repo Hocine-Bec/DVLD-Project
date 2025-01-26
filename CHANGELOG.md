@@ -6,6 +6,46 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [2.4.0] - 2025-01-26
+
+### Added
+- **Solution File**: Created a new solution file (`DVLD_Backend.sln`) to group BAL, DAL, and DTOs projects.
+  - This ensures all backend projects are loaded together in Visual Studio.
+  - Removes the need to manually re-add projects each time.
+
+### Changed
+- **Refactor**: Removed the Windows Forms UI (presentation layer) from the repository.
+  - The Windows Forms project has been moved to a separate folder outside of Git.
+  - The focus is now on refactoring the backend (BAL, DAL, and DTOs) for a future web-based frontend.
+  - This change removes the distraction of maintaining the Windows Forms UI and allows full focus on backend improvements.
+- **Project Dependencies**: Updated project dependencies to ensure proper build order.
+
+### Future Plans
+- Transition to a modern web application using ASP.NET Core.
+- Improve backend architecture and add unit tests.
+  
+---
+
+## [1.4.0] - 2025-01-26
+### Added
+**`UserSqlStatements` Class**:  
+  - Centralized all SQL queries related to user operations into a single, dedicated class.  
+  - Ensures consistent query usage across the application and simplifies maintenance and updates to SQL logic.  
+
+**`UserParameterBuilder` Class**:  
+  - Encapsulates the logic for building and configuring `SqlCommand` parameters.  
+  - Reduces redundancy and improves code clarity by isolating parameter creation logic in one place.  
+
+**`UserDataMapper` Class**:  
+  - Handles the mapping between database query results and `UsersDTO` objects.  
+  - Promotes separation of concerns by decoupling data retrieval from data transformation logic.  
+
+### Changed  
+- Refactored the data access layer to improve maintainability, readability, and adherence to the **Single Responsibility Principle (SRP)** and **Don't Repeat Yourself (DRY)** principles.  
+- Introduced three dedicated helper classes (`UserSqlStatements`, `UserParameterBuilder`, and `UserDataMapper`) to streamline repository operations, reduce code duplication, and enhance modularity.  
+- Updated existing repository implementations to leverage the new helper classes, ensuring a more structured and maintainable codebase.  
+
+---
 
 ## [1.3.0] - 2025-01-25
 ### Added
@@ -102,7 +142,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ---
 
 ### Links
-- **[Refactor/SRP-People-Data-Access-Layer](https://github.com/Hocine-Bec/DVLD-Project/compare/v1.2.0...v1.3.0)**: Improved `PersonRepository` class to adhere to the **Don't Repeat Yourself Principle (DRY)**.
+- **[Delete/Remove-Windows-Forms-UI](https://github.com/Hocine-Bec/DVLD-Project/compare/v1.4.0...v2.4.0)**: Removed the **Windows Forms UI (presentation layer)** to focus on backend development..
+- **[Refactor/SRP-Data-Access-Layer](https://github.com/Hocine-Bec/DVLD-Project/compare/v1.3.0...v1.4.0)**: Improved **Data Access Layer (DAL)** class to adhere to the **Don't Repeat Yourself Principle (DRY)**.
 - **[Refactor/SRP-People-Business-Layer](https://github.com/Hocine-Bec/DVLD-Project/compare/v1.1.0...v1.2.0)**: Improved `clsPerson` class to adhere to the **Single Responsibility Principle (SRP)**.
 - **[Refactor/Add-DTOs](https://github.com/Hocine-Bec/DVLD-Project/compare/v1.0.0...v1.1.0)**: Introduced **Data Transfer Objects (DTOs)** for cleaner data handling.
 - **[Initial Release](https://github.com/Hocine-Bec/DVLD-Project/tree/v1.0.0)**: Initial implementation of the project.
