@@ -1,63 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static DVLD_DataAccess.clsCountryData;
+using static DVLD_DataAccess.CountriesRepository;
 using System.Net;
 using System.Security.Policy;
+using DVLD.DTOs;
 
 namespace DVLD_DataAccess
 {
-    public class clsApplicationTypeData
+
+    public class AppTypeRepository
     {
-
-        public static bool GetApplicationTypeInfoById(int applicationTypeId,
-           ref string applicationTypeTitle, ref float applicationFees)
+        public static AppTypeDTO GetApplicationTypeInfoById(int applicationTypeId)
         {
-            const string query = "SELECT * FROM ApplicationTypes WHERE ApplicationTypeID = @ApplicationTypeID";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(AppTypeSqlStatements.GetById, connection))
                 {
-                    command.Parameters.AddWithValue("@ApplicationTypeID", applicationTypeId);
+                    AppTypeParameterBuilder.FillSqlCommandParameters(command, applicationTypeId);
 
                     connection.Open();
                     using (var reader = command.ExecuteReader())
                     {
                         if (reader.Read())
                         {
-                            applicationTypeTitle = (string)reader["ApplicationTypeTitle"];
-                            applicationFees = Convert.ToSingle(reader["ApplicationFees"]);
-                            return true;
+                            return AppTypeDataMapper.MapToApplicationTypeInfo(reader);
+
                         }
 
-                        return false;
+                        return null;
                     }
                 }
             }
             catch
             {
-                return false;
+                return null;
             }
         }
 
         public static DataTable GetAllApplicationTypes()
         {
-            const string query = "SELECT * FROM ApplicationTypes ORDER BY ApplicationTypeTitle";
             var dataTable = new DataTable();
 
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(AppTypeSqlStatements.GetAllApplicationTypes, connection))
                 {
                     connection.Open();
-
                     using (var reader = command.ExecuteReader())
                     {
                         if (reader.HasRows)
@@ -75,26 +69,20 @@ namespace DVLD_DataAccess
             return dataTable;
         }
 
-        public static int AddNewApplicationType(string title, float fees)
+        public static int AddNewApplicationType(AppTypeDTO appTypeDTO)
         {
-            const string query = @"INSERT INTO ApplicationTypes (ApplicationTypeTitle, ApplicationFees)
-                             VALUES (@Title, @Fees);
-                             SELECT SCOPE_IDENTITY();";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(AppTypeSqlStatements.AddNewApplicationType, connection))
                 {
-                    command.Parameters.AddWithValue("@Title", title);
-                    command.Parameters.AddWithValue("@Fees", fees);
+                    AppTypeParameterBuilder.FillSqlCommandParameters(command, appTypeDTO);
 
                     connection.Open();
                     var result = command.ExecuteScalar();
 
                     return result != null && int.TryParse(result.ToString(), out var insertedId)
                         ? insertedId : -1;
-
                 }
             }
             catch
@@ -103,21 +91,14 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool UpdateApplicationType(int applicationTypeId, string title, float fees)
+        public static bool UpdateApplicationType(AppTypeDTO appTypeDTO)
         {
-            const string query = @"UPDATE ApplicationTypes  
-                            SET ApplicationTypeTitle = @Title,
-                                ApplicationFees = @Fees
-                            WHERE ApplicationTypeID = @ApplicationTypeID";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(AppTypeSqlStatements.UpdateApplicationType, connection))
                 {
-                    command.Parameters.AddWithValue("@ApplicationTypeID", applicationTypeId);
-                    command.Parameters.AddWithValue("@Title", title);
-                    command.Parameters.AddWithValue("@Fees", fees);
+                    AppTypeParameterBuilder.FillSqlCommandParameters(command, appTypeDTO);
 
                     connection.Open();
                     var rowsAffected = command.ExecuteNonQuery();
@@ -129,7 +110,6 @@ namespace DVLD_DataAccess
                 return false;
             }
         }
-
     }
 
 }

@@ -10,17 +10,14 @@ using DVLD.DTOs;
 
 namespace DVLD_DataAccess
 {
-   
-    public class clsApplicationData
+    public class ApplicationRepository
     {
         public static ApplicationDTO GetApplicationInfoById(int applicationId)
         {
-            const string query = "SELECT * FROM Applications WHERE ApplicationID = @ApplicationID";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(ApplicationSqlStatements.GetById, connection))
                 {
                     command.Parameters.AddWithValue("@ApplicationID", applicationId);
 
@@ -29,17 +26,9 @@ namespace DVLD_DataAccess
                     {
                         if (reader.Read())
                         {
-                            return new ApplicationDTO()
-                            {
-                                ApplicantPersonID = (int)reader["ApplicantPersonID"],
-                                ApplicationDate = (DateTime)reader["ApplicationDate"],
-                                ApplicationTypeID = (int)reader["ApplicationTypeID"],
-                                ApplicationStatus = (byte)reader["ApplicationStatus"],
-                                LastStatusDate = (DateTime)reader["LastStatusDate"],
-                                PaidFees = Convert.ToSingle(reader["PaidFees"]),
-                                CreatedByUserID = (int)reader["CreatedByUserID"],
-                            };
+                            return ApplicationDataMapper.MapToApplicationDTO(reader);
                         }
+
                         return null;
                     }
                 }
@@ -52,13 +41,12 @@ namespace DVLD_DataAccess
 
         public static DataTable GetAllApplications()
         {
-            const string query = "SELECT * FROM ApplicationsList_View ORDER BY ApplicationDate";
             var dataTable = new DataTable();
 
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(ApplicationSqlStatements.GetAll, connection))
                 {
                     connection.Open();
                     using (var reader = command.ExecuteReader())
@@ -80,31 +68,12 @@ namespace DVLD_DataAccess
 
         public static int AddNewApplication(ApplicationDTO applicationDTO)
         {
-            const string query = @"
-            INSERT INTO Applications 
-            (
-                ApplicantPersonID, ApplicationDate, ApplicationTypeID,
-                ApplicationStatus, LastStatusDate, PaidFees, CreatedByUserID
-            )
-            VALUES 
-            (
-                @ApplicantPersonID, @ApplicationDate, @ApplicationTypeID,
-                @ApplicationStatus, @LastStatusDate, @PaidFees, @CreatedByUserID
-            );
-            SELECT SCOPE_IDENTITY();";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(ApplicationSqlStatements.AddNew, connection))
                 {
-                    command.Parameters.AddWithValue("@ApplicantPersonID", applicationDTO.ApplicantPersonID);
-                    command.Parameters.AddWithValue("@ApplicationDate",   applicationDTO.ApplicationDate);
-                    command.Parameters.AddWithValue("@ApplicationTypeID", applicationDTO.ApplicationTypeID);
-                    command.Parameters.AddWithValue("@ApplicationStatus", applicationDTO.ApplicationStatus);
-                    command.Parameters.AddWithValue("@LastStatusDate",    applicationDTO.LastStatusDate);
-                    command.Parameters.AddWithValue("@PaidFees",          applicationDTO.PaidFees);
-                    command.Parameters.AddWithValue("@CreatedByUserID",   applicationDTO.CreatedByUserID);
+                    ApplicationParameterBuilder.FillSqlCommandParameters(command, applicationDTO);
 
                     connection.Open();
                     var result = command.ExecuteScalar();
@@ -121,31 +90,13 @@ namespace DVLD_DataAccess
 
         public static bool UpdateApplication(ApplicationDTO applicationDTO)
         {
-            const string query = @"
-            UPDATE Applications  
-            SET 
-                ApplicantPersonID = @ApplicantPersonID,
-                ApplicationDate = @ApplicationDate,
-                ApplicationTypeID = @ApplicationTypeID,
-                ApplicationStatus = @ApplicationStatus, 
-                LastStatusDate = @LastStatusDate,
-                PaidFees = @PaidFees,
-                CreatedByUserID = @CreatedByUserID
-            WHERE ApplicationID = @ApplicationID";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
-                { 
-                    command.Parameters.AddWithValue("@ApplicationID", applicationDTO.ApplicantPersonID);
-                    command.Parameters.AddWithValue("@ApplicantPersonID", applicationDTO.ApplicationDate);
-                    command.Parameters.AddWithValue("@ApplicationDate", applicationDTO.ApplicationTypeID);
-                    command.Parameters.AddWithValue("@ApplicationTypeID", applicationDTO.ApplicationStatus);
-                    command.Parameters.AddWithValue("@ApplicationStatus", applicationDTO.LastStatusDate);
-                    command.Parameters.AddWithValue("@LastStatusDate", applicationDTO.LastStatusDate);
-                    command.Parameters.AddWithValue("@PaidFees", applicationDTO.PaidFees);
-                    command.Parameters.AddWithValue("@CreatedByUserID", applicationDTO.CreatedByUserID);
+                using (var command = new SqlCommand(ApplicationSqlStatements.Update, connection))
+                {
+                    ApplicationParameterBuilder.FillSqlCommandParameters(command, applicationDTO);
+                    command.Parameters.AddWithValue("@ApplicationID", applicationDTO.ApplicationID);
 
                     connection.Open();
                     var rowsAffected = command.ExecuteNonQuery();
@@ -160,12 +111,10 @@ namespace DVLD_DataAccess
 
         public static bool DeleteApplication(int applicationId)
         {
-            const string query = "DELETE FROM Applications WHERE ApplicationID = @ApplicationID";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(ApplicationSqlStatements.Delete, connection))
                 {
                     command.Parameters.AddWithValue("@ApplicationID", applicationId);
 
@@ -182,12 +131,10 @@ namespace DVLD_DataAccess
 
         public static bool IsApplicationExist(int applicationId)
         {
-            const string query = "SELECT Found = 1 FROM Applications WHERE ApplicationID = @ApplicationID";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(ApplicationSqlStatements.IsExist, connection))
                 {
                     command.Parameters.AddWithValue("@ApplicationID", applicationId);
 
@@ -211,17 +158,10 @@ namespace DVLD_DataAccess
 
         public static int GetActiveApplicationId(int personId, int applicationTypeId)
         {
-            const string query = @"
-            SELECT ApplicationID 
-            FROM Applications 
-            WHERE ApplicantPersonID = @ApplicantPersonID 
-                AND ApplicationTypeID = @ApplicationTypeID 
-                AND ApplicationStatus = 1";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(ApplicationSqlStatements.GetActiveApplicationId, connection))
                 {
                     command.Parameters.AddWithValue("@ApplicantPersonID", personId);
                     command.Parameters.AddWithValue("@ApplicationTypeID", applicationTypeId);
@@ -241,24 +181,12 @@ namespace DVLD_DataAccess
 
         public static int GetActiveApplicationIdForLicenseClass(int personId, int applicationTypeId, int licenseClassId)
         {
-            const string query = @"
-            SELECT Applications.ApplicationID  
-            FROM Applications 
-            INNER JOIN LocalDrivingLicenseApplications 
-                ON Applications.ApplicationID = LocalDrivingLicenseApplications.ApplicationID
-            WHERE ApplicantPersonID = @ApplicantPersonID 
-                AND ApplicationTypeID = @ApplicationTypeID 
-                AND LocalDrivingLicenseApplications.LicenseClassID = @LicenseClassID
-                AND ApplicationStatus = 1";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(ApplicationSqlStatements.GetActiveApplicationIdForLicenseClass, connection))
                 {
-                    command.Parameters.AddWithValue("@ApplicantPersonID", personId);
-                    command.Parameters.AddWithValue("@ApplicationTypeID", applicationTypeId);
-                    command.Parameters.AddWithValue("@LicenseClassID", licenseClassId);
+                    ApplicationParameterBuilder.FillSqlCommandParameters(command, personId, applicationTypeId, licenseClassId);
 
                     connection.Open();
                     var result = command.ExecuteScalar();
@@ -275,17 +203,10 @@ namespace DVLD_DataAccess
 
         public static bool UpdateStatus(int applicationId, short newStatus)
         {
-            const string query = @"
-            UPDATE Applications  
-            SET 
-                ApplicationStatus = @NewStatus, 
-                LastStatusDate = @LastStatusDate
-            WHERE ApplicationID = @ApplicationID";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(ApplicationSqlStatements.UpdateStatus, connection))
                 {
                     command.Parameters.AddWithValue("@ApplicationID", applicationId);
                     command.Parameters.AddWithValue("@NewStatus", newStatus);

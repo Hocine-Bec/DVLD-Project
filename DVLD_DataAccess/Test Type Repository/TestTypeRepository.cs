@@ -1,27 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static DVLD_DataAccess.clsCountryData;
+using static DVLD_DataAccess.CountriesRepository;
 using System.Net;
 using System.Security.Policy;
 using DVLD.DTOs;
 
 namespace DVLD_DataAccess
 {
-    public class clsTestTypeData
+    public class TestTypeRepository
     {
         public static TestTypesDTO GetTestTypeInfoById(int testTypeId)
         {
-            const string query = "SELECT * FROM TestTypes WHERE TestTypeID = @TestTypeID";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(TestTypeSqlStatements.GetById, connection))
                 {
                     command.Parameters.AddWithValue("@TestTypeID", testTypeId);
 
@@ -30,13 +27,7 @@ namespace DVLD_DataAccess
                     {
                         if (reader.Read())
                         {
-                            return new TestTypesDTO()
-                            {
-                                TestTypeID = testTypeId,
-                                Title = (string)reader["TestTypeTitle"],
-                                Description = (string)reader["TestTypeDescription"],
-                                Fees = Convert.ToSingle(reader["TestTypeFees"]),
-                            };
+                            return TestTypeDataMapper.MapToTestTypeDTO(reader);
                         }
 
                         return null;
@@ -51,13 +42,12 @@ namespace DVLD_DataAccess
 
         public static DataTable GetAllTestTypes()
         {
-            const string query = "SELECT * FROM TestTypes ORDER BY TestTypeID";
             var dataTable = new DataTable();
 
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(TestTypeSqlStatements.GetAllTestTypes, connection))
                 {
                     connection.Open();
                     using (var reader = command.ExecuteReader())
@@ -79,19 +69,12 @@ namespace DVLD_DataAccess
 
         public static int AddNewTestType(TestTypesDTO testTypesDTO)
         {
-            const string query = @"
-            INSERT INTO TestTypes (TestTypeTitle, TestTypeDescription, TestTypeFees)
-            VALUES (@TestTypeTitle, @TestTypeDescription, @TestTypeFees);
-            SELECT SCOPE_IDENTITY();";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(TestTypeSqlStatements.AddNewTestType, connection))
                 {
-                    command.Parameters.AddWithValue("@TestTypeTitle", testTypesDTO.Title);
-                    command.Parameters.AddWithValue("@TestTypeDescription", testTypesDTO.Description);
-                    command.Parameters.AddWithValue("@TestTypeFees", testTypesDTO.Fees);
+                    TestTypeParameterBuilder.FillSqlCommandParameters(command, testTypesDTO);
 
                     connection.Open();
                     var result = command.ExecuteScalar();
@@ -108,23 +91,12 @@ namespace DVLD_DataAccess
 
         public static bool UpdateTestType(TestTypesDTO testTypesDTO)
         {
-            const string query = @"
-            UPDATE TestTypes  
-            SET 
-                TestTypeTitle = @TestTypeTitle,
-                TestTypeDescription = @TestTypeDescription,
-                TestTypeFees = @TestTypeFees
-            WHERE TestTypeID = @TestTypeID";
-
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(TestTypeSqlStatements.UpdateTestType, connection))
                 {
-                    command.Parameters.AddWithValue("@TestTypeID", testTypesDTO.TestTypeID);
-                    command.Parameters.AddWithValue("@TestTypeTitle", testTypesDTO.Title);
-                    command.Parameters.AddWithValue("@TestTypeDescription", testTypesDTO.Description);
-                    command.Parameters.AddWithValue("@TestTypeFees", testTypesDTO.Fees);
+                    TestTypeParameterBuilder.FillSqlCommandParameters(command, testTypesDTO);
 
                     connection.Open();
                     var rowsAffected = command.ExecuteNonQuery();
@@ -136,7 +108,6 @@ namespace DVLD_DataAccess
                 return false;
             }
         }
-
     }
 
 }
