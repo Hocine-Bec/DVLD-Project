@@ -6,6 +6,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [2.3.0] - 2025-01-26
+
+### Added
+- **Solution File**: Created a new solution file (`DVLD_Backend.sln`) to group BAL, DAL, and DTOs projects.
+  - This ensures all backend projects are loaded together in Visual Studio.
+  - Removes the need to manually re-add projects each time.
+
+### Changed
+- **Refactor**: Removed the Windows Forms UI (presentation layer) from the repository.
+  - The Windows Forms project has been moved to a separate folder outside of Git.
+  - The focus is now on refactoring the backend (BAL, DAL, and DTOs) for a future web-based frontend.
+  - This change removes the distraction of maintaining the Windows Forms UI and allows full focus on backend improvements.
+- **Project Dependencies**: Updated project dependencies to ensure proper build order.
+
+### Future Plans
+- Transition to a modern web application using ASP.NET Core.
+- Improve backend architecture and add unit tests.
+  
+---
 
 ## [1.3.0] - 2025-01-25
 ### Added
