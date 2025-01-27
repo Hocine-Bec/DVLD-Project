@@ -8,7 +8,7 @@ namespace DVLD_DataAccess
 {
     public class UsersRepository
     {
-        public static UsersDTO GetUserInfoByUserId(int userId)
+        public UsersDTO GetUserInfoByUserId(int userId)
         {
             try
             {
@@ -35,7 +35,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static UsersDTO GetUserInfoByPersonId(int personId)
+        public UsersDTO GetUserInfoByPersonId(int personId)
         {
             try
             {
@@ -62,7 +62,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static UsersDTO GetUserInfoByUsernameAndPassword(string userName, string password)
+        public UsersDTO GetUserInfoByUsernameAndPassword(string userName, string password)
         {
             try
             {
@@ -90,7 +90,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static int AddNewUser(UsersDTO usersDTO)
+        public int AddNewUser(UsersDTO usersDTO)
         {
             try
             {
@@ -112,7 +112,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool UpdateUser(UsersDTO usersDTO)
+        public bool UpdateUser(UsersDTO usersDTO)
         {
             try
             {
@@ -133,7 +133,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static DataTable GetAllUsers()
+        public DataTable GetAllUsers()
         {
             var dataTable = new DataTable();
 
@@ -160,7 +160,7 @@ namespace DVLD_DataAccess
             return dataTable;
         }
 
-        public static bool DeleteUser(int userId)
+        public bool DeleteUser(int userId)
         {
             try
             {
@@ -180,7 +180,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool IsUserExist(int userId)
+        public bool IsUserExist(int userId)
         {
             try
             {
@@ -202,7 +202,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool IsUserExist(string userName)
+        public bool IsUserExist(string userName)
         {
             try
             {
@@ -224,7 +224,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool IsUserExistByPersonId(int personId)
+        public bool IsUserExistByPersonId(int personId)
         {
             try
             {
@@ -246,7 +246,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool DoesPersonHaveUser(int personId)
+        public bool DoesPersonHaveUser(int personId)
         {
             try
             {
@@ -268,7 +268,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool ChangePassword(int userId, string newPassword)
+        public bool ChangePassword(int userId, string newPassword)
         {
             try
             {

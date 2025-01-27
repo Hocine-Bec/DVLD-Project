@@ -53,13 +53,17 @@
     <Compile Include="clsApplicationType.cs" />
     <Compile Include="clsCountry.cs" />
     <Compile Include="ApplicationRepository.cs" />
-    <Compile Include="clsUser.cs" />
+    <Compile Include="Users\UserService.cs" />
     <Compile Include="People\Person.cs" />
     <Compile Include="People\PersonMapper.cs" />
     <Compile Include="People\PersonRepoService.cs" />
     <Compile Include="People\PersonService.cs" />
     <Compile Include="People\PersonValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Users\User.cs" />
+    <Compile Include="Users\UserMapper.cs" />
+    <Compile Include="Users\UserRepoService.cs" />
+    <Compile Include="Users\UserValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DVLD.DTOs\DVLD.DTOs.csproj">
