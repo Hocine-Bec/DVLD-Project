@@ -41,8 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationDTO.cs" />
-    <Compile Include="ApplicationTypeDTO.cs" />
+    <Compile Include="AppDTO.cs" />
+    <Compile Include="AppTypeDTO.cs" />
     <Compile Include="CountriesDTO.cs" />
     <Compile Include="DetainedLicensesDTO.cs" />
     <Compile Include="DriverDTO.cs" />

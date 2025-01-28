@@ -10,23 +10,23 @@ using DVLD.DTOs;
 
 namespace DVLD_DataAccess
 {
-    public class ApplicationRepository
+    public class AppRepository
     {
-        public static ApplicationDTO GetApplicationInfoById(int applicationId)
+        public AppDTO GetApplicationInfoById(int appId)
         {
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(ApplicationSqlStatements.GetById, connection))
+                using (var command = new SqlCommand(AppSqlStatements.GetById, connection))
                 {
-                    command.Parameters.AddWithValue("@ApplicationID", applicationId);
+                    command.Parameters.AddWithValue("@ApplicationID", appId);
 
                     connection.Open();
                     using (var reader = command.ExecuteReader())
                     {
                         if (reader.Read())
                         {
-                            return ApplicationDataMapper.MapToApplicationDTO(reader);
+                            return AppDataMapper.MapToApplicationDTO(reader);
                         }
 
                         return null;
@@ -39,14 +39,14 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static DataTable GetAllApplications()
+        public DataTable GetAllApplications()
         {
             var dataTable = new DataTable();
 
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(ApplicationSqlStatements.GetAll, connection))
+                using (var command = new SqlCommand(AppSqlStatements.GetAll, connection))
                 {
                     connection.Open();
                     using (var reader = command.ExecuteReader())
@@ -66,20 +66,20 @@ namespace DVLD_DataAccess
             return dataTable;
         }
 
-        public static int AddNewApplication(ApplicationDTO applicationDTO)
+        public int AddNewApplication(AppDTO appDTO)
         {
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(ApplicationSqlStatements.AddNew, connection))
+                using (var command = new SqlCommand(AppSqlStatements.AddNew, connection))
                 {
-                    ApplicationParameterBuilder.FillSqlCommandParameters(command, applicationDTO);
+                    AppParameterBuilder.FillSqlCommandParameters(command, appDTO);
 
                     connection.Open();
                     var result = command.ExecuteScalar();
 
-                    return result != null && int.TryParse(result.ToString(), out var applicationId)
-                        ? applicationId : -1;
+                    return result != null && int.TryParse(result.ToString(), out var appId)
+                        ? appId : -1;
                 }
             }
             catch
@@ -88,15 +88,15 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool UpdateApplication(ApplicationDTO applicationDTO)
+        public bool UpdateApplication(AppDTO appDTO)
         {
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(ApplicationSqlStatements.Update, connection))
+                using (var command = new SqlCommand(AppSqlStatements.Update, connection))
                 {
-                    ApplicationParameterBuilder.FillSqlCommandParameters(command, applicationDTO);
-                    command.Parameters.AddWithValue("@ApplicationID", applicationDTO.ApplicationID);
+                    AppParameterBuilder.FillSqlCommandParameters(command, appDTO);
+                    command.Parameters.AddWithValue("@ApplicationID", appDTO.AppId);
 
                     connection.Open();
                     var rowsAffected = command.ExecuteNonQuery();
@@ -109,12 +109,12 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool DeleteApplication(int applicationId)
+        public bool DeleteApplication(int applicationId)
         {
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(ApplicationSqlStatements.Delete, connection))
+                using (var command = new SqlCommand(AppSqlStatements.Delete, connection))
                 {
                     command.Parameters.AddWithValue("@ApplicationID", applicationId);
 
@@ -129,12 +129,12 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool IsApplicationExist(int applicationId)
+        public bool IsApplicationExist(int applicationId)
         {
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(ApplicationSqlStatements.IsExist, connection))
+                using (var command = new SqlCommand(AppSqlStatements.IsExist, connection))
                 {
                     command.Parameters.AddWithValue("@ApplicationID", applicationId);
 
@@ -151,17 +151,17 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool DoesPersonHaveActiveApplication(int personId, int applicationTypeId)
+        public bool DoesPersonHaveActiveApplication(int personId, int applicationTypeId)
         {
             return GetActiveApplicationId(personId, applicationTypeId) != -1;
         }
 
-        public static int GetActiveApplicationId(int personId, int applicationTypeId)
+        public int GetActiveApplicationId(int personId, int applicationTypeId)
         {
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(ApplicationSqlStatements.GetActiveApplicationId, connection))
+                using (var command = new SqlCommand(AppSqlStatements.GetActiveApplicationId, connection))
                 {
                     command.Parameters.AddWithValue("@ApplicantPersonID", personId);
                     command.Parameters.AddWithValue("@ApplicationTypeID", applicationTypeId);
@@ -179,14 +179,14 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static int GetActiveApplicationIdForLicenseClass(int personId, int applicationTypeId, int licenseClassId)
+        public int GetActiveAppIdForLicenseClass(int personId, int applicationTypeId, int licenseClassId)
         {
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(ApplicationSqlStatements.GetActiveApplicationIdForLicenseClass, connection))
+                using (var command = new SqlCommand(AppSqlStatements.GetActiveApplicationIdForLicenseClass, connection))
                 {
-                    ApplicationParameterBuilder.FillSqlCommandParameters(command, personId, applicationTypeId, licenseClassId);
+                    AppParameterBuilder.FillSqlCommandParameters(command, personId, applicationTypeId, licenseClassId);
 
                     connection.Open();
                     var result = command.ExecuteScalar();
@@ -201,12 +201,12 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool UpdateStatus(int applicationId, short newStatus)
+        public bool UpdateStatus(int applicationId, short newStatus)
         {
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(ApplicationSqlStatements.UpdateStatus, connection))
+                using (var command = new SqlCommand(AppSqlStatements.UpdateStatus, connection))
                 {
                     command.Parameters.AddWithValue("@ApplicationID", applicationId);
                     command.Parameters.AddWithValue("@NewStatus", newStatus);

@@ -242,7 +242,7 @@ namespace DVLD_Business
             Application.ApplicationTypeID = (int)clsApplication.enApplicationType.ReleaseDetainedDrivingLicsense;
             Application.ApplicationStatus = clsApplication.enApplicationStatus.Completed;
             Application.LastStatusDate = DateTime.Now;
-            Application.PaidFees = clsApplicationType.Find((int)clsApplication.enApplicationType.ReleaseDetainedDrivingLicsense).Fees;
+            Application.PaidFees = AppType.Find((int)clsApplication.enApplicationType.ReleaseDetainedDrivingLicsense).Fees;
             Application.CreatedByUserID = ReleasedByUserID;
 
             if (!Application.Save())
@@ -269,7 +269,7 @@ namespace DVLD_Business
             Application.ApplicationTypeID = (int)clsApplication.enApplicationType.RenewDrivingLicense;
             Application.ApplicationStatus = clsApplication.enApplicationStatus.Completed;
             Application.LastStatusDate = DateTime.Now;
-            Application.PaidFees = clsApplicationType.Find((int)clsApplication.enApplicationType.RenewDrivingLicense).Fees;
+            Application.PaidFees = AppType.Find((int)clsApplication.enApplicationType.RenewDrivingLicense).Fees;
             Application.CreatedByUserID = CreatedByUserID;
 
             if (!Application.Save())
@@ -321,7 +321,7 @@ namespace DVLD_Business
 
             Application.ApplicationStatus = clsApplication.enApplicationStatus.Completed;
             Application.LastStatusDate = DateTime.Now;
-            Application.PaidFees = clsApplicationType.Find(Application.ApplicationTypeID).Fees;
+            Application.PaidFees = AppType.Find(Application.ApplicationTypeID).Fees;
             Application.CreatedByUserID = CreatedByUserID;
 
             if (!Application.Save())

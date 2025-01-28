@@ -1,6 +1,6 @@
 ﻿namespace DVLD_DataAccess
 {
-    public static class ApplicationSqlStatements
+    public static class AppSqlStatements
     {
         public const string GetById = "SELECT * FROM Applications WHERE ApplicationID = @ApplicationID";
         public const string GetAll = "SELECT * FROM ApplicationsList_View ORDER BY ApplicationDate";

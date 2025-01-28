@@ -6,7 +6,7 @@ using DVLD_DataAccess;
 
 namespace DVLD_Business
 {
-    public class clsApplicationType
+    public class AppType
     {
 
         public enum enMode { AddNew = 0, Update = 1 };
@@ -17,7 +17,7 @@ namespace DVLD_Business
         public string Title { set; get; }
         public float Fees { set; get; }
 
-        public clsApplicationType()
+        public AppType()
 
         {
             this.ID = -1;
@@ -27,7 +27,7 @@ namespace DVLD_Business
 
         }
 
-        public clsApplicationType(AppTypeDTO appTypeDTO)
+        public AppType(AppTypeDTO appTypeDTO)
 
         {
             this.ID = appTypeDTO.ID;
@@ -61,11 +61,11 @@ namespace DVLD_Business
             return AppTypeRepository.UpdateApplicationType(dto);
         }
 
-        public static clsApplicationType Find(int ID)
+        public static AppType Find(int ID)
         {
             var dto = AppTypeRepository.GetApplicationTypeInfoById((int)ID);
 
-            return (dto != null) ? new clsApplicationType(dto) : null;
+            return (dto != null) ? new AppType(dto) : null;
         }
 
         public static DataTable GetAllApplicationTypes()
