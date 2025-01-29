@@ -14,7 +14,7 @@ namespace DVLD_DataAccess
 {
     public class LicenseRepository
     {
-        public static LicenseDTO GetLicenseInfoById(int licenseId)
+        public LicenseDTO GetLicenseInfoById(int licenseId)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static DataTable GetAllLicenses()
+        public DataTable GetAllLicenses()
         {
             var dataTable = new DataTable();
 
@@ -68,7 +68,7 @@ namespace DVLD_DataAccess
             return dataTable;
         }
 
-        public static DataTable GetDriverLicenses(int driverId)
+        public DataTable GetDriverLicenses(int driverId)
         {
             var dataTable = new DataTable();
 
@@ -97,7 +97,7 @@ namespace DVLD_DataAccess
             return dataTable;
         }
 
-        public static int AddNewLicense(LicenseDTO licenseDTO)
+        public int AddNewLicense(LicenseDTO licenseDTO)
         {
             try
             {
@@ -119,14 +119,14 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool UpdateLicense(LicenseDTO licenseDTO)
+        public bool UpdateLicense(LicenseDTO licenseDTO)
         {
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
                 using (var command = new SqlCommand(LicenseSqlStatements.Update, connection))
                 {
-                    LicenseParameterBuilder.FillSqlCommandParameters(command, licenseDTO, licenseDTO.LicenseID);
+                    LicenseParameterBuilder.FillSqlCommandParameters(command, licenseDTO, licenseDTO.LicenseId);
 
                     connection.Open();
                     var rowsAffected = command.ExecuteNonQuery();
@@ -139,7 +139,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static int GetActiveLicenseIdByPersonId(int personId, int licenseClassId)
+        public int GetActiveLicenseIdByPersonId(int personId, int licenseClassId)
         {
             try
             {
@@ -161,7 +161,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool DeactivateLicense(int licenseId)
+        public bool DeactivateLicense(int licenseId)
         {
             try
             {
