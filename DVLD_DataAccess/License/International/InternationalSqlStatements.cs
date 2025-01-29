@@ -1,6 +1,6 @@
 ﻿namespace DVLD_DataAccess
 {
-    public static class InternationalLicenseSqlStatements
+    public static class InternationalSqlStatements
     {
         public const string GetById = @"
         SELECT * FROM InternationalLicenses 

@@ -12,14 +12,14 @@ using DVLD.DTOs;
 
 namespace DVLD_DataAccess
 {
-    public class clsInternationalLicenseData
+    public class InternationalRepository
     {
-        public static InternationalLicenseDTO GetInternationalLicenseInfoById(int internationalLicenseId)
+        public InternationalDTO GetInternationalLicenseById(int internationalLicenseId)
         {
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(InternationalLicenseSqlStatements.GetById, connection))
+                using (var command = new SqlCommand(InternationalSqlStatements.GetById, connection))
                 {
                     command.Parameters.AddWithValue("@InternationalLicenseID", internationalLicenseId);
 
@@ -28,7 +28,7 @@ namespace DVLD_DataAccess
                     {
                         if (reader.Read())
                         {
-                            return InternationalLicenseDataMapper.MapToInternationalLicenseDTO(reader);
+                            return InternationalDataMapper.MapToInternationalLicenseDTO(reader);
                         }
 
                         return null;
@@ -41,14 +41,14 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static DataTable GetAllInternationalLicenses()
+        public DataTable GetAllInternationalLicenses()
         {
             var dataTable = new DataTable();
 
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(InternationalLicenseSqlStatements.GetAll, connection))
+                using (var command = new SqlCommand(InternationalSqlStatements.GetAll, connection))
                 {
                     connection.Open();
                     using (var reader = command.ExecuteReader())
@@ -68,14 +68,14 @@ namespace DVLD_DataAccess
             return dataTable;
         }
 
-        public static DataTable GetDriverInternationalLicenses(int driverId)
+        public DataTable GetDriverInternationalLicenses(int driverId)
         {
             var dataTable = new DataTable();
 
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(InternationalLicenseSqlStatements.GetDriverInternationalLicenses, connection))
+                using (var command = new SqlCommand(InternationalSqlStatements.GetDriverInternationalLicenses, connection))
                 {
                     command.Parameters.AddWithValue("@DriverID", driverId);
 
@@ -97,14 +97,14 @@ namespace DVLD_DataAccess
             return dataTable;
         }
 
-        public static int AddNewInternationalLicense(InternationalLicenseDTO internationalLicenseDTO)
+        public int AddNewInternationalLicense(InternationalDTO internationalLicenseDTO)
         {
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(InternationalLicenseSqlStatements.AddNew, connection))
+                using (var command = new SqlCommand(InternationalSqlStatements.AddNew, connection))
                 {
-                    InternationalLicenseParameterBuilder.FillSqlCommandParameters(command, internationalLicenseDTO);
+                    InternationalParameterBuilder.FillSqlCommandParameters(command, internationalLicenseDTO);
 
                     connection.Open();
                     var result = command.ExecuteScalar();
@@ -119,14 +119,15 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool UpdateInternationalLicense(InternationalLicenseDTO internationalLicenseDTO)
+        public bool UpdateInternationalLicense(InternationalDTO internationalLicenseDTO)
         {
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(InternationalLicenseSqlStatements.Update, connection))
+                using (var command = new SqlCommand(InternationalSqlStatements.Update, connection))
                 {
-                    InternationalLicenseParameterBuilder.FillSqlCommandParameters(command, internationalLicenseDTO, internationalLicenseDTO.InternationalLicenseID);
+                    InternationalParameterBuilder.FillSqlCommandParameters
+                        (command, internationalLicenseDTO, internationalLicenseDTO.InternationalId);
 
                     connection.Open();
                     var rowsAffected = command.ExecuteNonQuery();
@@ -139,12 +140,12 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static int GetActiveInternationalLicenseIdByDriverId(int driverId)
+        public int GetActiveInternationalLicenseIdByDriverId(int driverId)
         {
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(InternationalLicenseSqlStatements.GetActiveInternationalLicenseIdByDriverId, connection))
+                using (var command = new SqlCommand(InternationalSqlStatements.GetActiveInternationalLicenseIdByDriverId, connection))
                 {
                     command.Parameters.AddWithValue("@InternationalLicenseID", driverId);
 
