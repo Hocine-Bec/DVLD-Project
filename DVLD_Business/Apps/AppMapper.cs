@@ -13,10 +13,10 @@ namespace DVLD_Business
             return new AppDTO()
             {
                 AppId = app.AppId,
-                ApplicantPersonId = app.ApplicantPersonId,
+                PersonId = app.PersonId,
                 AppDate = app.AppDate,
                 AppTypeId = app.AppType.ID,
-                StatusId = AppService.SetStatusId(app.StatusText),
+                StatusId = AppHelpers.SetStatusId(app.StatusText),
                 LastStatusDate = app.LastStatusDate,
                 PaidFees = app.PaidFees,
                 UserID = app.CreatedByUser.UserID
@@ -28,11 +28,11 @@ namespace DVLD_Business
             return new App()
             {
                 AppId = appDTO.AppId,
-                ApplicantPersonId = appDTO.ApplicantPersonId,
-                ApplicantFullName = _personService.Find(appDTO.ApplicantPersonId).FullName,
+                PersonId = appDTO.PersonId,
+                ApplicantFullName = _personService.Find(appDTO.PersonId).FullName,
                 AppDate = appDTO.AppDate,
                 AppType = AppType.Find(appDTO.AppTypeId),
-                StatusText = AppService.SetStatusText(appDTO.StatusId),
+                StatusText = AppHelpers.SetStatusText(appDTO.StatusId),
                 LastStatusDate = appDTO.LastStatusDate,
                 PaidFees = appDTO.PaidFees,
                 CreatedByUser = _userService.FindByUserID(appDTO.UserID)

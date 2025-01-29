@@ -9,7 +9,7 @@ namespace DVLD.DTOs
     public class AppDTO
     {
         public int AppId { set; get; }
-        public int ApplicantPersonId { set; get; }
+        public int PersonId { set; get; }
         public DateTime AppDate { set; get; }
         public int AppTypeId { set; get; }
         public short StatusId { set; get; }

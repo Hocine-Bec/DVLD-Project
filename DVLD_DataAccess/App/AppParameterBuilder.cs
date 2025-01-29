@@ -7,7 +7,7 @@ namespace DVLD_DataAccess
     {
         public static void FillSqlCommandParameters(SqlCommand command, AppDTO appDTO)
         {
-            command.Parameters.AddWithValue($"@{nameof(appDTO.ApplicantPersonId)}", appDTO.ApplicantPersonId);
+            command.Parameters.AddWithValue($"@{nameof(appDTO.PersonId)}", appDTO.PersonId);
             command.Parameters.AddWithValue($"@{nameof(appDTO.AppDate)}", appDTO.AppDate);
             command.Parameters.AddWithValue($"@{nameof(appDTO.AppTypeId)}", appDTO.AppTypeId);
             command.Parameters.AddWithValue($"@{nameof(appDTO.StatusId)}", appDTO.StatusId);

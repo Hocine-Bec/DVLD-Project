@@ -41,18 +41,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Apps\App.cs" />
+    <Compile Include="Apps\AppHelpers.cs" />
+    <Compile Include="Apps\AppMapper.cs" />
+    <Compile Include="Apps\AppRepoService.cs" />
+    <Compile Include="Apps\AppValidator.cs" />
     <Compile Include="clsDetainedLicense.cs" />
     <Compile Include="clsDriver.cs" />
     <Compile Include="clsInternationalLicense.cs" />
-    <Compile Include="clsLicense.cs" />
+    <Compile Include="License\License.cs" />
+    <Compile Include="License\LicenseHelpers.cs" />
+    <Compile Include="License\LicenseMapper.cs" />
+    <Compile Include="License\LicenseOperations.cs" />
+    <Compile Include="License\LicenseRepoService.cs" />
+    <Compile Include="License\LicenseService.cs" />
+    <Compile Include="clsLocalDLA.cs" />
     <Compile Include="clsTestAppointment.cs" />
     <Compile Include="clsTest.cs" />
     <Compile Include="clsTestType.cs" />
-    <Compile Include="clsLocalDLA.cs" />
     <Compile Include="clsLicenseClass.cs" />
     <Compile Include="AppType.cs" />
     <Compile Include="clsCountry.cs" />
     <Compile Include="Apps\AppService.cs" />
+    <Compile Include="License\LicenseValidator.cs" />
     <Compile Include="Users\UserService.cs" />
     <Compile Include="People\Person.cs" />
     <Compile Include="People\PersonMapper.cs" />
@@ -75,5 +86,6 @@
       <Name>DVLD_DataAccess</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

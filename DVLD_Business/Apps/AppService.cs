@@ -1,12 +1,32 @@
-﻿using System.CodeDom;
+﻿using System;
+using System.CodeDom;
 using System.Data;
 using System.Security.AccessControl;
+using DVLD.DTOs;
 using static System.Net.Mime.MediaTypeNames;
 using static DVLD_Business.AppService;
 
 
 namespace DVLD_Business
 {
+    public enum enAppType
+    {
+        NewDrivingLicense = 1,
+        RenewDrivingLicense = 2,
+        ReplaceLostDrivingLicense = 3,
+        ReplaceDamagedDrivingLicense = 4,
+        ReleaseDetainedDrivingLicense = 5,
+        NewInternationalLicense = 6,
+        RetakeTest = 7
+    };
+
+    public enum enAppStatus
+    {
+        New = 1,
+        Cancelled = 2,
+        Completed = 3
+    };
+
     public class AppService
     {
         //This is for testing purpose, it will be updated later
@@ -16,24 +36,6 @@ namespace DVLD_Business
         private readonly AppRepoService _appRepoService;
         private readonly AppMapper _appMapper;
         
-        public enum enApplicationType 
-        {
-            NewDrivingLicense = 1, 
-            RenewDrivingLicense = 2, 
-            ReplaceLostDrivingLicense=3,
-            ReplaceDamagedDrivingLicense=4, 
-            ReleaseDetainedDrivingLicense=5, 
-            NewInternationalLicense=6,
-            RetakeTest=7
-        };
-
-        public enum enApplicationStatus 
-        { 
-            New = 1, 
-            Cancelled = 2,
-            Completed = 3
-        };
-
         public AppService()
         {
             PersonService _personService = new PersonService();
@@ -43,38 +45,8 @@ namespace DVLD_Business
             AppMapper _appMapper = new AppMapper();
         }
 
-        public static string SetStatusText(int statusId)
-        {
-            switch ((enApplicationStatus)statusId)
-            {
-                case enApplicationStatus.New:
-                    return "New";
-                case enApplicationStatus.Cancelled:
-                    return "Cancelled";
-                case enApplicationStatus.Completed:
-                    return "Completed";
-                default:
-                    return "Unknown";
-            }
-        }
-
-        public static short SetStatusId(string status)
-        {
-            switch (status)
-            {
-                case "New":
-                    return 1;
-                case "Cancelled":
-                    return 2;
-                case "Completed":
-                    return 3;
-                default:
-                    return -1;
-            }
-        }
-
         public bool AddNewApp(App app)
-        {
+        {       
             var dto = _appMapper.ToDTO(app);
 
             app.AppId = _appRepoService.AddNewApp(dto);
@@ -117,6 +89,22 @@ namespace DVLD_Business
 
         public int GetActiveApplicationId(int personId, int appTypeId)
             => _appRepoService.GetActiveApplicationId(personId, appTypeId);
+
+        public App CreateNewLicenseApp(int personId, int userId, short appTypeId)
+        {
+            var app = new App()
+            {
+                PersonId = personId,
+                AppDate = DateTime.Now,
+                AppTypeId = appTypeId,
+                StatusText = enAppStatus.Completed.ToString(),
+                LastStatusDate = DateTime.Now,
+                PaidFees = AppType.Find(appTypeId).Fees,
+                UserId = userId,
+            };
+
+            return (this.AddNewApp(app)) ? app : null;
+        }
 
     }
 }

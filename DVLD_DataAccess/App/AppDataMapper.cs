@@ -11,7 +11,7 @@ namespace DVLD_DataAccess
             return new AppDTO
             {
                 AppId = (int)reader["ApplicationID"],
-                ApplicantPersonId = (int)reader["ApplicantPersonID"],
+                PersonId = (int)reader["ApplicantPersonID"],
                 AppDate = (DateTime)reader["ApplicationDate"],
                 AppTypeId = (int)reader["ApplicationTypeID"],
                 StatusId = (byte)reader["ApplicationStatus"],
