@@ -1,6 +1,6 @@
 ﻿namespace DVLD_DataAccess
 {
-    public static class DetainedLicenseSqlStatements
+    public static class DetainedSqlStatements
     {
         public const string GetById = "SELECT * FROM DetainedLicenses WHERE DetainID = @DetainID";
         public const string GetByLicenseId = "SELECT TOP 1 * FROM DetainedLicenses WHERE LicenseID = @LicenseID ORDER BY DetainID DESC";

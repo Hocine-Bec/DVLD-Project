@@ -36,9 +36,9 @@ namespace DVLD_Business
                 PaidFees = dto.PaidFees,
                 IsActive = dto.IsActive,
                 IssueReasonText = LicenseHelpers.GetIssueReasonText(dto.IssueReasonId),
-                DetainedLicenseId = clsDetainedLicense.FindByLicenseID(dto.LicenseClassId).DetainID,
+                DetainedLicenseId = DetainedService.FindByLicenseID(dto.LicenseClassId).DetainID,
                 UserID = dto.UserID,
-                IsDetained = clsDetainedLicense.IsLicenseDetained(dto.LicenseId)
+                IsDetained = DetainedService.IsLicenseDetained(dto.LicenseId)
             };
 
         }

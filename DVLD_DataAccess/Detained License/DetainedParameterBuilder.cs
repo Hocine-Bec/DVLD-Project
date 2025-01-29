@@ -1,16 +1,17 @@
-﻿using System;
+﻿using DVLD.DTOs;
+using System;
 using System.Data.SqlClient;
 
 namespace DVLD_DataAccess
 {
-    public static class DetainedLicenseParameterBuilder
+    public static class DetainedParameterBuilder
     {
-        public static void FillSqlCommandParameters(SqlCommand command, int licenseId, DateTime detainDate, float fineFees, int createdByUserId)
+        public static void FillSqlCommandParameters(SqlCommand command, DetainedDTO dto)
         {
-            command.Parameters.AddWithValue("@LicenseID", licenseId);
-            command.Parameters.AddWithValue("@DetainDate", detainDate);
-            command.Parameters.AddWithValue("@FineFees", fineFees);
-            command.Parameters.AddWithValue("@CreatedByUserID", createdByUserId);
+            command.Parameters.AddWithValue("@LicenseID", dto.LicenseId);
+            command.Parameters.AddWithValue("@DetainDate", dto.DetainDate);
+            command.Parameters.AddWithValue("@FineFees", dto.FineFees);
+            command.Parameters.AddWithValue("@CreatedByUserID", dto.CreatedByUserId);
         }
 
         public static void FillSqlCommandParameters(SqlCommand command, int detainId, int releasedByUserId, int releaseApplicationId)

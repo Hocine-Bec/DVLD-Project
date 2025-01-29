@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace DVLD.DTOs
 {
-    public class DetainedLicensesDTO
+    public class DetainedDTO
     {
-        public int DetainID { set; get; }
-        public int LicenseID { set; get; }
+        public int DetainId { set; get; }
+        public int LicenseId { set; get; }
         public DateTime DetainDate { set; get; }
         public float FineFees { set; get; }
-        public int CreatedByUserID { set; get; }
+        public int CreatedByUserId { set; get; }
         public bool IsReleased { set; get; }
         public DateTime ReleaseDate { set; get; }
-        public int ReleasedByUserID { set; get; }
-        public int ReleaseApplicationID { set; get; }
+        public int ReleasedByUserId { set; get; }
+        public int ReleaseAppId { set; get; }
     }
 }

@@ -16,7 +16,7 @@ namespace DVLD_Business
         public bool IsActive { set; get; }
         public string IssueReasonText { set; get; }
         public int UserID { set; get; }
-        public int DetainedLicenseId { set; get; }
+        public int DetainedId { set; get; }
         public bool IsDetained { set; get; }
     }
 

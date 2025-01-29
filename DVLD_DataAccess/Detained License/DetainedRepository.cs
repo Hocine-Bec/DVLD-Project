@@ -12,14 +12,14 @@ using DVLD.DTOs;
 
 namespace DVLD_DataAccess
 {
-    public class DetainedLicenseRepository
+    public class DetainedRepository
     {
-        public static DetainedLicensesDTO GetDetainedLicenseInfoById(int detainId)
+        public DetainedDTO GetDetainedLicenseInfoById(int detainId)
         {
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(DetainedLicenseSqlStatements.GetById, connection))
+                using (var command = new SqlCommand(DetainedSqlStatements.GetById, connection))
                 {
                     command.Parameters.AddWithValue("@DetainID", detainId);
 
@@ -28,7 +28,7 @@ namespace DVLD_DataAccess
                     {
                         if (reader.Read())
                         {
-                            return DetainedLicenseDataMapper.MapToDetainedLicenseDTO(reader);
+                            return DetainedDataMapper.MapToDetainedLicenseDTO(reader);
                         }
 
                         return null;
@@ -41,12 +41,12 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static DetainedLicensesDTO GetDetainedLicenseInfoByLicenseId(int licenseId)
+        public DetainedDTO GetDetainedLicenseInfoByLicenseId(int licenseId)
         {
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(DetainedLicenseSqlStatements.GetByLicenseId, connection))
+                using (var command = new SqlCommand(DetainedSqlStatements.GetByLicenseId, connection))
                 {
                     command.Parameters.AddWithValue("@LicenseID", licenseId);
 
@@ -55,7 +55,7 @@ namespace DVLD_DataAccess
                     {
                         if (reader.Read())
                         {
-                            return DetainedLicenseDataMapper.MapToDetainedLicenseDTO(reader);
+                            return DetainedDataMapper.MapToDetainedLicenseDTO(reader);
                         }
 
                         return null;
@@ -68,14 +68,14 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static DataTable GetAllDetainedLicenses()
+        public DataTable GetAllDetainedLicenses()
         {
             var dataTable = new DataTable();
 
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(DetainedLicenseSqlStatements.GetAll, connection))
+                using (var command = new SqlCommand(DetainedSqlStatements.GetAll, connection))
                 {
                     connection.Open();
                     using (var reader = command.ExecuteReader())
@@ -95,14 +95,14 @@ namespace DVLD_DataAccess
             return dataTable;
         }
 
-        public static int AddNewDetainedLicense(int licenseId, DateTime detainDate, float fineFees, int createdByUserId)
+        public int AddNewDetainedLicense(DetainedDTO dto)
         {
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(DetainedLicenseSqlStatements.AddNew, connection))
+                using (var command = new SqlCommand(DetainedSqlStatements.AddNew, connection))
                 {
-                    DetainedLicenseParameterBuilder.FillSqlCommandParameters(command, licenseId, detainDate, fineFees, createdByUserId);
+                    DetainedParameterBuilder.FillSqlCommandParameters(command, dto);
 
                     connection.Open();
                     var result = command.ExecuteScalar();
@@ -117,15 +117,15 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool UpdateDetainedLicense(int detainId, int licenseId, DateTime detainDate, float fineFees, int createdByUserId)
+        public bool UpdateDetainedLicense(DetainedDTO dto)
         {
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(DetainedLicenseSqlStatements.Update, connection))
+                using (var command = new SqlCommand(DetainedSqlStatements.Update, connection))
                 {
-                    DetainedLicenseParameterBuilder.FillSqlCommandParameters(command, licenseId, detainDate, fineFees, createdByUserId);
-                    command.Parameters.AddWithValue("@DetainID", detainId);
+                    DetainedParameterBuilder.FillSqlCommandParameters(command, dto);
+                    command.Parameters.AddWithValue("@DetainID", dto.DetainId);
 
                     connection.Open();
                     var rowsAffected = command.ExecuteNonQuery();
@@ -138,14 +138,14 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool ReleaseDetainedLicense(int detainId, int releasedByUserId, int releaseApplicationId)
+        public bool ReleaseDetainedLicense(int detainId, int releasedByUserId, int releaseApplicationId)
         {
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(DetainedLicenseSqlStatements.Release, connection))
+                using (var command = new SqlCommand(DetainedSqlStatements.Release, connection))
                 {
-                    DetainedLicenseParameterBuilder.FillSqlCommandParameters(command, detainId, releasedByUserId, releaseApplicationId);
+                    DetainedParameterBuilder.FillSqlCommandParameters(command, detainId, releasedByUserId, releaseApplicationId);
 
                     connection.Open();
                     var rowsAffected = command.ExecuteNonQuery();
@@ -158,12 +158,12 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool IsLicenseDetained(int licenseId)
+        public bool IsLicenseDetained(int licenseId)
         {
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(DetainedLicenseSqlStatements.IsLicenseDetained, connection))
+                using (var command = new SqlCommand(DetainedSqlStatements.IsLicenseDetained, connection))
                 {
                     command.Parameters.AddWithValue("@LicenseID", licenseId);
 

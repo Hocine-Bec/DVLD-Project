@@ -6,13 +6,13 @@ namespace DVLD_Business
     {
         private readonly LicenseService _licenseService;
         private readonly AppService _appService;
-        private readonly clsDetainedLicense _detainedLicense;
+        private readonly DetainedService _detainedLicense;
 
         public LicenseOperations()
         {
             _licenseService = new LicenseService();
             _appService = new AppService();
-            _detainedLicense = new clsDetainedLicense();
+            _detainedLicense = new DetainedService();
         }
 
         public bool Release(License license, int userId, ref int appId)
@@ -30,8 +30,8 @@ namespace DVLD_Business
 
             appId = app.AppId;
 
-
-            return _detainedLicense.ReleaseDetainedLicense(userId, app.AppId);
+            
+            return _detainedLicense.ReleaseDetainedLicense(license.DetainedId, userId, app.AppId);
         }
 
         public License Renew(License license, string notes, int userId)
