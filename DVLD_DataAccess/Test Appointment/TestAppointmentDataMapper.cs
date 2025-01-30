@@ -6,18 +6,19 @@ namespace DVLD_DataAccess
 {
     public static class TestAppointmentDataMapper
     {
-        public static TestsAppointmentsDTO MapToTestAppointmentDTO(SqlDataReader reader)
+        public static TestsAppointmentDTO MapToTestAppointmentDTO(SqlDataReader reader)
         {
-            return new TestsAppointmentsDTO
+            return new TestsAppointmentDTO
             {
-                TestAppointmentID = (int)reader["TestAppointmentID"],
-                TestTypeID = (int)reader["TestTypeID"],
-                LocalDrivingLicenseApplicationID = (int)reader["LocalDrivingLicenseApplicationID"],
+                TestAppointmentId = (int)reader["TestAppointmentID"],
+                TestTypeId = (int)reader["TestTypeID"],
+                LocalLicenseAppId = (int)reader["LocalDrivingLicenseApplicationID"],
                 AppointmentDate = (DateTime)reader["AppointmentDate"],
                 PaidFees = Convert.ToSingle(reader["PaidFees"]),
-                CreatedByUserID = (int)reader["CreatedByUserID"],
+                UserId = (int)reader["CreatedByUserID"],
                 IsLocked = (bool)reader["IsLocked"],
-                RetakeTestApplicationID = reader["RetakeTestApplicationID"] == DBNull.Value ? -1 : (int)reader["RetakeTestApplicationID"]
+                RetakeTestAppId = reader["RetakeTestApplicationID"] == DBNull.Value ? -1 : (int)reader["RetakeTestApplicationID"],
+                TestId = (int)reader["TestID"]
             };
         }
     }

@@ -2,7 +2,9 @@
 {
     public static class TestAppointmentSqlStatements
     {
-        public const string GetById = "SELECT * FROM TestAppointments WHERE TestAppointmentID = @TestAppointmentID";
+        public const string GetById = 
+            "SELECT TestAppointments.*, TestID FROM TestAppointments " +
+            "INNER JOIN Tests ON Tests.TestAppointmentID = TestAppointments.TestAppointmentID";
         public const string GetLastTestAppointment = @"
         SELECT TOP 1 *
         FROM TestAppointments

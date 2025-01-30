@@ -15,7 +15,7 @@ namespace DVLD_DataAccess
 {
     public class TestAppointmentRepository
     {
-        public static TestsAppointmentsDTO GetTestAppointmentInfoById(int testAppointmentId)
+        public TestsAppointmentDTO GetTestAppointmentInfoById(int testAppointmentId)
         {
             try
             {
@@ -42,7 +42,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static TestsAppointmentsDTO GetLastTestAppointment(int localDrivingLicenseApplicationId, int testTypeId)
+        public TestsAppointmentDTO GetLastTestAppointment(int localDrivingLicenseApplicationId, int testTypeId)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static DataTable GetAllTestAppointments()
+        public DataTable GetAllTestAppointments()
         {
             var dataTable = new DataTable();
 
@@ -96,7 +96,7 @@ namespace DVLD_DataAccess
             return dataTable;
         }
 
-        public static DataTable GetApplicationTestAppointmentsPerTestType(int localDrivingLicenseApplicationId, int testTypeId)
+        public DataTable GetApplicationTestAppointmentsPerTestType(int localDrivingLicenseApplicationId, int testTypeId)
         {
             var dataTable = new DataTable();
 
@@ -125,7 +125,7 @@ namespace DVLD_DataAccess
             return dataTable;
         }
 
-        public static int AddNewTestAppointment(TestsAppointmentsDTO testsAppointmentsDTO)
+        public int AddNewTestAppointment(TestsAppointmentDTO testsAppointmentsDTO)
         {
             try
             {
@@ -147,14 +147,14 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool UpdateTestAppointment(TestsAppointmentsDTO testsAppointmentsDTO)
+        public bool UpdateTestAppointment(TestsAppointmentDTO testsAppointmentsDTO)
         {
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
                 using (var command = new SqlCommand(TestAppointmentSqlStatements.Update, connection))
                 {
-                    TestAppointmentParameterBuilder.FillSqlCommandParameters(command, testsAppointmentsDTO, testsAppointmentsDTO.TestAppointmentID);
+                    TestAppointmentParameterBuilder.FillSqlCommandParameters(command, testsAppointmentsDTO, testsAppointmentsDTO.TestAppointmentId);
 
                     connection.Open();
                     var rowsAffected = command.ExecuteNonQuery();
@@ -167,26 +167,5 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static int GetTestId(int testAppointmentId)
-        {
-            try
-            {
-                using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(TestAppointmentSqlStatements.GetTestId, connection))
-                {
-                    command.Parameters.AddWithValue("@TestAppointmentID", testAppointmentId);
-
-                    connection.Open();
-                    var result = command.ExecuteScalar();
-
-                    return result != null && int.TryParse(result.ToString(), out var testId)
-                        ? testId : -1;
-                }
-            }
-            catch
-            {
-                return -1;
-            }
-        }
     }
 }

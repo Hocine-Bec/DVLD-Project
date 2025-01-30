@@ -6,21 +6,20 @@ using DVLD_DataAccess;
 
 namespace DVLD_Business
 {
-    public class clsTestType
+    public enum enTestType { VisionTest = 1, WrittenTest = 2, StreetTest = 3 };
+
+    public class TestType
     {
-
-        public enum enMode { AddNew = 0, Update = 1 };
         public enMode Mode = enMode.AddNew;
-        public  enum enTestType { VisionTest = 1, WrittenTest = 2,StreetTest=3 };
 
-        public clsTestType.enTestType ID { set; get; }
+        public enTestType Id { set; get; }
         public string Title { set; get; }
         public string Description { set; get; } 
         public float Fees { set; get; }
-        public clsTestType()
 
+        public TestType()
         {
-            this.ID = clsTestType.enTestType.VisionTest;
+            this.Id = enTestType.VisionTest;
             this.Title = "";
             this.Description = "";
             this.Fees = 0;
@@ -28,9 +27,9 @@ namespace DVLD_Business
 
         }
 
-        public clsTestType(TestTypesDTO testTypesDTO)
+        public TestType(TestTypesDTO testTypesDTO)
         {
-            this.ID = (enTestType)testTypesDTO.TestTypeID;
+            this.Id = (enTestType)testTypesDTO.TestTypeID;
             this.Title = testTypesDTO.Title;
             this.Description = testTypesDTO.Description;
             this.Fees = testTypesDTO.Fees;
@@ -46,7 +45,7 @@ namespace DVLD_Business
                 Fees = this.Fees
             };
 
-            this.ID = (clsTestType.enTestType) TestTypeRepository.AddNewTestType(testTypeDTO);
+            this.Id = (enTestType) TestTypeRepository.AddNewTestType(testTypeDTO);
               
             return (this.Title !="");
         }
@@ -55,7 +54,7 @@ namespace DVLD_Business
         {
             var testTypeDTO = new TestTypesDTO()
             {
-                TestTypeID = (int)this.ID,
+                TestTypeID = (int)this.Id,
                 Title = this.Title,
                 Description = this.Description,
                 Fees = this.Fees
@@ -64,23 +63,19 @@ namespace DVLD_Business
             return TestTypeRepository.UpdateTestType(testTypeDTO);
         }
 
-        public static clsTestType Find(clsTestType.enTestType testTypeID)
+        public static TestType Find(enTestType testTypeID)
         {
             var testTypeDTO = TestTypeRepository.GetTestTypeInfoById((int)testTypeID);
 
             if (testTypeDTO != null)
 
-                return new clsTestType(testTypeDTO);
+                return new TestType(testTypeDTO);
             else
                 return null;
 
         }
 
-        public static DataTable GetAllTestTypes()
-        {
-            return TestTypeRepository.GetAllTestTypes();
-
-        }
+        public static DataTable GetAllTestTypes() => TestTypeRepository.GetAllTestTypes();
 
         public bool Save()
         {
