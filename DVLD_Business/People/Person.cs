@@ -17,7 +17,7 @@ namespace DVLD_Business
         public string Phone { get; set; }
         public string Email { get; set; }
         public int NationalityCountryID { get; set; }
-        public clsCountry Country => clsCountry.Find(NationalityCountryID);
+        public Countries Country => Countries.Find(NationalityCountryID);
         public string ImagePath { get; set; }
     }
 

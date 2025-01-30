@@ -15,7 +15,7 @@ namespace DVLD_Business
                 AppId = app.AppId,
                 PersonId = app.PersonId,
                 AppDate = app.AppDate,
-                AppTypeId = app.AppType.ID,
+                AppTypeId = app.AppType.Id,
                 StatusId = AppHelpers.SetStatusId(app.StatusText),
                 LastStatusDate = app.LastStatusDate,
                 PaidFees = app.PaidFees,

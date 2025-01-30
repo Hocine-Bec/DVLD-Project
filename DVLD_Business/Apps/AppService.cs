@@ -30,9 +30,6 @@ namespace DVLD_Business
     public class AppService
     {
         //This is for testing purpose, it will be updated later
-        private readonly PersonService _personService;
-        private readonly UserService _userService;
-        private readonly AppType _appType;
         private readonly AppRepoService _appRepoService;
         private readonly AppMapper _appMapper;
         

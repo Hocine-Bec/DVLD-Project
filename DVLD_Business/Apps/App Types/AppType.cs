@@ -6,21 +6,20 @@ using DVLD_DataAccess;
 
 namespace DVLD_Business
 {
+    public enum enMode { AddNew = 0, Update = 1 };
+
     public class AppType
     {
-
-        public enum enMode { AddNew = 0, Update = 1 };
         public enMode Mode = enMode.AddNew;
 
 
-        public int ID { set; get; }
+        public int Id { set; get; }
         public string Title { set; get; }
         public float Fees { set; get; }
 
         public AppType()
-
         {
-            this.ID = -1;
+            this.Id = -1;
             this.Title = "";
             this.Fees = 0;
             Mode = enMode.AddNew;
@@ -28,9 +27,8 @@ namespace DVLD_Business
         }
 
         public AppType(AppTypeDTO appTypeDTO)
-
         {
-            this.ID = appTypeDTO.ID;
+            this.Id = appTypeDTO.ID;
             this.Title = appTypeDTO.Title;
             this.Fees = appTypeDTO.Fees;
             Mode = enMode.Update;
@@ -44,16 +42,16 @@ namespace DVLD_Business
                 Fees = this.Fees
             };
 
-            this.ID = AppTypeRepository.AddNewApplicationType(dto);
+            this.Id = AppTypeRepository.AddNewApplicationType(dto);
               
-            return (this.ID != -1);
+            return (this.Id != -1);
         }
 
         private bool _UpdateApplicationType()
         {
             var dto = new AppTypeDTO()
             {
-                ID = this.ID,
+                ID = this.Id,
                 Title = this.Title,
                 Fees = this.Fees
             };
@@ -61,17 +59,14 @@ namespace DVLD_Business
             return AppTypeRepository.UpdateApplicationType(dto);
         }
 
-        public static AppType Find(int ID)
+        public static AppType Find(int id)
         {
-            var dto = AppTypeRepository.GetApplicationTypeInfoById((int)ID);
+            var dto = AppTypeRepository.GetApplicationTypeInfoById((int)id);
 
             return (dto != null) ? new AppType(dto) : null;
         }
 
-        public static DataTable GetAllApplicationTypes()
-        {
-            return AppTypeRepository.GetAllApplicationTypes();
-        }
+        public static DataTable GetAllApplicationTypes() => AppTypeRepository.GetAllApplicationTypes();
 
         public bool Save()
         {

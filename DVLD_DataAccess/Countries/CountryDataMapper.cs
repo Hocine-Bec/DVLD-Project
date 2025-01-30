@@ -9,7 +9,7 @@ namespace DVLD_DataAccess
         {
             return new CountriesDTO()
             {
-                ID = (int)reader["CountryID"],
+                Id = (int)reader["CountryID"],
                 CountryName = (string)reader["CountryName"]
             };
 

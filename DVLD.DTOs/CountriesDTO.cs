@@ -8,7 +8,7 @@ namespace DVLD.DTOs
 {
     public class CountriesDTO
     {
-        public int ID { set; get; }
+        public int Id { set; get; }
         public string CountryName { set; get; }
 
     }
