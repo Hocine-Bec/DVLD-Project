@@ -10,11 +10,11 @@ namespace DVLD_DataAccess
         {
             return new TestsDTO
             {
-                TestID = (int)reader["TestID"],
-                TestAppointmentID = (int)reader["TestAppointmentID"],
+                TestId = (int)reader["TestID"],
+                TestAppointmentId = (int)reader["TestAppointmentID"],
                 TestResult = (bool)reader["TestResult"],
                 Notes = reader["Notes"] == DBNull.Value ? "" : (string)reader["Notes"],
-                CreatedByUserID = (int)reader["CreatedByUserID"]
+                UserId = (int)reader["CreatedByUserID"]
             };
         }
     }

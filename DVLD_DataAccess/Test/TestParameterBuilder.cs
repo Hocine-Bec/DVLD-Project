@@ -8,10 +8,10 @@ namespace DVLD_DataAccess
     {
         public static void FillSqlCommandParameters(SqlCommand command, TestsDTO testsDTO)
         {
-            command.Parameters.AddWithValue($"@{nameof(testsDTO.TestAppointmentID)}", testsDTO.TestAppointmentID);
+            command.Parameters.AddWithValue($"@{nameof(testsDTO.TestAppointmentId)}", testsDTO.TestAppointmentId);
             command.Parameters.AddWithValue($"@{nameof(testsDTO.TestResult)}", testsDTO.TestResult);
             command.Parameters.AddWithValue($"@{nameof(testsDTO.Notes)}", string.IsNullOrEmpty(testsDTO.Notes) ? DBNull.Value : (object)testsDTO.Notes);
-            command.Parameters.AddWithValue($"@{nameof(testsDTO.CreatedByUserID)}", testsDTO.CreatedByUserID);
+            command.Parameters.AddWithValue($"@{nameof(testsDTO.UserId)}", testsDTO.UserId);
         }
 
         public static void FillSqlCommandParameters(SqlCommand command, TestsDTO testsDTO, int testId)

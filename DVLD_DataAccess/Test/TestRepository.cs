@@ -15,7 +15,7 @@ namespace DVLD_DataAccess
 {
     public class TestRepository
     {
-        public static TestsDTO GetTestInfoById(int testId)
+        public TestsDTO GetTestInfoById(int testId)
         {
             try
             {
@@ -42,7 +42,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static TestsDTO GetLastTestByPersonAndTestTypeAndLicenseClass(int personId, int licenseClassId, int testTypeId)
+        public TestsDTO GetLastTestByPersonAndTestTypeAndLicenseClass(int personId, int licenseClassId, int testTypeId)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static DataTable GetAllTests()
+        public DataTable GetAllTests()
         {
             var dataTable = new DataTable();
 
@@ -96,7 +96,7 @@ namespace DVLD_DataAccess
             return dataTable;
         }
 
-        public static int AddNewTest(TestsDTO testsDTO)
+        public int AddNewTest(TestsDTO testsDTO)
         {
             try
             {
@@ -118,14 +118,14 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool UpdateTest(TestsDTO testsDTO)
+        public bool UpdateTest(TestsDTO testsDTO)
         {
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
                 using (var command = new SqlCommand(TestSqlStatements.Update, connection))
                 {
-                    TestParameterBuilder.FillSqlCommandParameters(command, testsDTO, testsDTO.TestID);
+                    TestParameterBuilder.FillSqlCommandParameters(command, testsDTO, testsDTO.TestId);
 
                     connection.Open();
                     var rowsAffected = command.ExecuteNonQuery();
@@ -138,7 +138,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static byte GetPassedTestCount(int localDrivingLicenseApplicationId)
+        public byte GetPassedTestCount(int localDrivingLicenseApplicationId)
         {
             try
             {
@@ -159,6 +159,97 @@ namespace DVLD_DataAccess
                 return 0;
             }
         }
+
+
+
+        //Tests
+        public bool DoesPassTestType(int localDrivingLicenseApplicationId, int testTypeId)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(DbConfig.ConnectionString))
+                using (var command = new SqlCommand(LocalLicenseAppSqlStatements.DoesPassTestType, connection))
+                {
+                    LocalLicenseAppParameterBuilder.FillSqlCommandParameters(command, localDrivingLicenseApplicationId, testTypeId);
+
+                    connection.Open();
+                    var result = command.ExecuteScalar();
+
+                    return result != null && bool.TryParse(result.ToString(), out var returnedResult)
+                        ? returnedResult : false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public bool DoesAttendTestType(int localDrivingLicenseApplicationId, int testTypeId)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(DbConfig.ConnectionString))
+                using (var command = new SqlCommand(LocalLicenseAppSqlStatements.DoesAttendTestType, connection))
+                {
+                    LocalLicenseAppParameterBuilder.FillSqlCommandParameters(command, localDrivingLicenseApplicationId, testTypeId);
+
+                    connection.Open();
+                    var result = command.ExecuteScalar();
+
+                    return result != null;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public byte TotalTrialsPerTest(int localDrivingLicenseApplicationId, int testTypeId)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(DbConfig.ConnectionString))
+                using (var command = new SqlCommand(LocalLicenseAppSqlStatements.TotalTrialsPerTest, connection))
+                {
+                    LocalLicenseAppParameterBuilder.FillSqlCommandParameters(command, localDrivingLicenseApplicationId, testTypeId);
+
+                    connection.Open();
+                    var result = command.ExecuteScalar();
+
+                    if (result != null && byte.TryParse(result.ToString(), out var trials))
+                    {
+                        return trials;
+                    }
+
+                    return 0;
+                }
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+        public bool IsThereAnActiveScheduledTest(int localDrivingLicenseApplicationId, int testTypeId)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(DbConfig.ConnectionString))
+                using (var command = new SqlCommand(LocalLicenseAppSqlStatements.IsThereAnActiveScheduledTest, connection))
+                {
+                    LocalLicenseAppParameterBuilder.FillSqlCommandParameters(command, localDrivingLicenseApplicationId, testTypeId);
+
+                    connection.Open();
+                    var result = command.ExecuteScalar();
+
+                    return result != null;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
     }
 
 }
