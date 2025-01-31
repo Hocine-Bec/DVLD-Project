@@ -13,7 +13,7 @@ namespace DVLD_DataAccess
 {
     public class DriverRepository
     {
-        public static DriverDTO GetDriverInfoByDriverId(int driverId)
+        public DriverDTO GetDriverInfoByDriverId(int driverId)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static DriverDTO GetDriverInfoByPersonId(int personId)
+        public DriverDTO GetDriverInfoByPersonId(int personId)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static DataTable GetAllDrivers()
+        public DataTable GetAllDrivers()
         {
             var dataTable = new DataTable();
 
@@ -94,14 +94,14 @@ namespace DVLD_DataAccess
             return dataTable;
         }
 
-        public static int AddNewDriver(int personId, int createdByUserId)
+        public int AddNewDriver(int personId, int userId)
         {
             try
             {
                 using (var connection = new SqlConnection(DbConfig.ConnectionString))
                 using (var command = new SqlCommand(DriverSqlStatements.AddNew, connection))
                 {
-                    DriverParameterBuilder.FillSqlCommandParameters(command, personId, createdByUserId);
+                    DriverParameterBuilder.FillSqlCommandParameters(command, personId, userId);
 
                     connection.Open();
                     var result = command.ExecuteScalar();
@@ -116,7 +116,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool UpdateDriver(DriverDTO driverDTO)
+        public bool UpdateDriver(DriverDTO driverDTO)
         {
             try
             {

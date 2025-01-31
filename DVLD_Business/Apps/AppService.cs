@@ -43,7 +43,10 @@ namespace DVLD_Business
         }
 
         public bool AddNewApp(App app)
-        {       
+        {
+            if (AppValidator.IsAppObjectEmpty(app))
+                return false;
+
             var dto = _appMapper.ToDTO(app);
 
             app.AppId = _appRepoService.AddNewApp(dto);
@@ -53,8 +56,11 @@ namespace DVLD_Business
         
         public bool UpdateApp(App app)
         {
-            var dto = _appMapper.ToDTO(app);
+            if (AppValidator.IsAppObjectEmpty(app))
+                return false;
 
+
+            var dto = _appMapper.ToDTO(app);
             return _appRepoService.UpdateApp(dto);
         }
 
@@ -105,3 +111,5 @@ namespace DVLD_Business
 
     }
 }
+
+
