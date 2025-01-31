@@ -19,7 +19,7 @@ namespace DVLD_Business
                 Address = person.Address,
                 Phone = person.Phone,
                 Email = person.Email,
-                NationalityCountryID = person.NationalityCountryID,
+                CountryId = person.CountryId,
                 ImagePath = person.ImagePath
             };
         }
@@ -39,7 +39,8 @@ namespace DVLD_Business
                 Address = dto.Address,
                 Phone = dto.Phone,
                 Email = dto.Email,
-                NationalityCountryID = dto.NationalityCountryID,
+                CountryId = dto.CountryId,
+                Country = Countries.Find(dto.CountryId),
                 ImagePath = dto.ImagePath
             };
         }

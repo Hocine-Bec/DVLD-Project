@@ -18,15 +18,9 @@ namespace DVLD_Business
 
         public static User FromDTO(UsersDTO userDTO, PersonService personService)
         {
-            return new User()
-            {
-                UserID = userDTO.UserID,
-                PersonID = userDTO.PersonID,
-                UserName = userDTO.Username,
-                Password = userDTO.Password,
-                IsActive = userDTO.IsActive,
-                Person = personService.Find(userDTO.PersonID)
-            };
+            var person = personService.Find(userDTO.PersonID);
+
+            return new User(userDTO, person);
         }
     }
 

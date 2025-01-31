@@ -18,7 +18,7 @@ namespace DVLD_DataAccess
             command.Parameters.AddWithValue($"@{nameof(person.Address)}", person.Address);
             command.Parameters.AddWithValue($"@{nameof(person.Phone)}", person.Phone);
             command.Parameters.AddWithValue($"@{nameof(person.Email)}", string.IsNullOrEmpty(person.Email) ? DBNull.Value : (object)person.Email);
-            command.Parameters.AddWithValue($"@{nameof(person.NationalityCountryID)}", person.NationalityCountryID);
+            command.Parameters.AddWithValue($"@{nameof(person.CountryId)}", person.CountryId);
             command.Parameters.AddWithValue($"@{nameof(person.ImagePath)}", string.IsNullOrEmpty(person.ImagePath) ? DBNull.Value : (object)person.ImagePath);
         }
     }

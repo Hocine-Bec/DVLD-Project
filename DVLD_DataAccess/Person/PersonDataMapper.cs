@@ -21,7 +21,7 @@ namespace DVLD_DataAccess
                 Address = (string)reader["Address"],
                 Phone = (string)reader["Phone"],
                 Email = reader["Email"] == DBNull.Value ? "" : (string)reader["Email"],
-                NationalityCountryID = (int)reader["NationalityCountryID"],
+                CountryId = (int)reader["NationalityCountryID"],
                 ImagePath = reader["ImagePath"] == DBNull.Value ? "" : (string)reader["ImagePath"]
             };
         }
