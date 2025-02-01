@@ -4,13 +4,24 @@ namespace DVLD_Business
 {
     public class LicenseMapper
     {
+        private readonly LicenseClassService _licenseClassService;
+        private readonly DetainedService _detainedService;
+        private readonly DriverService _driverService;
+
+        public LicenseMapper()
+        {
+            _licenseClassService = new LicenseClassService();
+            _detainedService = new DetainedService();
+            _driverService = new DriverService();
+        }
+
         public LicenseDTO ToDTO(License license)
         {
             return new LicenseDTO()
             {
                 AppId = license.AppId,
                 LicenseId = license.LicenseId,
-                DriverId = license.Driver.DriverID,
+                DriverId = license.DriverId,
                 LicenseClassId = license.LicenseClass.LicenseClassID,
                 IssueDate = license.IssueDate,
                 ExpirationDate = license.ExpirationDate,
@@ -26,19 +37,19 @@ namespace DVLD_Business
         {
             return new License()
             {
-                Driver = clsDriver.FindByDriverID(dto.DriverId),
+                Driver = _driverService.FindByDriverId(dto.DriverId),
                 LicenseId = dto.LicenseId,
                 AppId = dto.AppId,
-                LicenseClass = clsLicenseClass.Find(dto.LicenseClassId),
+                LicenseClass = _licenseClassService.Find(dto.LicenseClassId),
                 IssueDate = dto.IssueDate,
                 ExpirationDate = dto.ExpirationDate,
                 Notes = dto.Notes,
                 PaidFees = dto.PaidFees,
                 IsActive = dto.IsActive,
                 IssueReasonText = LicenseHelpers.GetIssueReasonText(dto.IssueReasonId),
-                DetainedLicenseId = DetainedService.FindByLicenseID(dto.LicenseClassId).DetainID,
+                DetainedId = _detainedService.FindByLicenseID(dto.LicenseClassId).DetainId,
                 UserID = dto.UserID,
-                IsDetained = DetainedService.IsLicenseDetained(dto.LicenseId)
+                IsDetained = _detainedService.IsLicenseDetained(dto.LicenseId)
             };
 
         }

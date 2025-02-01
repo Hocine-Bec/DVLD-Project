@@ -5,10 +5,10 @@ namespace DVLD_Business
     public class License
     {
         public int DriverId { get; set; }
-        public clsDriver Driver { get; set; }
+        public Driver Driver { get; set; }
         public int LicenseId { set; get; }
         public int AppId { set; get; }
-        public clsLicenseClass LicenseClass { set; get; }
+        public LicenseClass LicenseClass { set; get; }
         public DateTime IssueDate { set; get; }
         public DateTime ExpirationDate { set; get; }
         public string Notes { set; get; }
@@ -22,3 +22,5 @@ namespace DVLD_Business
 
     
 }
+
+

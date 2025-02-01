@@ -20,7 +20,7 @@ namespace DVLD_Business
             short appTypeId = (short)enAppType.ReleaseDetainedDrivingLicense;
 
             //Create New
-            var app = _appService.CreateNewLicenseApp(license.Driver.PersonID, userId, appTypeId);
+            var app = _appService.CreateNewLicenseApp(license.Driver.PersonId, userId, appTypeId);
 
             if (!_appService.AddNewApp(app))
             {
@@ -44,7 +44,7 @@ namespace DVLD_Business
             short appTypeId = (short)enAppType.RenewDrivingLicense;
 
             //Create New App
-            var app = _appService.CreateNewLicenseApp(license.Driver.PersonID, userId, appTypeId);
+            var app = _appService.CreateNewLicenseApp(license.Driver.PersonId, userId, appTypeId);
 
 
             if (!_appService.AddNewApp(app))
@@ -75,7 +75,7 @@ namespace DVLD_Business
 
             short appTypeId = GetLostOrDamagedLicenseId(issueReason.ToString());
             //Create New App
-            var app = _appService.CreateNewLicenseApp(license.Driver.PersonID, userId, appTypeId);
+            var app = _appService.CreateNewLicenseApp(license.Driver.PersonId, userId, appTypeId);
 
             if (!_appService.AddNewApp(app))
                 return null;

@@ -36,7 +36,7 @@ namespace DVLD_Business
         {
             var newLicense = new License()
             {
-                DriverId = license.Driver.DriverID,
+                DriverId = license.DriverId,
                 LicenseClass = license.LicenseClass,
                 IssueDate = DateTime.Now,
                 ExpirationDate = license.ExpirationDate,
@@ -57,6 +57,9 @@ namespace DVLD_Business
 
         public bool AddNewLicense(License license)
         {
+            if(LicenseValidator.IsLicenseObjectEmpty(license)) 
+                return false;
+
             var dto = _licenseMapper.ToDTO(license);
 
             license.LicenseId = _licenseRepoService.AddNewLicense(dto);
@@ -66,8 +69,10 @@ namespace DVLD_Business
 
         public bool UpdateLicense(License license)
         {
-            var dto = _licenseMapper.ToDTO(license);
+            if (LicenseValidator.IsLicenseObjectEmpty(license))
+                return false;
 
+            var dto = _licenseMapper.ToDTO(license);
             return _licenseRepoService.UpdateLicense(dto);
         }
 
