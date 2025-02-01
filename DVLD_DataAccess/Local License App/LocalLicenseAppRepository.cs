@@ -12,6 +12,7 @@ namespace DVLD_DataAccess
 {
     public class LocalLicenseAppRepository
     {
+        //Local License
         public static bool GetLocalDrivingLicenseApplicationInfoByID(int localDrivingLicenseApplicationID, ref int applicationID, ref int licenseClassID)
         {
             try
@@ -162,95 +163,10 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool DoesPassTestType(int localDrivingLicenseApplicationId, int testTypeId)
-        {
-            try
-            {
-                using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(LocalLicenseAppSqlStatements.DoesPassTestType, connection))
-                {
-                    LocalLicenseAppParameterBuilder.FillSqlCommandParameters(command, localDrivingLicenseApplicationId, testTypeId);
 
-                    connection.Open();
-                    var result = command.ExecuteScalar();
 
-                    return result != null && bool.TryParse(result.ToString(), out var returnedResult)
-                        ? returnedResult : false;
-                }
-            }
-            catch
-            {
-                return false;
-            }
-        }
+      
 
-        public static bool DoesAttendTestType(int localDrivingLicenseApplicationId, int testTypeId)
-        {
-            try
-            {
-                using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(LocalLicenseAppSqlStatements.DoesAttendTestType, connection))
-                {
-                    LocalLicenseAppParameterBuilder.FillSqlCommandParameters(command, localDrivingLicenseApplicationId, testTypeId);
-
-                    connection.Open();
-                    var result = command.ExecuteScalar();
-
-                    return result != null;
-                }
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public static byte TotalTrialsPerTest(int localDrivingLicenseApplicationId, int testTypeId)
-        {
-            try
-            {
-                using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(LocalLicenseAppSqlStatements.TotalTrialsPerTest, connection))
-                {
-                    LocalLicenseAppParameterBuilder.FillSqlCommandParameters(command, localDrivingLicenseApplicationId, testTypeId);
-
-                    connection.Open();
-                    var result = command.ExecuteScalar();
-
-                    if (result != null && byte.TryParse(result.ToString(), out var trials))
-                    {
-                        return trials;
-                    }
-
-                    return 0;
-                }
-            }
-            catch
-            {
-                return 0;
-            }
-        }
-
-        public static bool IsThereAnActiveScheduledTest(int localDrivingLicenseApplicationId, int testTypeId)
-        {
-            try
-            {
-                using (var connection = new SqlConnection(DbConfig.ConnectionString))
-                using (var command = new SqlCommand(LocalLicenseAppSqlStatements.IsThereAnActiveScheduledTest, connection))
-                {
-                    LocalLicenseAppParameterBuilder.FillSqlCommandParameters(command, localDrivingLicenseApplicationId, testTypeId);
-
-                    connection.Open();
-                    var result = command.ExecuteScalar();
-
-                    return result != null;
-                }
-            }
-            catch
-            {
-                return false;
-            }
-        }
     }
 
 
