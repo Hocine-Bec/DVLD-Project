@@ -71,9 +71,9 @@
     <Compile Include="License\LicenseOperations.cs" />
     <Compile Include="License\LicenseRepoService.cs" />
     <Compile Include="License\LicenseService.cs" />
-    <Compile Include="License\Local License App\LicenseIssuer.cs" />
     <Compile Include="License\Local License App\LicenseTestManager.cs" />
     <Compile Include="License\Local License App\LocalLicenseApp.cs" />
+    <Compile Include="License\Local License App\LocalLicenseAppIssuer.cs" />
     <Compile Include="License\Local License App\LocalLicenseAppService.cs" />
     <Compile Include="Tests\Test Appointments\TestAppointment.cs" />
     <Compile Include="Tests\Test Appointments\TestAppointmentMapper.cs" />
