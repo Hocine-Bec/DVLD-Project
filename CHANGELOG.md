@@ -6,6 +6,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [2.5.0] - 2025-02-01
+
+### Added
+- **LicenseIssuer**: A new class responsible for issuing driving licenses.
+- **LicenseTestManager**: A new class to oversee all licensing tests, including vision, written, and practical driving assessments.
+- **Helper Classes**: New classes to manage mapping between status texts and their IDs.
+- **LicenseOperations**: New classes to manage license operations (renewal, replacement, and release).
+
+### Changed
+- **Refactored Business Layer**: Split the business layer into smaller, single-responsibility classes:
+  - **Entities**: Represent core data models.
+  - **Services**: Manage business logic and workflows.
+  - **RepoServices**: Handle data access logic.
+  - **Validators**: Encapsulate validation logic.
+  - **Mappers**: Handle mapping between DTOs and entities.
+
+### Fixed
+- **Naming Inconsistencies**: Resolved naming issues to ensure consistency across the codebase.
+
+### Removed
+- **Redundant Code**: Removed redundant methods and logic from the old monolithic classes.
+
+---
+
 ## [2.4.0] - 2025-01-26
 
 ### Added
@@ -66,28 +90,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [1.2.0] - 2025-01-23
-### Added
-- **PersonValidator**: A new class to handle validation logic for person data.
-- **PersonMapper**: A new class to map data between `Person` and `PersonDTO`.
-- **PersonRepoService**: A new class to handle data access logic.
-  
-### Changed
-- **Refactored `clsPerson`**: Split the `clsPerson` class into multiple classes, each with a single responsibility:
-  - `Person`: Encapsulates person data.
-  - `PersonService`: Manages business logic and workflows.
-  - `PersonRepoService`: Handles data access logic.
-- **Updated Presentation Layer**: Adjusted forms to use the new `PersonService` and related classes.
-- **Adhered to C# Naming Conventions**: Updated class, method, and variable names to follow C# naming conventions.
-
-### Fixed
-- **Naming Inconsistencies**: Fixed naming issues to ensure consistency across the codebase.
-
-### Removed
-- **Redundant Code**: Removed redundant methods and logic from the old `clsPerson` class.
-
----
-
 ## [1.1.0] - 2025-01-18
 ### Added
 - Introduced **Data Transfer Objects (DTOs)** to encapsulate data transferred between the **Data Access Layer (DAL)** and the **Business Layer (BL)**.
@@ -142,8 +144,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ---
 
 ### Links
-- **[Delete/Remove-Windows-Forms-UI](https://github.com/Hocine-Bec/DVLD-Project/compare/v1.4.0...v2.4.0)**: Removed the **Windows Forms UI (presentation layer)** to focus on backend development..
+- **[Refactor/SRP-Business-Layer](https://github.com/Hocine-Bec/DVLD-Project/compare/v2.4.0...v2.5.0)**: Improved **Business Layer** classes to adhere to the **Single Responsibility Principle (SRP)**.
 - **[Refactor/SRP-Data-Access-Layer](https://github.com/Hocine-Bec/DVLD-Project/compare/v1.3.0...v1.4.0)**: Improved **Data Access Layer (DAL)** class to adhere to the **Don't Repeat Yourself Principle (DRY)**.
-- **[Refactor/SRP-People-Business-Layer](https://github.com/Hocine-Bec/DVLD-Project/compare/v1.1.0...v1.2.0)**: Improved `clsPerson` class to adhere to the **Single Responsibility Principle (SRP)**.
+- **[Delete/Remove-Windows-Forms-UI](https://github.com/Hocine-Bec/DVLD-Project/compare/v1.4.0...v2.4.0)**: Removed the **Windows Forms UI (presentation layer)** to focus on backend development..
 - **[Refactor/Add-DTOs](https://github.com/Hocine-Bec/DVLD-Project/compare/v1.0.0...v1.1.0)**: Introduced **Data Transfer Objects (DTOs)** for cleaner data handling.
 - **[Initial Release](https://github.com/Hocine-Bec/DVLD-Project/tree/v1.0.0)**: Initial implementation of the project.
