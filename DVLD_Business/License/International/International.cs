@@ -4,7 +4,7 @@ namespace DVLD_Business
 {
     public class International
     {
-        public clsDriver Driver { get; set; }
+        public Driver Driver { get; set; }
         public App App { get; set; }
         public int InternationalId { set; get; }
         public int DriverID { set; get; }

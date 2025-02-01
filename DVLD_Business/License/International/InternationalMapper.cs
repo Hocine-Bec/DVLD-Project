@@ -4,15 +4,17 @@ namespace DVLD_Business
 {
     public class InternationalMapper
     {
-        private PersonService _personService;
-        private UserService _userService;
+        private readonly PersonService _personService;
+        private readonly UserService _userService;
         private readonly AppService _appService;
+        private readonly DriverService _driverService;
 
         public InternationalMapper()
         {
             _personService = new PersonService();
             _userService = new UserService();
             _appService = new AppService();
+            _driverService = new DriverService();
         }
 
         public InternationalDTO ToDTO(International international)
@@ -21,7 +23,7 @@ namespace DVLD_Business
             {
                 AppId = international.App.AppId,
                 InternationalId = international.InternationalId,
-                DriverId = international.Driver.DriverID,
+                DriverId = international.DriverID,
                 IssuedUsingLicenseId = international.IssuedUsingLicenseId,
                 IssueDate = international.IssueDate,
                 ExpireDate = international.ExpireDate,
@@ -36,7 +38,7 @@ namespace DVLD_Business
             {
                 InternationalId = dto.InternationalId,
                 App = _appService.FindBaseApp(dto.AppId),
-                Driver = clsDriver.FindByDriverID(dto.DriverId),
+                Driver = _driverService.FindByDriverId(dto.DriverId),
                 IssuedUsingLicenseId = dto.IssuedUsingLicenseId,
                 IssueDate = dto.IssueDate,
                 ExpireDate = dto.ExpireDate,
