@@ -8,7 +8,7 @@ namespace DVLD_Business
         public Driver Driver { get; set; }
         public int LicenseId { set; get; }
         public int AppId { set; get; }
-        public LicenseClass LicenseClass { set; get; }
+        public LicenseType LicenseClass { set; get; }
         public DateTime IssueDate { set; get; }
         public DateTime ExpirationDate { set; get; }
         public string Notes { set; get; }

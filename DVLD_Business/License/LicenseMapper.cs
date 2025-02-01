@@ -4,13 +4,13 @@ namespace DVLD_Business
 {
     public class LicenseMapper
     {
-        private readonly LicenseClassService _licenseClassService;
+        private readonly LicenseTypeService _licenseClassService;
         private readonly DetainedService _detainedService;
         private readonly DriverService _driverService;
 
         public LicenseMapper()
         {
-            _licenseClassService = new LicenseClassService();
+            _licenseClassService = new LicenseTypeService();
             _detainedService = new DetainedService();
             _driverService = new DriverService();
         }

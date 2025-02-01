@@ -13,7 +13,7 @@ namespace DVLD_DataAccess
 {
     public class LicenseClassRepository
     {
-        public static LicenseClassDTO GetLicenseClassInfoById(int licenseClassId)
+        public LicenseClassDTO GetLicenseClassInfoById(int licenseClassId)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static LicenseClassDTO GetLicenseClassInfoByClassName(string className)
+        public LicenseClassDTO GetLicenseClassInfoByClassName(string className)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static DataTable GetAllLicenseClasses()
+        public DataTable GetAllLicenseClasses()
         {
             var dataTable = new DataTable();
 
@@ -94,7 +94,7 @@ namespace DVLD_DataAccess
             return dataTable;
         }
 
-        public static int AddNewLicenseClass(LicenseClassDTO licenseClassDTO)
+        public int AddNewLicenseClass(LicenseClassDTO licenseClassDTO)
         {
             try
             {
@@ -116,7 +116,7 @@ namespace DVLD_DataAccess
             }
         }
 
-        public static bool UpdateLicenseClass(LicenseClassDTO licenseClassDTO)
+        public bool UpdateLicenseClass(LicenseClassDTO licenseClassDTO)
         {
             try
             {
