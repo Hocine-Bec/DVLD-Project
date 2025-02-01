@@ -41,17 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationDTO.cs" />
-    <Compile Include="ApplicationTypeDTO.cs" />
+    <Compile Include="AppDTO.cs" />
+    <Compile Include="AppTypeDTO.cs" />
     <Compile Include="CountriesDTO.cs" />
-    <Compile Include="DetainedLicensesDTO.cs" />
+    <Compile Include="DetainedDTO.cs" />
     <Compile Include="DriverDTO.cs" />
-    <Compile Include="InternationalLicenseDTO.cs" />
+    <Compile Include="InternationalDTO.cs" />
     <Compile Include="LicenseClassDTO.cs" />
     <Compile Include="LicenseDTO.cs" />
     <Compile Include="PersonDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestsAppointmentsDTO.cs" />
+    <Compile Include="TestsAppointmentDTO.cs" />
     <Compile Include="TestsDTO.cs" />
     <Compile Include="TestTypesDTO.cs" />
     <Compile Include="UsersDTO.cs" />

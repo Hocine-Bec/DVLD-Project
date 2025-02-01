@@ -41,25 +41,67 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="clsDetainedLicense.cs" />
-    <Compile Include="clsDriver.cs" />
-    <Compile Include="clsInternationalLicense.cs" />
-    <Compile Include="clsLicense.cs" />
-    <Compile Include="clsTestAppointment.cs" />
-    <Compile Include="clsTest.cs" />
-    <Compile Include="clsTestType.cs" />
-    <Compile Include="clsLocalDLA.cs" />
-    <Compile Include="clsLicenseClass.cs" />
-    <Compile Include="clsApplicationType.cs" />
-    <Compile Include="clsCountry.cs" />
-    <Compile Include="ApplicationRepository.cs" />
-    <Compile Include="clsUser.cs" />
+    <Compile Include="Apps\App.cs" />
+    <Compile Include="Apps\AppHelpers.cs" />
+    <Compile Include="Apps\AppMapper.cs" />
+    <Compile Include="Apps\AppRepoService.cs" />
+    <Compile Include="Apps\AppValidator.cs" />
+    <Compile Include="Drivers\Driver.cs" />
+    <Compile Include="Drivers\DriverMapper.cs" />
+    <Compile Include="Drivers\DriverRepoService.cs" />
+    <Compile Include="Drivers\DriverValidator.cs" />
+    <Compile Include="License\Detained License\Detained.cs" />
+    <Compile Include="License\Detained License\DetainedMapper.cs" />
+    <Compile Include="License\Detained License\DetainedRepoService.cs" />
+    <Compile Include="License\Detained License\DetainedService.cs" />
+    <Compile Include="Drivers\DriverService.cs" />
+    <Compile Include="License\International\International.cs" />
+    <Compile Include="License\International\InternationalMapper.cs" />
+    <Compile Include="License\International\InternationalRepoService.cs" />
+    <Compile Include="License\International\InternationalService.cs" />
+    <Compile Include="License\Detained License\DetainedValidator.cs" />
+    <Compile Include="License\International\InternationalValidator.cs" />
+    <Compile Include="License\License Types\LicenseType.cs" />
+    <Compile Include="License\License Types\LicenseTypeMapper.cs" />
+    <Compile Include="License\License Types\LicenseTypeRepoService.cs" />
+    <Compile Include="License\License Types\LicenseTypeValidator.cs" />
+    <Compile Include="License\License.cs" />
+    <Compile Include="License\LicenseHelpers.cs" />
+    <Compile Include="License\LicenseMapper.cs" />
+    <Compile Include="License\LicenseOperations.cs" />
+    <Compile Include="License\LicenseRepoService.cs" />
+    <Compile Include="License\LicenseService.cs" />
+    <Compile Include="License\Local License App\LicenseIssuer.cs" />
+    <Compile Include="License\Local License App\LicenseTestManager.cs" />
+    <Compile Include="License\Local License App\LocalLicenseApp.cs" />
+    <Compile Include="License\Local License App\LocalLicenseAppService.cs" />
+    <Compile Include="Tests\Test Appointments\TestAppointment.cs" />
+    <Compile Include="Tests\Test Appointments\TestAppointmentMapper.cs" />
+    <Compile Include="Tests\Test Appointments\TestAppointmentRepoService.cs" />
+    <Compile Include="Tests\Test Appointments\TestAppointmentService.cs" />
+    <Compile Include="Tests\Test Appointments\TestAppointmentValidator.cs" />
+    <Compile Include="Tests\Test.cs" />
+    <Compile Include="Tests\TestMapper.cs" />
+    <Compile Include="Tests\TestRepoService.cs" />
+    <Compile Include="Tests\TestService.cs" />
+    <Compile Include="Tests\TestTypes\TestType.cs" />
+    <Compile Include="License\License Types\LicenseTypeService.cs" />
+    <Compile Include="Apps\App Types\AppType.cs" />
+    <Compile Include="Countries\Countries.cs" />
+    <Compile Include="Apps\AppService.cs" />
+    <Compile Include="License\LicenseValidator.cs" />
+    <Compile Include="Tests\TestValidator.cs" />
+    <Compile Include="Users\UserService.cs" />
     <Compile Include="People\Person.cs" />
     <Compile Include="People\PersonMapper.cs" />
     <Compile Include="People\PersonRepoService.cs" />
     <Compile Include="People\PersonService.cs" />
     <Compile Include="People\PersonValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Users\User.cs" />
+    <Compile Include="Users\UserMapper.cs" />
+    <Compile Include="Users\UserRepoService.cs" />
+    <Compile Include="Users\UserValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DVLD.DTOs\DVLD.DTOs.csproj">
@@ -71,5 +113,6 @@
       <Name>DVLD_DataAccess</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
