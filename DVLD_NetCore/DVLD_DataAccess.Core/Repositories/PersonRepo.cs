@@ -16,9 +16,13 @@ namespace DVLD_DataAccess.Core.Repositories
         {
             _context = context;
         }
-
+        
+        #region Public Methods
         public async Task<Person?> GetPersonByIdAsync(int personId)
         {
+            if (personId <= 0)
+                return null;
+
             return await ExecuteDbOperationAsync(async () => await _context.People.FindAsync(personId));
         }
 
@@ -27,7 +31,8 @@ namespace DVLD_DataAccess.Core.Repositories
             if (string.IsNullOrWhiteSpace(nationalNo))
                 return null;
 
-            return await ExecuteDbOperationAsync(async () => await _context.People.FirstOrDefaultAsync(x => x.NationalNo == nationalNo));
+            return await ExecuteDbOperationAsync(async () 
+                => await _context.People.FirstOrDefaultAsync(x => x.NationalNo == nationalNo));
         }
 
         public async Task<int> AddNewPersonAsync(Person person)
@@ -38,7 +43,7 @@ namespace DVLD_DataAccess.Core.Repositories
             ExecuteDbOperation(() => _context.People.Add(person));
             await _context.SaveChangesAsync();
 
-            return person.PersonId;
+            return person.Id;
         }
 
         public async Task<bool> UpdatePersonAsync(Person person)
@@ -58,6 +63,9 @@ namespace DVLD_DataAccess.Core.Repositories
 
         public async Task<bool> DeletePersonAsync(int personId)
         {
+            if (personId <= 0)
+                return false;
+
             var person = _context.People.Find(personId);
 
             if (person == null)
@@ -69,10 +77,10 @@ namespace DVLD_DataAccess.Core.Repositories
 
         public async Task<bool> DoesPersonExistAsync(int personId)
         {
-            if (personId == -1)
+            if (personId <= 0)
                 return false;
 
-            return await ExecuteDbOperationAsync(async () => await _context.People.AnyAsync(x => x.PersonId == personId));
+            return await ExecuteDbOperationAsync(async () => await _context.People.AnyAsync(x => x.Id == personId));
         }
 
         public async Task<bool> DoesPersonExistAsync(string nationalNo)
@@ -80,11 +88,14 @@ namespace DVLD_DataAccess.Core.Repositories
             if (string.IsNullOrWhiteSpace(nationalNo))
                 return false;
 
-            return await ExecuteDbOperationAsync(async () => await _context.People.AnyAsync(x => x.NationalNo == nationalNo));
+            return await ExecuteDbOperationAsync(async () 
+                => await _context.People.AnyAsync(x => x.NationalNo == nationalNo));
 
         }
+        #endregion
 
 
+        #region Private Helpers
         private async Task<T?> ExecuteDbOperationAsync<T>(Func<Task<T>> operation)
         {
             try
@@ -108,6 +119,8 @@ namespace DVLD_DataAccess.Core.Repositories
                 //Handle exceptions later
             }
         }
+        #endregion
+
     }
 
 }
