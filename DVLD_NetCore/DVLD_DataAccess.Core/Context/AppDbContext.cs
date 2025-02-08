@@ -1,40 +1,46 @@
 ﻿using DVLD_DataAccess.Core.Entities;
+using DVLD_DataAccess.Core.Entities.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace DVLD_DataAccess.Core.Context
 {
     public class AppDbContext : DbContext
     {
-        public DbSet<Person> People { get; set; }
+        public virtual DbSet<Person> People { get; set; }
 
+        public AppDbContext() { } 
+        
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-        {   }
+        {  
+        
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Person>(entity =>
-            {
-                entity.HasIndex(p => p.NationalNo)
-                .IsUnique();
-
-                entity.Property(p => p.NationalNo)
-                .HasMaxLength(20);
-
-                entity.Property(x => x.FirstName)
-                .HasMaxLength(50)
-                .IsRequired();
-
-                entity.Property(x => x.SecondName).HasMaxLength(50);
-                entity.Property(x => x.ThirdName).HasMaxLength(50);
-                
-                entity.Property(x => x.LastName)
-                .HasMaxLength(50)
-                .IsRequired();
-
-
-                entity.Property(x => x.Gender)
-                      .HasConversion<int>();
-            });
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
         }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var entries = ChangeTracker.Entries<BaseEntity>();
+
+            foreach (var entry in entries)
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        entry.Entity.CreatedAt = DateTime.UtcNow;
+                        break;
+
+                    case EntityState.Modified:
+                        entry.Entity.UpdatedAt = DateTime.UtcNow;
+                        break;
+                }
+            }
+
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
     }
 }
