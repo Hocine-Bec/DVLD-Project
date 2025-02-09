@@ -7,6 +7,7 @@ namespace DVLD_DataAccess.Core.Context
     public class AppDbContext : DbContext
     {
         public virtual DbSet<Person> People { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         public AppDbContext() { } 
         
