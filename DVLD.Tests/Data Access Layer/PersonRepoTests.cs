@@ -1,9 +1,11 @@
+using Castle.Core.Logging;
 using DVLD_DataAccess.Core.Context;
 using DVLD_DataAccess.Core.Entities;
 using DVLD_DataAccess.Core.Enums;
 using DVLD_DataAccess.Core.Repositories;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestPlatform.Common.Utilities;
 using Moq;
@@ -35,61 +37,59 @@ namespace DVLD.Tests
             //Arrange
             var person = CreateTestPerson();
             using var context = CreateInMemoryDbContext(person);
-            var repo = new PersonRepo(context);
 
-            // Act
+            var mockLogger = new Mock<ILogger<PersonRepo>>();
+            var repo = new PersonRepo(context, mockLogger.Object);
+
+            // Act  
             var result = await repo.GetPersonByIdAsync(ValidPersonId);
 
             // Assert   
             result.Should().BeEquivalentTo(person);
         }
-        
+
         [Fact]
-        public async Task GetPersonByIdAsync_WhenPersonIdIsZero_ReturnsNull()
+        public async Task GetPersonByIdAsync_WhenPersonIdIsZero_ThrowArgumentException()
         {
             //Arrange
             var person = CreateTestPerson();
             using var context = CreateInMemoryDbContext(person);
-            var repo = new PersonRepo(context);
 
-            // Act
-            var result = await repo.GetPersonByIdAsync(0);
+            var mockLogger = new Mock<ILogger<PersonRepo>>();
+            var repo = new PersonRepo(context, mockLogger.Object);
 
-            // Assert
-            result.Should().BeNull();
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentException>(async () => await repo.GetPersonByIdAsync(0));
         }
 
         [Fact]
-        public async Task GetPersonByIdAsync_WhenPersonDoesNotExist_ReturnsNull()
+        public async Task GetPersonByIdAsync_WhenPersonDoesNotExist_ThrowArgumentException()
         {
             //Arrange
             using var context = CreateInMemoryDbContext();
-            var repo = new PersonRepo(context);
 
-            // Act
-            var result = await repo.GetPersonByIdAsync(-1);
+            var mockLogger = new Mock<ILogger<PersonRepo>>();
+            var repo = new PersonRepo(context, mockLogger.Object);
 
-            // Assert
-            result.Should().BeNull();
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentException>(async () => await repo.GetPersonByIdAsync(-1));
         }
 
         [Fact]
-        public async Task GetPersonByIdAsync_WhenDbOperationFails_ReturnsNull()
+        public async Task GetPersonByIdAsync_WhenDbOperationFails_ThrowArgumentNullException()
         {
             //Arrange
             var mockDbContext = new Mock<AppDbContext>();
             var mockDbSet = new Mock<DbSet<Person>>();
 
-            mockDbSet.Setup(x => x.FindAsync(It.IsAny<int>())).ThrowsAsync(new Exception("Database Error"));
+            mockDbSet.Setup(x => x.FindAsync(It.IsAny<int>())).ThrowsAsync(new ArgumentNullException("Database Error"));
             mockDbContext.Setup(x => x.People).Returns(mockDbSet.Object);
 
-            var repo = new PersonRepo(mockDbContext.Object);
+            var mockLogger = new Mock<ILogger<PersonRepo>>();
+            var repo = new PersonRepo(mockDbContext.Object, mockLogger.Object);
 
-            //Act
-            var result = await repo.GetPersonByIdAsync(ValidPersonId);
-
-            //Assert
-            result.Should().BeNull();
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentNullException>(() => repo.GetPersonByIdAsync(ValidPersonId));
         }
 
         //Get Person By National No
@@ -99,7 +99,9 @@ namespace DVLD.Tests
             //Arrange
             var person = CreateTestPerson();
             using var context = CreateInMemoryDbContext(person);
-            var repo = new PersonRepo(context);
+
+            var mockLogger = new Mock<ILogger<PersonRepo>>();
+            var repo = new PersonRepo(context, mockLogger.Object);
 
             // Act
             var result = await repo.GetPersonByNationalNoAsync(ValidNationalNo);
@@ -108,12 +110,14 @@ namespace DVLD.Tests
             result.Should().BeEquivalentTo(person);
         }
 
-        [Fact]            
+        [Fact]
         public async Task GetPersonByNationalNoAsync_WhenPersonDoesNotExist_ReturnsNull()
         {
             //Arrange
             using var context = CreateInMemoryDbContext();
-            var repo = new PersonRepo(context);
+
+            var mockLogger = new Mock<ILogger<PersonRepo>>();
+            var repo = new PersonRepo(context, mockLogger.Object);
 
             // Act
             var result = await repo.GetPersonByNationalNoAsync("N99");
@@ -123,18 +127,17 @@ namespace DVLD.Tests
         }
 
         [Fact]
-        public async Task GetPersonByNationalNoAsync_WhenNationalNoIsNullOrWhiteSpace_ReturnsNull()
+        public async Task GetPersonByNationalNoAsync_WhenNationalNoIsNullOrEmpty_ThrowArgumentException()
         {
             //Arrange
             var person = CreateTestPerson();
             using var context = CreateInMemoryDbContext(person);
-            var repo = new PersonRepo(context);
 
-            // Act
-            var result = await repo.GetPersonByNationalNoAsync("");
+            var mockLogger = new Mock<ILogger<PersonRepo>>();
+            var repo = new PersonRepo(context, mockLogger.Object);
 
-            // Assert
-            result.Should().BeNull();
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentException>(() => repo.GetPersonByNationalNoAsync(""));
         }
         #endregion
 
@@ -145,9 +148,12 @@ namespace DVLD.Tests
         {
             //Arrange
             using var context = CreateInMemoryDbContext();
-            var repo = new PersonRepo(context);
-            var person = CreateTestPerson();
             
+            var mockLogger = new Mock<ILogger<PersonRepo>>();
+            var repo = new PersonRepo(context, mockLogger.Object);
+
+            var person = CreateTestPerson();
+
             // Act
             var result = await repo.AddNewPersonAsync(person);
 
@@ -156,17 +162,16 @@ namespace DVLD.Tests
         }
 
         [Fact]
-        public async Task AddNewPersonAsync_WhenPersonIsNull_ReturnsMinusOne()
+        public async Task AddNewPersonAsync_WhenPersonIsNull_ThrowArgumentNullException()
         {
             //Arrange
             using var context = CreateInMemoryDbContext();
-            var repo = new PersonRepo(context);
 
-            // Act
-            var result = await repo.AddNewPersonAsync(null!);
+            var mockLogger = new Mock<ILogger<PersonRepo>>();
+            var repo = new PersonRepo(context, mockLogger.Object);
 
-            // Assert
-            result.Should().Be(-1);
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentNullException>(() => repo.AddNewPersonAsync(null!));
         }
         #endregion
 
@@ -178,7 +183,10 @@ namespace DVLD.Tests
             //Arrange
             var person = CreateTestPerson();
             using var context = CreateInMemoryDbContext(person);
-            var repo = new PersonRepo(context);
+
+            var mockLogger = new Mock<ILogger<PersonRepo>>();
+            var repo = new PersonRepo(context, mockLogger.Object);
+
             person.FirstName = "Jason";
 
             // Act
@@ -190,17 +198,16 @@ namespace DVLD.Tests
         }
 
         [Fact]
-        public async Task UpdatePersonAsync_WhenPersonIsNull_ReturnsFalse()
+        public async Task UpdatePersonAsync_WhenPersonIsNull_ThrowArgumentNullException()
         {
             //Arrange
             using var context = CreateInMemoryDbContext();
-            var repo = new PersonRepo(context);
 
-            // Act
-            var result = await repo.UpdatePersonAsync(null!);
+            var mockLogger = new Mock<ILogger<PersonRepo>>();
+            var repo = new PersonRepo(context, mockLogger.Object);
 
-            // Assert
-            result.Should().BeFalse();
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentNullException>(() => repo.UpdatePersonAsync(null!));
         }
         #endregion
 
@@ -211,8 +218,10 @@ namespace DVLD.Tests
         {
             //Arrange
             var person = CreateTestPerson();
-            using var context = CreateInMemoryDbContext(person);            
-            var repo = new PersonRepo(context);
+            using var context = CreateInMemoryDbContext(person);
+            
+            var mockLogger = new Mock<ILogger<PersonRepo>>();
+            var repo = new PersonRepo(context, mockLogger.Object);
 
             // Act
             var result = await repo.GetAllPeopleAsync();
@@ -240,7 +249,8 @@ namespace DVLD.Tests
             context.People.AddRange(people);
             await context.SaveChangesAsync();
 
-            var repo = new PersonRepo(context);
+            var mockLogger = new Mock<ILogger<PersonRepo>>();
+            var repo = new PersonRepo(context, mockLogger.Object);
 
             // Act
             var result = await repo.GetAllPeopleAsync();
@@ -254,8 +264,10 @@ namespace DVLD.Tests
         {
             //Arrange
             using var context = CreateInMemoryDbContext();
-            var repo = new PersonRepo(context);
-
+            
+            var mockLogger = new Mock<ILogger<PersonRepo>>();
+            var repo = new PersonRepo(context, mockLogger.Object);
+            
             // Act
             var result = await repo.GetAllPeopleAsync();
 
@@ -263,7 +275,7 @@ namespace DVLD.Tests
             result.Should().BeEmpty();
         }
         #endregion
-    
+
 
         #region Delete Person
         [Fact]
@@ -272,7 +284,9 @@ namespace DVLD.Tests
             //Arrange
             var person = CreateTestPerson();
             using var context = CreateInMemoryDbContext(person);
-            var repo = new PersonRepo(context);
+
+            var mockLogger = new Mock<ILogger<PersonRepo>>();
+            var repo = new PersonRepo(context, mockLogger.Object);
 
             // Act
             var result = await repo.DeletePersonAsync(ValidPersonId);
@@ -282,32 +296,30 @@ namespace DVLD.Tests
         }
 
         [Fact]
-        public async Task DeletePersonAsync_WhenPersonIdIsZero_ReturnsFalse()
+        public async Task DeletePersonAsync_WhenPersonIdIsZero_ThrowArgumentException()
         {
             //Arrange
             var person = CreateTestPerson();
             using var context = CreateInMemoryDbContext(person);
-            var repo = new PersonRepo(context);
 
-            // Act
-            var result = await repo.DeletePersonAsync(0);
+            var mockLogger = new Mock<ILogger<PersonRepo>>();
+            var repo = new PersonRepo(context, mockLogger.Object);
 
-            // Assert
-            result.Should().BeFalse();
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentException>(() => repo.DeletePersonAsync(0));
         }
 
         [Fact]
-        public async Task DeletePersonAsync_WhenNonValidPersonId_ReturnsFalse()
+        public async Task DeletePersonAsync_WhenNonValidPersonId_ThrowArgumentException()
         {
             //Arrange
             using var context = CreateInMemoryDbContext();
-            var repo = new PersonRepo(context);
 
-            // Act
-            var result = await repo.DeletePersonAsync(-1);
+            var mockLogger = new Mock<ILogger<PersonRepo>>();
+            var repo = new PersonRepo(context, mockLogger.Object);;
 
-            // Assert
-            result.Should().BeFalse();
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentException>(() => repo.DeletePersonAsync(-1));
         }
         #endregion
 
@@ -319,7 +331,9 @@ namespace DVLD.Tests
             //Arrange
             var person = CreateTestPerson();
             using var context = CreateInMemoryDbContext(person);
-            var repo = new PersonRepo(context);
+
+            var mockLogger = new Mock<ILogger<PersonRepo>>();
+            var repo = new PersonRepo(context, mockLogger.Object);
 
             // Act
             var result = await repo.DoesPersonExistAsync(ValidPersonId);
@@ -329,17 +343,16 @@ namespace DVLD.Tests
         }
 
         [Fact]
-        public async Task DoesPersonExistAsync_WhenNonValidPersonId_ReturnsFalse()
+        public async Task DoesPersonExistAsync_WhenNonValidPersonId_ThrowArgumentException()
         {
             //Arrange
             using var context = CreateInMemoryDbContext();
-            var repo = new PersonRepo(context);
 
-            // Act
-            var result = await repo.DoesPersonExistAsync(-1);
+            var mockLogger = new Mock<ILogger<PersonRepo>>();
+            var repo = new PersonRepo(context, mockLogger.Object);
 
-            // Assert
-            result.Should().BeFalse();
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentException>(() => repo.DoesPersonExistAsync(-1));
         }
 
         [Fact]
@@ -348,7 +361,9 @@ namespace DVLD.Tests
             //Arrange
             var person = CreateTestPerson();
             using var context = CreateInMemoryDbContext(person);
-            var repo = new PersonRepo(context);
+
+            var mockLogger = new Mock<ILogger<PersonRepo>>();
+            var repo = new PersonRepo(context, mockLogger.Object);
 
             // Act
             var result = await repo.DoesPersonExistAsync(ValidNationalNo);
@@ -362,7 +377,9 @@ namespace DVLD.Tests
         {
             //Arrange
             using var context = CreateInMemoryDbContext();
-            var repo = new PersonRepo(context);
+
+            var mockLogger = new Mock<ILogger<PersonRepo>>();
+            var repo = new PersonRepo(context, mockLogger.Object);
 
             // Act
             var result = await repo.DoesPersonExistAsync("ss");
@@ -372,34 +389,43 @@ namespace DVLD.Tests
         }
 
         [Fact]
-        public async Task DoesPersonExistAsync_WhenNationalNoIsNullOrWhiteSpace_ReturnsFalse()
+        public async Task DoesPersonExistAsync_WhenNationalNoIsNullOrWhiteSpace_ThrowArgumentException()
         {
             //Arrange
             using var context = CreateInMemoryDbContext();
-            var repo = new PersonRepo(context);
 
-            // Act
-            var result = await repo.DoesPersonExistAsync("");
+            var mockLogger = new Mock<ILogger<PersonRepo>>();
+            var repo = new PersonRepo(context, mockLogger.Object);
 
-            // Assert
-            result.Should().BeFalse();
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentException>(() => repo.DoesPersonExistAsync(""));
         }
         #endregion
 
 
         //Async Exception
         [Fact]
-        public async Task AddNewPersonAsync_WhenOperationTimesOut_ThrowsException()
+        public async Task AddNewPersonAsync_WhenOperationTimesOut_ThrowsTaskCanceledException()
         {
             // Arrange
             var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase(databaseName: new Guid().ToString()).Options;
+                    .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                    .Options;
 
             var mockDbContext = new Mock<AppDbContext>(options);
-            mockDbContext.Setup(m => m.SaveChangesAsync(It.IsAny<CancellationToken>()))
-            .ThrowsAsync(new TaskCanceledException("Operation Timed Out"));
 
-            var repo = new PersonRepo(mockDbContext.Object);
+            // Mock DbSet<Person> for AddAsync
+            var mockDbSet = new Mock<DbSet<Person>>();
+            mockDbContext.Setup(m => m.People).Returns(mockDbSet.Object);
+
+            // Mock SaveChangesAsync to throw TaskCanceledException
+            mockDbContext.Setup(m => m.SaveChangesAsync(It.IsAny<CancellationToken>()))
+                        .ThrowsAsync(new TaskCanceledException("Operation Timed Out"));
+
+            var mockLogger = new Mock<ILogger<PersonRepo>>();
+            var repo = new PersonRepo(mockDbContext.Object, mockLogger.Object);
+
+
             var person = CreateTestPerson();
 
             // Act
@@ -437,7 +463,8 @@ namespace DVLD.Tests
             DateOfBirth = new DateTime(1990, 1, 1),
             CountryId = 1
         };
-        
+
         #endregion
     }
+
 }
