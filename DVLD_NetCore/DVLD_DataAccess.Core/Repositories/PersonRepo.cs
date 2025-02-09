@@ -4,15 +4,16 @@ using DVLD_DataAccess.Core.Interfaces;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Logging;
 using System.Data;
 
 namespace DVLD_DataAccess.Core.Repositories
 {
-    public class PersonRepo : IPersonRepo
+    public class PersonRepo : BaseRepoHelper, IPersonRepo
     {
         private readonly AppDbContext _context;
 
-        public PersonRepo(AppDbContext context)
+        public PersonRepo(AppDbContext context, ILogger logger) : base(logger) 
         {
             _context = context;
         }
@@ -21,7 +22,7 @@ namespace DVLD_DataAccess.Core.Repositories
         public async Task<Person?> GetPersonByIdAsync(int personId)
         {
             if (personId <= 0)
-                return null;
+                throw new ArgumentException($"Person ID {personId} must be greater than 0.");
 
             return await ExecuteDbOperationAsync(async () => await _context.People.FindAsync(personId));
         }
@@ -29,7 +30,7 @@ namespace DVLD_DataAccess.Core.Repositories
         public async Task<Person?> GetPersonByNationalNoAsync(string nationalNo)
         {
             if (string.IsNullOrWhiteSpace(nationalNo))
-                return null;
+                throw new ArgumentException("National No cannot be empty.");
 
             return await ExecuteDbOperationAsync(async () 
                 => await _context.People.FirstOrDefaultAsync(x => x.NationalNo == nationalNo));
@@ -38,22 +39,24 @@ namespace DVLD_DataAccess.Core.Repositories
         public async Task<int> AddNewPersonAsync(Person person)
         {
             if (person == null)
-                return -1;
+                throw new ArgumentNullException("person cannot be Null.");
 
-            ExecuteDbOperation(() => _context.People.Add(person));
-            await _context.SaveChangesAsync();
+            return await ExecuteDbOperationAsync(async () =>
+            {
+                await _context.People.AddAsync(person);
+                await _context.SaveChangesAsync();
 
-            return person.Id;
+                return person.Id;
+            });
         }
 
         public async Task<bool> UpdatePersonAsync(Person person)
         {
             if (person == null)
-                return false;
-
+                throw new ArgumentNullException("person cannot be Null.");
 
             ExecuteDbOperation(() => _context.People.Update(person));
-            return await _context.SaveChangesAsync() > 0;
+            return await ExecuteDbOperationAsync(async () => await _context.SaveChangesAsync() > 0);
         }
 
         public async Task<List<Person>?> GetAllPeopleAsync()
@@ -64,21 +67,21 @@ namespace DVLD_DataAccess.Core.Repositories
         public async Task<bool> DeletePersonAsync(int personId)
         {
             if (personId <= 0)
-                return false;
+                throw new ArgumentException($"Person ID {personId} must be greater than 0.");
 
-            var person = _context.People.Find(personId);
+            var person = await ExecuteDbOperationAsync(async () => await _context.People.FindAsync(personId));
 
             if (person == null)
-                return false;
+                throw new ArgumentNullException("person cannot be Null.");
 
             ExecuteDbOperation(() => _context.People.Remove(person));
-            return await _context.SaveChangesAsync() > 0;
+            return await ExecuteDbOperationAsync(async () => await _context.SaveChangesAsync() > 0);
         }
 
         public async Task<bool> DoesPersonExistAsync(int personId)
         {
             if (personId <= 0)
-                return false;
+                throw new ArgumentException($"Person ID {personId} must be greater than 0.");
 
             return await ExecuteDbOperationAsync(async () => await _context.People.AnyAsync(x => x.Id == personId));
         }
@@ -86,7 +89,7 @@ namespace DVLD_DataAccess.Core.Repositories
         public async Task<bool> DoesPersonExistAsync(string nationalNo)
         {
             if (string.IsNullOrWhiteSpace(nationalNo))
-                return false;
+                throw new ArgumentException("National No cannot be empty.");
 
             return await ExecuteDbOperationAsync(async () 
                 => await _context.People.AnyAsync(x => x.NationalNo == nationalNo));
@@ -94,33 +97,5 @@ namespace DVLD_DataAccess.Core.Repositories
         }
         #endregion
 
-
-        #region Private Helpers
-        private async Task<T?> ExecuteDbOperationAsync<T>(Func<Task<T>> operation)
-        {
-            try
-            {
-                return await operation();
-            }
-            catch
-            {
-                return default;
-            }
-        }
-
-        private void ExecuteDbOperation(Action operation)
-        {
-            try
-            {
-                operation();
-            }
-            catch
-            {
-                //Handle exceptions later
-            }
-        }
-        #endregion
-
     }
-
 }
