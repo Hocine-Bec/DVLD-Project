@@ -32,7 +32,11 @@ Driving License Management Department (DVLD) is a comprehensive Windows forms ap
 
 ## Recent Improvements
 This section showcases my growth as a developer and documents key improvements made to the project, along with the dates they were implemented.
-
+- **Migration to .NET Core**: Successfully migrated **The Data Access Layer (DAL)** from .NET Framework to .NET Core [2025-02-11].
+  - **Data Access Layer**:
+    - **Repository Pattern & Interfaces**: Implemented the repository pattern and interface contracts for the data access layer
+    - **Entity Framework Core (EF Core)**: Configured database entities using EF Core Fluent API and defined relationships, constraints, and optimized performance with raw SQL queries for complex joins.
+    - **Unit Testing**: Added xUnit tests to validate repository methods and business logic and used Moq to mock dependencies for isolated and reliable testing.
 - **Single Responsibility Principle (SRP)**: Each class was split into smaller, single-responsibility classes.
   - **business layer**: 
     - Entities, Services, RepoServices, Validators, Mappers, and other specific classes [2025-02-01].
