@@ -1,4 +1,4 @@
-﻿using DVLD_DataAccess.Core.Entities;
+﻿using DVLD_DataAccess.Core.Entities.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;

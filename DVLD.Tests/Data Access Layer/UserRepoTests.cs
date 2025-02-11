@@ -1,18 +1,12 @@
-﻿using Castle.Core.Logging;
-using DVLD_DataAccess.Core.Context;
-using DVLD_DataAccess.Core.Entities;
+﻿using DVLD_DataAccess.Core.Context;
+using DVLD_DataAccess.Core.Entities.Identity;
 using DVLD_DataAccess.Core.Repositories;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DVLD.Tests
+namespace DVLD.Tests.DataAccess
 {
     public class UserRepoTests
     {

@@ -1,18 +1,12 @@
-using Castle.Core.Logging;
 using DVLD_DataAccess.Core.Context;
-using DVLD_DataAccess.Core.Entities;
-using DVLD_DataAccess.Core.Enums;
+using DVLD_DataAccess.Core.Entities.Identity;
 using DVLD_DataAccess.Core.Repositories;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Microsoft.VisualStudio.TestPlatform.Common.Utilities;
 using Moq;
-using System.Net;
-using System.Numerics;
 
-namespace DVLD.Tests
+namespace DVLD.Tests.DataAccess
 {
     public class PersonRepoTests
     {

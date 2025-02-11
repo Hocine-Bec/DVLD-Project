@@ -1,5 +1,5 @@
 ﻿using DVLD_DataAccess.Core.Context;
-using DVLD_DataAccess.Core.Entities;
+using DVLD_DataAccess.Core.Entities.Identity;
 using DVLD_DataAccess.Core.Interfaces;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;

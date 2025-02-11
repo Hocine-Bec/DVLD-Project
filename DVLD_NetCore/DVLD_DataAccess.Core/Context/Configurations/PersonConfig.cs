@@ -1,4 +1,5 @@
 ﻿using DVLD_DataAccess.Core.Entities;
+using DVLD_DataAccess.Core.Entities.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -32,6 +33,7 @@ namespace DVLD_DataAccess.Core.Context.Configuration
             // National Number configuration
             entity.HasIndex(p => p.NationalNo)
                   .IsUnique();  
+
             entity.Property(p => p.NationalNo)
                   .HasMaxLength(20)
                   .IsRequired()

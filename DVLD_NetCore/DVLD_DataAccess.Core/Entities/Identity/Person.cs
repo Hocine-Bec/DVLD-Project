@@ -1,7 +1,7 @@
 ﻿using DVLD_DataAccess.Core.Enums;
 using DVLD_DataAccess.Core.Entities.Base;
 
-namespace DVLD_DataAccess.Core.Entities
+namespace DVLD_DataAccess.Core.Entities.Identity
 {
     public class Person : BaseEntity
     {
