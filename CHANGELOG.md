@@ -4,7 +4,52 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+---
+## [4.0.0] - 2025-02-20
 
+### Added
+
+- **Migration to .NET Core**:
+  - Migrated (`The Data Access Layer (DAL)`) from the .NET Framework to the .NET Core
+  - Updated dependencies, configurations, and project structure to align with .NET Core standards
+
+- **Repository Pattern & Interfaces**:
+  - Implemented the repository pattern and interface contracts (IRepository<T>) for decoupled data access
+  - Added concrete repository classes for all entities, following a consistent pattern
+  - Introduced ExecuteDbOperationAsync for centralized error handling in database operations
+
+- **Entity Framework Core (EF Core)**:
+  - Configured database entities using EF Core Fluent API
+  - Added relationships, constraints, and seed data for the database schema
+  - Implemented raw SQL queries for optimized performance in complex joins
+
+- **Unit Testing**:
+  - Added xUnit tests to validate repository methods
+  - Used Moq to mock dependencies for isolated and reliable testing
+  - Covered CRUD operations and edge cases
+
+- **Error Handling**:
+  - Introduced custom exceptions for clearer and more specific error handling.
+  - Added validation for method parameters and database operations to ensure data integrity
+
+### Changed
+
+- **Project Structure**:
+  - Refactored the project to align with .NET Core conventions
+  - Reorganized solution architecture for better maintainability
+  - Updated project dependencies to .NET core-compatible versions
+
+- **Data Access Layer**:
+  - Decoupled data access logic using the repository pattern
+  - Improved database operation performance through optimized queries
+  - Enhanced error handling and logging mechanisms
+
+### Fixed
+
+- **Bug Fixes**:
+  - Resolved issues related to database connection handling during migration
+  - Fixed compatibility issues with legacy code components
+  - Addressed performance bottlenecks in data access operations
 ---
 ## [2.5.0] - 2025-02-01
 
@@ -144,6 +189,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ---
 
 ### Links
+- **[Migration/Data-Access-Layer](https://github.com/Hocine-Bec/DVLD-Project/compare/v2.5.0...v4.0.0)**: Migration to .NET Core, the introduction of **repository pattern** with **EF Core**, enhanced **unit testing**.
 - **[Refactor/SRP-Business-Layer](https://github.com/Hocine-Bec/DVLD-Project/compare/v2.4.0...v2.5.0)**: Improved **Business Layer** classes to adhere to the **Single Responsibility Principle (SRP)**.
 - **[Refactor/SRP-Data-Access-Layer](https://github.com/Hocine-Bec/DVLD-Project/compare/v1.3.0...v1.4.0)**: Improved **Data Access Layer (DAL)** class to adhere to the **Don't Repeat Yourself Principle (DRY)**.
 - **[Delete/Remove-Windows-Forms-UI](https://github.com/Hocine-Bec/DVLD-Project/compare/v1.4.0...v2.4.0)**: Removed the **Windows Forms UI (presentation layer)** to focus on backend development..
