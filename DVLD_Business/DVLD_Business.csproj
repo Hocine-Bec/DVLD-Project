@@ -98,8 +98,8 @@
       <Project>{0128d7c1-ab15-4132-8658-60bbc52da075}</Project>
       <Name>DVLD.DTOs</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DVLD_NetCore\DVLD_DataAccess.Core\DVLD_DataAccess.csproj">
-      <Project>{1bbb2703-edf1-475c-b988-a8d8bad58cb0}</Project>
+    <ProjectReference Include="..\DVLD_DataAccess\DVLD_DataAccess.csproj">
+      <Project>{74b5f510-9686-4d36-a7e3-744d0169dc9e}</Project>
       <Name>DVLD_DataAccess</Name>
     </ProjectReference>
   </ItemGroup>
