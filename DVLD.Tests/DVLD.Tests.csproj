@@ -33,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DVLD_NetCore\DVLD_DataAccess.Core\DVLD_DataAccess.Core.csproj" />
+    <ProjectReference Include="..\DVLD_NetCore\DVLD_DataAccess.Core\DVLD_DataAccess.csproj" />
   </ItemGroup>
 
 </Project>
